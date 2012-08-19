@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
+  <Identity Name="Jukebox1" Publisher="CN=Shannon" Version="1.0.0.0" />
+  <Properties>
+    <DisplayName>Jukebox</DisplayName>
+    <PublisherDisplayName>Shannon</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+    <Description>Jukebox</Description>
+  </Properties>
+  <Prerequisites>
+    <OSMinVersion>6.2.1</OSMinVersion>
+    <OSMaxVersionTested>6.2.1</OSMaxVersionTested>
+  </Prerequisites>
+  <Resources>
+    <Resource Language="x-generate" />
+  </Resources>
+  <Applications>
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Jukebox.App">
+      <VisualElements DisplayName="Jukebox" Logo="Assets\Logo.png" SmallLogo="Assets\SmallLogo.png" Description="Jukebox" ForegroundText="light" BackgroundColor="#222222">
+        <LockScreen Notification="badgeAndTileText" BadgeLogo="Images\Jukebox.small.png" />
+        <DefaultTile ShowName="allLogos" WideLogo="Assets\WideLog.png" />
+        <SplashScreen Image="Assets\SplashScreen.png" />
+      </VisualElements>
+      <Extensions>
+        <Extension Category="windows.backgroundTasks" StartPage="MainPage">
+          <BackgroundTasks>
+            <Task Type="controlChannel" />
+            <Task Type="audio" />
+          </BackgroundTasks>
+        </Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="videosLibrary" />
+    <Capability Name="musicLibrary" />
+    <Capability Name="internetClient" />
+  </Capabilities>
+</Package>

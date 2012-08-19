@@ -1,0 +1,146 @@
+﻿<Pages:LayoutAwarePageWithNavigation
+    x:Name="pageRoot"
+    x:Class="Jukebox.Albums.AlbumView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Jukebox.Albums"
+    xmlns:common="using:Jukebox.Common"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:Pages="using:Slew.WinRT.Pages"
+    xmlns:WinRtBehaviors="using:WinRtBehaviors"
+    xmlns:b="using:Slew.WinRT.Pages"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+
+        <!-- Collection of items displayed by this page -->
+        <CollectionViewSource
+            x:Name="itemsViewSource"
+            Source="{Binding Tracks}"/>
+
+        <DataTemplate x:Name="Standard500x130ItemTemplate">
+			<StackPanel 
+                Orientation="Horizontal" 
+                HorizontalAlignment="Left">
+				<TextBlock Text="{Binding Song.TrackNumber}"/>
+				<TextBlock Text=" - " Margin="5 0 0 0"/>
+                <TextBlock Text="{Binding Song.Title}" Margin="5 0 0 0"/>
+                <WinRtBehaviors:Interaction.Behaviors>
+                    <b:DragDropBehaviour 
+                        FloatingControlTypeName="Jukebox.Albums.TrackFloatingView,Jukebox"
+                        LocationCommandMappings="{Binding TrackLocationCommandMappings, Mode=TwoWay}"
+                        />
+                </WinRtBehaviors:Interaction.Behaviors>
+			</StackPanel>
+		</DataTemplate>
+
+		<DataTemplate x:Name="Standard80ItemTemplate">
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Text="{Binding Song.TrackNumber}"/>
+				<TextBlock Text=" - " Margin="5 0 0 0"/>
+                <TextBlock Text="{Binding Song.Title}" Margin="5 0 0 0"/>
+			</StackPanel>
+		</DataTemplate>
+	</UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Horizontal scrolling grid used in most view states -->
+        <ScrollViewer
+            x:Name="gridScrollViewer"
+            AutomationProperties.AutomationId="DetailsScrollViewer"
+            Grid.Row="1"
+            Padding="0,-14,0,50"
+            Style="{StaticResource HorizontalScrollViewerStyle}">
+
+            <StackPanel x:Name="gridLayoutPanel" Margin="120,0,120,0" Orientation="Horizontal">
+                <StackPanel Width="480" Margin="0,4,14,0">
+                    <WinRtBehaviors:Interaction.Behaviors>
+                        <b:DragDropBehaviour 
+                            FloatingControlTypeName="Jukebox.Albums.AlbumFloatingView,Jukebox"
+                            LocationCommandMappings="{Binding AlbumLocationCommandMappings, Mode=TwoWay}"
+                        />
+                    </WinRtBehaviors:Interaction.Behaviors>
+                    <TextBlock Text="{Binding Album.Title}" Margin="0,0,18,20" Style="{StaticResource SubheaderTextStyle}" MaxHeight="60"/>
+                    <Image Source="{Binding Album.LargeBitmap}" Margin="0,0,18,20" Stretch="None"/>
+                    <TextBlock Text="{Binding Album.Title}" Margin="0,0,18,0" Style="{StaticResource BodyTextStyle}"/>
+                </StackPanel>
+                <GridView
+                    AutomationProperties.AutomationId="ItemGridView"
+                    AutomationProperties.Name="Items In Group"
+					SelectionMode="Single"
+                    ItemsSource="{Binding Source={StaticResource itemsViewSource}}"
+					SelectedItem="{Binding SelectedTrack, Mode=TwoWay}"
+                    ItemTemplate="{StaticResource Standard500x130ItemTemplate}">
+                
+                    <GridView.ItemContainerStyle>
+                        <Style TargetType="GridViewItem">
+                            <Setter Property="Margin" Value="52,0,0,10"/>
+                        </Style>
+                    </GridView.ItemContainerStyle>
+                </GridView>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Vertical scrolling list only used when snapped -->
+        <ScrollViewer
+            x:Name="snappedScrollViewer"
+            AutomationProperties.AutomationId="SnappedDetailsScrollViewer"
+            Grid.Row="1"
+            Visibility="Collapsed"
+            Style="{StaticResource VerticalScrollViewerStyle}">
+
+            <StackPanel>
+                <TextBlock Text="{Binding Group.Subtitle}" Margin="20,0,18,20" Style="{StaticResource TitleTextStyle}" MaxHeight="60"/>
+                <Image Source="{Binding Group.Image}" Margin="20,0,18,0" MaxHeight="160" Stretch="UniformToFill"/>
+                <TextBlock Margin="20,20,18,30" Text="{Binding Album.Title}" Style="{StaticResource BodyTextStyle}"/>
+                <ListView
+                    AutomationProperties.AutomationId="ItemListView"
+                    AutomationProperties.Name="Items In Group"
+                    Margin="10,0,0,60"
+					SelectionMode="Single"
+                    ItemsSource="{Binding Source={StaticResource itemsViewSource}}"
+					SelectedItem="{Binding SelectedSong, Mode=TwoWay}"
+                    ItemTemplate="{StaticResource Standard80ItemTemplate}"/>
+            </StackPanel>
+        </ScrollViewer>
+
+        <VisualStateManager.VisualStateGroups>
+
+            <!-- Visual states reflect the application's view state -->
+            <VisualStateGroup>
+                <VisualState x:Name="FullScreenLandscape"/>
+                <VisualState x:Name="Filled"/>
+
+                <!-- The entire page respects the narrower 100-pixel margin convention for portrait -->
+                <VisualState x:Name="FullScreenPortrait">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="gridLayoutPanel" Storyboard.TargetProperty="Margin">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="100,0,90,0"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+
+                <!--
+                    The back button and title have different styles when snapped, and the list representation is substituted
+                    for the grid displayed in all other view states
+                -->
+                <VisualState x:Name="Snapped">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="gridScrollViewer" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="snappedScrollViewer" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+    </Grid>
+</Pages:LayoutAwarePageWithNavigation>
