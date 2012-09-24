@@ -9,22 +9,26 @@
     xmlns:WinRtBehaviors="using:WinRtBehaviors"
     xmlns:b="using:Slew.WinRT.Pages" 
     xmlns:snapped="using:Jukebox.Features.Albums.Snapped" 
-    mc:Ignorable="d">
+    xmlns:designTime="using:Jukebox.Features.Albums.DesignTime"
+    mc:Ignorable="d"
+    d:DataContext="{Binding Source={d:DesignInstance Type=designTime:DesignTimeAlbumViewModel, IsDesignTimeCreatable=True}}">
 
     <UserControl.Resources>
 
         <!-- Collection of items displayed by this page -->
         <CollectionViewSource
             x:Name="itemsViewSource"
-            Source="{Binding Tracks}"/>
+            Source="{Binding Tracks}"
+            d:Source="{d:DesignInstance Type=designTime:DesignTimeTrackViewModels, IsDesignTimeCreatable=True}"/>
 
         <DataTemplate x:Name="Standard500x130ItemTemplate">
 			<StackPanel 
                 Orientation="Horizontal" 
-                HorizontalAlignment="Left">
-				<TextBlock Text="{Binding Song.TrackNumber}"/>
+                HorizontalAlignment="Left"
+                d:DataContext="{Binding Source={d:DesignInstance Type=designTime:DesignTimeTrackViewModel, IsDesignTimeCreatable=True}}">
+				<TextBlock Text="{Binding TrackNumber}"/>
 				<TextBlock Text=" - " Margin="5 0 0 0"/>
-                <TextBlock Text="{Binding Song.Title}" Margin="5 0 0 0"/>
+                <TextBlock Text="{Binding Title}" Margin="5 0 0 0"/>
                 <WinRtBehaviors:Interaction.Behaviors>
                     <b:DragDropBehaviour 
                         FloatingControlTypeName="Jukebox.Features.Albums.TrackFloatingView,Jukebox"
@@ -46,20 +50,19 @@
             x:Name="gridScrollViewer"
             AutomationProperties.AutomationId="DetailsScrollViewer"
             Grid.Row="1"
-            Padding="0,-14,0,50"
             Style="{StaticResource HorizontalScrollViewerStyle}">
 
-            <StackPanel x:Name="gridLayoutPanel" Margin="120,0,120,0" Orientation="Horizontal">
-                <StackPanel Width="480" Margin="0,4,14,0">
+            <StackPanel x:Name="gridLayoutPanel" Margin="{StaticResource MainPageMargin}" Orientation="Horizontal">
+                <StackPanel Width="480">
                     <WinRtBehaviors:Interaction.Behaviors>
                         <b:DragDropBehaviour 
                             FloatingControlTypeName="Jukebox.Features.Albums.AlbumFloatingView,Jukebox"
                             LocationCommandMappings="{Binding AlbumLocationCommandMappings, Mode=TwoWay}"
                         />
                     </WinRtBehaviors:Interaction.Behaviors>
-                    <TextBlock Text="{Binding Title}" Margin="0,0,18,20" Style="{StaticResource SubheaderTextStyle}" MaxHeight="60"/>
-                    <Image Source="{Binding LargeBitmap}" Width="300" Height="300" Margin="0,0,18,20" Stretch="None"/>
-                    <TextBlock Text="{Binding Title}" Margin="0,0,18,0" Style="{StaticResource BodyTextStyle}"/>
+                    <TextBlock Text="{Binding Title}" Style="{StaticResource SubheaderTextStyle}" MaxHeight="60"/>
+                    <Image Source="{Binding LargeBitmap}" Width="300" Height="300" Stretch="Uniform"/>
+                    <TextBlock Text="{Binding Title}" Style="{StaticResource BodyTextStyle}"/>
                 </StackPanel>
                 <GridView
                     AutomationProperties.AutomationId="ItemGridView"

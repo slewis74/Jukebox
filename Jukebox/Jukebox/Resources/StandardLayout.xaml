@@ -1,0 +1,21 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:System="using:System">
+
+    <!--
+    <System:Double x:Key="OneSubUnit">5</System:Double>
+    <System:Double x:Key="TwoSubUnits">10</System:Double>
+    <System:Double x:Key="OneUnit">20</System:Double>
+    <System:Double x:Key="TwoUnits">20</System:Double>
+    <System:Double x:Key="FourUnits">80</System:Double>
+    <System:Double x:Key="SixUnits">120</System:Double>
+    <System:Double x:Key="SevenUnits">140</System:Double>
+    -->
+
+    <GridLength x:Key="ApplicationHeaderHeight">140</GridLength>
+    
+    <Thickness x:Key="MainPageMargin">120 0 120 0</Thickness>
+ 
+    
+</ResourceDictionary>

@@ -125,6 +125,7 @@
       <DependentUpon>AlbumViewBottomAppBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\Albums\AlbumViewModel.cs" />
+    <Compile Include="Features\Albums\DesignTime\DesignTimeAlbumViewModel.cs" />
     <Compile Include="Features\Albums\Snapped\SnappedAlbumView.xaml.cs">
       <DependentUpon>SnappedAlbumView.xaml</DependentUpon>
     </Compile>
@@ -272,6 +273,11 @@
     <Page Include="Features\Playlists\PlaylistsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\StandardLayout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="Resources\Theme.xaml">
       <SubType>Designer</SubType>

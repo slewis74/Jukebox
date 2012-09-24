@@ -19,9 +19,8 @@
     </UserControl.Resources>
 
     <StackPanel>
-        <TextBlock Text="{Binding Group.Subtitle}" Margin="20,0,18,20" Style="{StaticResource TitleTextStyle}" MaxHeight="60"/>
-        <Image Source="{Binding Group.Image}" Margin="20,0,18,0" MaxHeight="160" Stretch="UniformToFill"/>
-        <TextBlock Margin="20,20,18,30" Text="{Binding Album.Title}" Style="{StaticResource BodyTextStyle}"/>
+        <Image Source="{Binding SmallBitmap}" Margin="20,0,18,0" MaxHeight="160" Stretch="UniformToFill"/>
+        <TextBlock Margin="20,20,18,30" Text="{Binding Title}" Style="{StaticResource BodyTextStyle}"/>
         <ListView
                     AutomationProperties.AutomationId="ItemListView"
                     AutomationProperties.Name="Items In Group"

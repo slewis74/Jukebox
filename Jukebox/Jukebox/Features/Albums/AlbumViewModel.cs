@@ -86,7 +86,7 @@ namespace Jukebox.Features.Albums
 
         public override void Execute(TrackViewModel parameter)
 		{
-            PresentationBus.Publish(new PlaySongNowRequest { Scope = parameter.Song });
+            PresentationBus.Publish(new PlaySongNowRequest { Scope = parameter.GetSong() });
 		}
 	}
 
@@ -107,7 +107,7 @@ namespace Jukebox.Features.Albums
 
         public override void Execute(TrackViewModel parameter)
         {
-            PresentationBus.Publish(new AddSongToCurrentPlaylistRequest { Song = parameter.Song });
+            PresentationBus.Publish(new AddSongToCurrentPlaylistRequest { Song = parameter.GetSong() });
         }
     }
 

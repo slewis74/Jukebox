@@ -14,7 +14,9 @@
                  -->
                 <ResourceDictionary Source="/Common/StandardStyles.xaml"/>
                 <ResourceDictionary Source="/Common/Converters.xaml"/>
-                
+
+                <ResourceDictionary Source="/Resources/StandardLayout.xaml"/>
+
                 <ResourceDictionary Source="/Resources/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 

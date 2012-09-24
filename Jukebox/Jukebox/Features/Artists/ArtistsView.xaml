@@ -17,20 +17,22 @@
 			IsSourceGrouped="True"
             Source="{Binding GroupedItems}"/>
 		
-		<DataTemplate x:Key="Artist250x250ItemTemplate">
+		<DataTemplate x:Key="ArtistItemTemplate">
 			<Button 
 				Click="MoreClicked"
 				HorizontalAlignment="Left" 
-				Width="250" Height="250">
-				<Grid>
-					<Grid.RowDefinitions>
-						<RowDefinition Height="Auto"/>
-						<RowDefinition Height="*"/>
-					</Grid.RowDefinitions>
-                    <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}">
-						<Image Source="{Binding LargeBitmap}" Stretch="UniformToFill"/>
-					</Border>
-				</Grid>
+				>
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <Image Source="{Binding LargeBitmap}" Height="250" Width="250" Stretch="UniformToFill"/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
 			</Button>
 		</DataTemplate>
 
@@ -56,7 +58,7 @@
 				AutomationProperties.AutomationId="ItemsGridView"
                 AutomationProperties.Name="Items"
                 ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"
-				ItemTemplate="{StaticResource Artist250x250ItemTemplate}"
+				ItemTemplate="{StaticResource ArtistItemTemplate}"
 				SelectionMode="None"
 				>
 				<GridView.ItemsPanel>
