@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 	xmlns:Pages="using:Slew.WinRT.Pages" 
+    xmlns:snapped="using:Jukebox.Features.Artists.Snapped" 
     mc:Ignorable="d"
     >
     
@@ -15,9 +16,6 @@
             x:Name="groupedItemsViewSource"
 			IsSourceGrouped="True"
             Source="{Binding GroupedItems}"/>
-		<CollectionViewSource
-            x:Name="itemsViewSource"
-			Source="{Binding Items}"/>
 		
 		<DataTemplate x:Key="Artist250x250ItemTemplate">
 			<Button 
@@ -36,22 +34,6 @@
 			</Button>
 		</DataTemplate>
 
-		<DataTemplate x:Key="Artist80ItemTemplate">
-			<Button 
-				Click="MoreClicked"
-				HorizontalAlignment="Left" 
-				Margin="6">
-				<Grid >
-					<Grid.RowDefinitions>
-						<RowDefinition Height="Auto"/>
-						<RowDefinition Height="*"/>
-					</Grid.RowDefinitions>
-                    <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" Width="60" Height="60">
-						<Image Source="{Binding SmallBitmap}" Stretch="UniformToFill"/>
-					</Border>
-				</Grid>
-			</Button>
-		</DataTemplate>
 	</UserControl.Resources>
     
     <Grid Background="{StaticResource ThemeBackground}">
@@ -112,15 +94,8 @@
             Visibility="Collapsed"
             Style="{StaticResource VerticalScrollViewerStyle}">
 
-            <ListView
-                x:Name="itemListView"
-                AutomationProperties.AutomationId="ItemsListView"
-                AutomationProperties.Name="Items"
-                Margin="10,0,0,60"
-				SelectionMode="None"
-                ItemsSource="{Binding Source={StaticResource itemsViewSource}}"
-                ItemTemplate="{StaticResource Artist80ItemTemplate}"
-				/>
+            <snapped:SnappedArtistsView/>
+            
         </ScrollViewer>
 
         <VisualStateManager.VisualStateGroups>

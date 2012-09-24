@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:common="using:Jukebox.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Pages="using:Slew.WinRT.Pages"
-    mc:Ignorable="d">
+    xmlns:snapped="using:Jukebox.Features.Artists.Snapped" mc:Ignorable="d">
 
     <UserControl.Resources>
 
@@ -13,12 +13,6 @@
         <CollectionViewSource
             x:Name="itemsViewSource"
             Source="{Binding Albums}"/>
-
-		<DataTemplate x:Name="Standard80ItemTemplate">
-			<StackPanel>
-                <Image Source="{Binding SmallBitmap}" Stretch="None"/>
-			</StackPanel>
-		</DataTemplate>
 
         <DataTemplate x:Key="StandardItemTemplate">
             <Grid x:Name="item"  Height="110" Width="480" Margin="10">
@@ -90,20 +84,7 @@
             Visibility="Collapsed"
             Style="{StaticResource VerticalScrollViewerStyle}">
 
-            <StackPanel>
-                <TextBlock Text="{Binding Name}" Margin="20,0,18,20" Style="{StaticResource TitleTextStyle}" MaxHeight="60"/>
-                <Image Source="{Binding SmallBitmap}" Margin="20,0,18,0" MaxHeight="160" Stretch="UniformToFill"/>
-                <TextBlock Margin="20,20,18,30" Text="{Binding Group.Description}" Style="{StaticResource BodyTextStyle}"/>
-                <ListView
-                    AutomationProperties.AutomationId="ItemListView"
-                    AutomationProperties.Name="Items In Group"
-                    Margin="10,0,0,60"
-					SelectionMode="None"
-                    ItemsSource="{Binding Source={StaticResource itemsViewSource}}"
-                    ItemTemplate="{StaticResource Standard80ItemTemplate}"
-                    IsItemClickEnabled="True"
-					ItemClick="ItemClicked"/>
-            </StackPanel>
+            <snapped:SnappedArtistView/>
         </ScrollViewer>
 
         <VisualStateManager.VisualStateGroups>

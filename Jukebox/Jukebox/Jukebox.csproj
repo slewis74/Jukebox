@@ -151,6 +151,12 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataPersistence\SongPersister.cs" />
+    <Compile Include="Features\Artists\Snapped\SnappedArtistsView.xaml.cs">
+      <DependentUpon>SnappedArtistsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Artists\Snapped\SnappedArtistView.xaml.cs">
+      <DependentUpon>SnappedArtistView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Features\MainPage\Events\SongEndedEvent.cs" />
     <Compile Include="Features\MainPage\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -250,6 +256,14 @@
     <Page Include="Common\StandardStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Features\Artists\Snapped\SnappedArtistsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Features\Artists\Snapped\SnappedArtistView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Features\MainPage\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
