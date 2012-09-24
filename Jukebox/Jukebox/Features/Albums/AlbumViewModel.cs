@@ -6,14 +6,17 @@ using Slew.WinRT.Data;
 using Slew.WinRT.Pages;
 using Slew.WinRT.PresentationBus;
 using Slew.WinRT.ViewModels;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace Jukebox.Features.Albums
 {
     public class AlbumViewModel : CanRequestNavigationBase
 	{
-		public AlbumViewModel(Album album)
+        private readonly Album _album;
+        
+        public AlbumViewModel(Album album)
 		{
-			Album = album;
+			_album = album;
 
             AlbumLocationCommandMappings = new AsyncObservableCollection<LocationCommandMapping>();
             TrackLocationCommandMappings = new AsyncObservableCollection<LocationCommandMapping>();
@@ -24,19 +27,22 @@ namespace Jukebox.Features.Albums
             AddAlbum = PropertyInjector.Resolve(()=> new AddAlbumCommand());
 
             Tracks = new AsyncObservableCollection<TrackViewModel>(
-                Album.Songs
+                album.Songs
                 .OrderBy(s => s.DiscNumber)
                 .ThenBy(s => s.TrackNumber)
                 .Select(t => 
                     PropertyInjector.Resolve(()=> new TrackViewModel(t, TrackLocationCommandMappings))));
 		}
 
-        public Album Album { get; private set; }
-
 		public PlaySongCommand PlaySong { get; private set; }
 		public PlayAlbumCommand PlayAlbum { get; private set; }
 		public AddSongCommand AddSong { get; private set; }
         public AddAlbumCommand AddAlbum { get; private set; }
+
+        public string Title { get { return _album.Title; } }
+
+        public BitmapImage SmallBitmap { get { return _album.SmallBitmap; } }
+        public BitmapImage LargeBitmap { get { return _album.LargeBitmap; } }
 
         public AsyncObservableCollection<TrackViewModel> Tracks { get; private set; }
 
@@ -53,6 +59,11 @@ namespace Jukebox.Features.Albums
 
 	    public AsyncObservableCollection<LocationCommandMapping> AlbumLocationCommandMappings { get; private set; }
 	    private AsyncObservableCollection<LocationCommandMapping> TrackLocationCommandMappings { get; set; }
+
+        public Album GetAlbum()
+        {
+            return _album;
+        }
 
 	    public void SetLocations(Location getPlayDropLocation, Location getPlaylistDropLocation)
 	    {
@@ -85,7 +96,7 @@ namespace Jukebox.Features.Albums
 
         public override void Execute(AlbumViewModel parameter)
 		{
-            PresentationBus.Publish(new PlayAlbumNowRequest { Scope = parameter.Album });
+            PresentationBus.Publish(new PlayAlbumNowRequest { Scope = parameter.GetAlbum() });
 		}
 
 	}
@@ -106,7 +117,7 @@ namespace Jukebox.Features.Albums
 
         public override void Execute(AlbumViewModel parameter)
         {
-            PresentationBus.Publish(new AddAlbumToCurrentPlaylistRequest { Album = parameter.Album });
+            PresentationBus.Publish(new AddAlbumToCurrentPlaylistRequest { Album = parameter.GetAlbum() });
         }
     }
 }

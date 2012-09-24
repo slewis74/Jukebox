@@ -14,8 +14,8 @@
             BorderThickness="1"
             BorderBrush="Gray">
             <StackPanel Margin="0,4,14,0">
-                <TextBlock Text="{Binding Album.Title}" Margin="0,0,0,20" />
-                <Image Source="{Binding Album.SmallBitmap}" Margin="0,0,0,20" Stretch="None"/>
+                <TextBlock Text="{Binding Title}" Margin="0,0,0,20" />
+                <Image Source="{Binding SmallBitmap}" Margin="0,0,0,20" Stretch="None"/>
                 <TextBlock Text="The album says 'Let me go!'"/>
             </StackPanel>
         </Border>

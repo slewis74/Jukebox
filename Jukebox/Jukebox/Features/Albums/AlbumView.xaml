@@ -57,9 +57,9 @@
                             LocationCommandMappings="{Binding AlbumLocationCommandMappings, Mode=TwoWay}"
                         />
                     </WinRtBehaviors:Interaction.Behaviors>
-                    <TextBlock Text="{Binding Album.Title}" Margin="0,0,18,20" Style="{StaticResource SubheaderTextStyle}" MaxHeight="60"/>
-                    <Image Source="{Binding Album.LargeBitmap}" Margin="0,0,18,20" Stretch="None"/>
-                    <TextBlock Text="{Binding Album.Title}" Margin="0,0,18,0" Style="{StaticResource BodyTextStyle}"/>
+                    <TextBlock Text="{Binding Title}" Margin="0,0,18,20" Style="{StaticResource SubheaderTextStyle}" MaxHeight="60"/>
+                    <Image Source="{Binding LargeBitmap}" Width="300" Height="300" Margin="0,0,18,20" Stretch="None"/>
+                    <TextBlock Text="{Binding Title}" Margin="0,0,18,0" Style="{StaticResource BodyTextStyle}"/>
                 </StackPanel>
                 <GridView
                     AutomationProperties.AutomationId="ItemGridView"
