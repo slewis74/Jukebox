@@ -1,11 +1,8 @@
 namespace Slew.WinRT.PresentationBus
 {
-    public interface IPresentationEvent
-    {
-        object Data { get; }
-    }
+    public interface IPresentationEvent{}
 
-    public interface IPresentationEvent<out T>
+    public interface IPresentationEvent<out T> : IPresentationEvent
     {
         T Data { get; }
     }

@@ -119,9 +119,13 @@
     <Compile Include="Pages\Location.cs" />
     <Compile Include="Pages\Navigator.cs" />
     <Compile Include="Pages\SuspensionManager.cs" />
+    <Compile Include="PresentationBus\IHandlePresentationEvents.cs" />
     <Compile Include="PresentationBus\IPresentationBus.cs" />
     <Compile Include="PresentationBus\IPresentationEvent.cs" />
-    <Compile Include="PresentationBus\IPresentationEventHandler.cs" />
+    <Compile Include="PresentationBus\IHandlePresentationEvent.cs" />
+    <Compile Include="PresentationBus\IPublish.cs" />
+    <Compile Include="PresentationBus\PresentationBus.cs" />
+    <Compile Include="Container\PropertyInjector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\CanRequestNavigationBase.cs" />
     <Compile Include="ViewModels\Command.cs" />

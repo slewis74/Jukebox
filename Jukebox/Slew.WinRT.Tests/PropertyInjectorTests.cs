@@ -1,24 +1,58 @@
 ﻿using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+using Slew.WinRT.Container;
 using Slew.WinRT.PresentationBus;
 
 namespace Slew.WinRT.Tests
 {
     [TestClass]
-    public class SubscribersTests
+    public class PropertyInjectorTests
     {
+        [TestMethod]
+        public void GivenASimpleClass_WhenResolved_TheObjectCanBeCreated()
+        {
+            var t = PropertyInjector.Resolve(() => new TestClass { Id = 13 });
+
+            Assert.IsNotNull(t);
+        }
+
+        [TestMethod]
+        public void GivenASimpleClass_WhenResolved_TheObjectIsInitialized()
+        {
+            var t = PropertyInjector.Resolve(() => new TestClass { Id = 13 });
+
+            Assert.AreEqual(13, t.Id);
+        }
+
         private class TestClass
         {
             public int Id { get; set; }
         }
 
         [TestMethod]
+        public void GivenAClassThatPublishes_WhenResolved_ThePresentationBusPropertyIsSet()
+        {
+            var bus = new PresentationBus.PresentationBus();
+            PropertyInjector.PresentationBus = bus;
+
+            var t = PropertyInjector.Resolve(() => new TestClassWithBus());
+
+            Assert.AreEqual(bus, t.PresentationBus);
+        }
+
+        private class TestClassWithBus : TestClass, IPublish
+        {
+            public IPresentationBus PresentationBus { get; set; }
+        }
+        
+        [TestMethod]
         public void GivenAClassThatSubscribes_WhenTheEventIsPublished_TheHandlerGetsCalled()
         {
             var bus = new PresentationBus.PresentationBus();
+            PropertyInjector.PresentationBus = bus;
 
-            var t = new TestClassWithHandler();
-            bus.Subscribe(t);
-            bus.Publish(new TestEvent { Data = 12 });
+            var t = PropertyInjector.Resolve(() => new TestClassWithHandler());
+
+            bus.Publish(new TestEvent { Data =  12 });
 
             Assert.IsTrue(t.HandleWasCalled);
         }
@@ -27,7 +61,7 @@ namespace Slew.WinRT.Tests
         {
             public int Data { get; set; }
         }
-
+         
         private class TestClassWithHandler : TestClass, IHandlePresentationEvent<TestEvent>
         {
             public bool HandleWasCalled { get; private set; }
@@ -41,13 +75,13 @@ namespace Slew.WinRT.Tests
         [TestMethod]
         public void GivenAClassThatSubscribes_WhenTheObjectIsUnsubscribedBeforeTheEventIsPublished_TheHandlerDoesntGetCalled()
         {
-            TestClassWithHandlerAndStaticCalledCheck.Reset();
-
+            TestClassWithHandlerAndStaticCalledCheck.HandleWasCalled = false;
+            
             var bus = new PresentationBus.PresentationBus();
+            PropertyInjector.PresentationBus = bus;
 
-            var t = new TestClassWithHandlerAndStaticCalledCheck();
+            var t = PropertyInjector.Resolve(() => new TestClassWithHandlerAndStaticCalledCheck());
 
-            bus.Subscribe(t);
             bus.UnSubscribe(t);
 
             bus.Publish(new TestEvent { Data = 12 });
@@ -62,14 +96,7 @@ namespace Slew.WinRT.Tests
 
         private class TestClassWithHandlerAndStaticCalledCheck : TestClass, IHandlePresentationEvent<TestEvent>, IHandlePresentationEvent<TestEventA>
         {
-            public static bool HandleWasCalled { get; private set; }
-            public static bool HandleAWasCalled { get; private set; }
-
-            public static void Reset()
-            {
-                HandleWasCalled = false;
-                HandleAWasCalled = false;
-            }
+            public static bool HandleWasCalled { get; set; }
 
             public void Handle(TestEvent e)
             {
@@ -77,40 +104,8 @@ namespace Slew.WinRT.Tests
             }
             public void Handle(TestEventA e)
             {
-                HandleAWasCalled = true;
+                HandleWasCalled = true;
             }
-        }
-
-        [TestMethod]
-        public void GivenAClassThatSubscribesToMultipleEvents_WhenTheOneEventIsPublished_ItsHandlerGetsCalled()
-        {
-            TestClassWithHandlerAndStaticCalledCheck.Reset();
-
-            var bus = new PresentationBus.PresentationBus();
-
-            var t = new TestClassWithHandlerAndStaticCalledCheck();
-
-            bus.Subscribe(t);
-
-            bus.Publish(new TestEvent { Data = 12 });
-
-            Assert.IsTrue(TestClassWithHandlerAndStaticCalledCheck.HandleWasCalled);
-        }
-
-        [TestMethod]
-        public void GivenAClassThatSubscribesToMultipleEvents_WhenTheOneEventIsPublished_TheOtherHandlerDoesntGetCalled()
-        {
-            TestClassWithHandlerAndStaticCalledCheck.Reset();
-
-            var bus = new PresentationBus.PresentationBus();
-
-            var t = new TestClassWithHandlerAndStaticCalledCheck();
-
-            bus.Subscribe(t);
-
-            bus.Publish(new TestEvent { Data = 12 });
-
-            Assert.IsFalse(TestClassWithHandlerAndStaticCalledCheck.HandleAWasCalled);
         }
     }
 }

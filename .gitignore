@@ -3,3 +3,4 @@
 *.g.*
 Debug
 Release
+*/TestResults/*
