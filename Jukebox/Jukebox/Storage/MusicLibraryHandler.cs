@@ -65,6 +65,7 @@ namespace Jukebox.Storage
                                            Title = (string)songComposite["Title"],
                                            Path = (string)songComposite["Path"],
                                            Album = album,
+                                           Duration = new TimeSpan(songComposite.ContainsKey("Duration") ? (long)songComposite["Duration"] : 0)
                                        };
                     }
                 }
@@ -136,7 +137,8 @@ namespace Jukebox.Storage
                                            DiscNumber = discNumber,
                                            TrackNumber = fileProps.TrackNumber,
                                            Path = f.Path,
-                                           Album = album
+                                           Album = album,
+                                           Duration = fileProps.Duration
                                        };
                             // save new entry to app storage
                         }
@@ -179,6 +181,7 @@ namespace Jukebox.Storage
                         songComposite["DiscNumber"] = song.DiscNumber;
                         songComposite["TrackNumber"] = song.TrackNumber;
                         songComposite["Path"] = song.Path;
+                        songComposite["Duration"] = song.Duration.Ticks;
 
                         songsContainer.Values[song.TrackNumber.ToString()] = songComposite;
                     }

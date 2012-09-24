@@ -114,30 +114,31 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Albums\AlbumController.cs" />
-    <Compile Include="Albums\AlbumFloatingView.xaml.cs">
+    <Compile Include="Features\Albums\AlbumController.cs" />
+    <Compile Include="Features\Albums\AlbumFloatingView.xaml.cs">
       <DependentUpon>AlbumFloatingView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Albums\AlbumView.xaml.cs">
+    <Compile Include="Features\Albums\AlbumView.xaml.cs">
       <DependentUpon>AlbumView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Albums\AlbumViewBottomAppBar.xaml.cs">
+    <Compile Include="Features\Albums\AlbumViewBottomAppBar.xaml.cs">
       <DependentUpon>AlbumViewBottomAppBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Albums\AlbumViewModel.cs" />
-    <Compile Include="Albums\TrackFloatingView.xaml.cs">
+    <Compile Include="Features\Albums\AlbumViewModel.cs" />
+    <Compile Include="Features\Albums\TrackFloatingView.xaml.cs">
       <DependentUpon>TrackFloatingView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Albums\TrackViewModel.cs" />
-    <Compile Include="Artists\ArtistController.cs" />
-    <Compile Include="Artists\ArtistsView.xaml.cs">
+    <Compile Include="Features\Albums\TrackViewModel.cs" />
+    <Compile Include="Features\Artists\ArtistController.cs" />
+    <Compile Include="Features\Artists\ArtistsView.xaml.cs">
       <DependentUpon>ArtistsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Artists\ArtistsViewModel.cs" />
-    <Compile Include="Artists\ArtistView.xaml.cs">
+    <Compile Include="Features\Artists\ArtistsViewModel.cs" />
+    <Compile Include="Features\Artists\ArtistView.xaml.cs">
       <DependentUpon>ArtistView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Artists\ArtistViewModel.cs" />
+    <Compile Include="Features\Artists\ArtistViewModel.cs" />
+    <Compile Include="Features\Artists\DesignTime\DesignArtistsViewModel.cs" />
     <Compile Include="Common\BooleanToVisibilityConverter.cs" />
     <Compile Include="Common\BooleanNegationConverter.cs" />
     <Compile Include="Common\JukeboxController.cs" />
@@ -147,23 +148,23 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataPersistence\SongPersister.cs" />
-    <Compile Include="MainPage\Events\SongEndedEvent.cs" />
-    <Compile Include="MainPage\MainPage.xaml.cs">
+    <Compile Include="Features\MainPage\Events\SongEndedEvent.cs" />
+    <Compile Include="Features\MainPage\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainPage\MainPageViewModel.cs" />
-    <Compile Include="MainPage\Requests\StopPlayingRequest.cs" />
+    <Compile Include="Features\MainPage\MainPageViewModel.cs" />
+    <Compile Include="Features\MainPage\Requests\StopPlayingRequest.cs" />
     <Compile Include="Model\Album.cs" />
     <Compile Include="Model\Artist.cs" />
     <Compile Include="Model\Genre.cs" />
     <Compile Include="Model\Playlist.cs" />
     <Compile Include="Model\Song.cs" />
-    <Compile Include="Playlists\PlaylistController.cs" />
-    <Compile Include="Playlists\PlaylistsView.xaml.cs">
+    <Compile Include="Features\Playlists\PlaylistController.cs" />
+    <Compile Include="Features\Playlists\PlaylistsView.xaml.cs">
       <DependentUpon>PlaylistsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Playlists\PlaylistsViewModel.cs" />
-    <Compile Include="Playlists\PlaylistViewModel.cs" />
+    <Compile Include="Features\Playlists\PlaylistsViewModel.cs" />
+    <Compile Include="Features\Playlists\PlaylistViewModel.cs" />
     <Compile Include="Requests\AddToCurrentPlaylistRequest.cs" />
     <Compile Include="Requests\PlayDropLocationRequest.cs" />
     <Compile Include="Requests\PlaylistDropLocationRequest.cs" />
@@ -210,27 +211,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Albums\AlbumFloatingView.xaml">
+    <Page Include="Features\Albums\AlbumFloatingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Albums\AlbumView.xaml">
+    <Page Include="Features\Albums\AlbumView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Albums\AlbumViewBottomAppBar.xaml">
+    <Page Include="Features\Albums\AlbumViewBottomAppBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Albums\TrackFloatingView.xaml">
+    <Page Include="Features\Albums\TrackFloatingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Artists\ArtistsView.xaml">
+    <Page Include="Features\Artists\ArtistsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Artists\ArtistView.xaml">
+    <Page Include="Features\Artists\ArtistView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -243,18 +244,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="MainPage\MainPage.xaml">
+    <Page Include="Features\MainPage\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Playlists\PlaylistsView.xaml">
+    <Page Include="Features\Playlists\PlaylistsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Theme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Events\" />
-    <Folder Include="NowPlaying\" />
+    <Folder Include="Features\Albums\Snapped\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="WinRtBehaviors">

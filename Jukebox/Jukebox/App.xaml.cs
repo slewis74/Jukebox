@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Jukebox.MainPage;
+using Jukebox.Features.MainPage;
 using Jukebox.Model;
 using Jukebox.Storage;
 using Slew.WinRT.Container;
@@ -54,7 +54,7 @@ namespace Jukebox
             }
 
             var mainPageViewModel = PropertyInjector.Resolve(() => new MainPageViewModel(_artists, _playlists, currentPlaylist, playlistHandler));
-            Window.Current.Content = PropertyInjector.Resolve(() => new MainPage.MainPage
+            Window.Current.Content = PropertyInjector.Resolve(() => new MainPage
         	                             {
                                              DataContext = mainPageViewModel
         	                             });

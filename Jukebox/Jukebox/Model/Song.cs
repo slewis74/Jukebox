@@ -21,6 +21,8 @@ namespace Jukebox.Model
         public string Title { get; set; }
         public string Path { get; set; }
 
+        public TimeSpan Duration { get; set; }
+
 		private Album _album;
 		public Album Album
 		{
