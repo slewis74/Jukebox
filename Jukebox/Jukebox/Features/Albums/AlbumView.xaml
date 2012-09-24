@@ -7,9 +7,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:Pages="using:Slew.WinRT.Pages"
     xmlns:WinRtBehaviors="using:WinRtBehaviors"
-    xmlns:b="using:Slew.WinRT.Pages"
-    mc:Ignorable="d"
-    >
+    xmlns:b="using:Slew.WinRT.Pages" 
+    xmlns:snapped="using:Jukebox.Features.Albums.Snapped" 
+    mc:Ignorable="d">
 
     <UserControl.Resources>
 
@@ -31,14 +31,6 @@
                         LocationCommandMappings="{Binding TrackLocationCommandMappings, Mode=TwoWay}"
                         />
                 </WinRtBehaviors:Interaction.Behaviors>
-			</StackPanel>
-		</DataTemplate>
-
-		<DataTemplate x:Name="Standard80ItemTemplate">
-			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                <TextBlock Text="{Binding Song.TrackNumber}"/>
-				<TextBlock Text=" - " Margin="5 0 0 0"/>
-                <TextBlock Text="{Binding Song.Title}" Margin="5 0 0 0"/>
 			</StackPanel>
 		</DataTemplate>
 	</UserControl.Resources>
@@ -94,19 +86,7 @@
             Visibility="Collapsed"
             Style="{StaticResource VerticalScrollViewerStyle}">
 
-            <StackPanel>
-                <TextBlock Text="{Binding Group.Subtitle}" Margin="20,0,18,20" Style="{StaticResource TitleTextStyle}" MaxHeight="60"/>
-                <Image Source="{Binding Group.Image}" Margin="20,0,18,0" MaxHeight="160" Stretch="UniformToFill"/>
-                <TextBlock Margin="20,20,18,30" Text="{Binding Album.Title}" Style="{StaticResource BodyTextStyle}"/>
-                <ListView
-                    AutomationProperties.AutomationId="ItemListView"
-                    AutomationProperties.Name="Items In Group"
-                    Margin="10,0,0,60"
-					SelectionMode="Single"
-                    ItemsSource="{Binding Source={StaticResource itemsViewSource}}"
-					SelectedItem="{Binding SelectedSong, Mode=TwoWay}"
-                    ItemTemplate="{StaticResource Standard80ItemTemplate}"/>
-            </StackPanel>
+            <snapped:SnappedAlbumView/>
         </ScrollViewer>
 
         <VisualStateManager.VisualStateGroups>

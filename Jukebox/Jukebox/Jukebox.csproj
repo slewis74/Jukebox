@@ -125,6 +125,9 @@
       <DependentUpon>AlbumViewBottomAppBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\Albums\AlbumViewModel.cs" />
+    <Compile Include="Features\Albums\Snapped\SnappedAlbumView.xaml.cs">
+      <DependentUpon>SnappedAlbumView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Features\Albums\TrackFloatingView.xaml.cs">
       <DependentUpon>TrackFloatingView.xaml</DependentUpon>
     </Compile>
@@ -223,6 +226,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Features\Albums\Snapped\SnappedAlbumView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Features\Albums\TrackFloatingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -260,7 +267,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Events\" />
-    <Folder Include="Features\Albums\Snapped\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="WinRtBehaviors">

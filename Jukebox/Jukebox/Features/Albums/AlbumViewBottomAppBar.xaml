@@ -19,7 +19,7 @@
         <Button 
 			Style="{StaticResource AddAppBarButtonStyle}"
 			Command="{Binding AddAlbum}"
-            CommandParameter="{Binding .}">
+            CommandParameter="{Binding}">
         </Button>
     </StackPanel>
 </UserControl>

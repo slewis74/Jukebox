@@ -172,11 +172,6 @@ namespace Slew.WinRT.Pages
                 (lcm.Location.Position.X <= currentXPosition && currentXPosition <= (lcm.Location.Position.X + lcm.Location.Size.Width)) &&
                 (lcm.Location.Position.Y <= currentYPosition && currentYPosition <= (lcm.Location.Position.Y + lcm.Location.Size.Height)));
 
-            if (_isOverLocation != null)
-            {
-                Debug.WriteLine("I see him!");
-            }
-
             e.Handled = true;
         }
     }
