@@ -24,18 +24,14 @@ namespace Jukebox.Artists
 		public ObservableCollection<Album> Albums { get { return _artist.Albums; } }
 	}
 
-	public class DisplayAlbumCommand : Command<Album>
+    public class DisplayAlbumCommand : NavigationCommand<Album>
 	{
-	    private readonly Lazy<INavigator> _navigator;
-	    
-        public DisplayAlbumCommand(Lazy<INavigator> navigator)
-		{
-		    _navigator = navigator;
-		}
+        public DisplayAlbumCommand(Lazy<INavigator> navigator) : base(navigator)
+		{}
 
 	    public override void Execute(Album album)
 		{
-			_navigator.Value.Navigate<AlbumController>(c => c.ShowAlbum(album));
+			Navigator.Value.Navigate<AlbumController>(c => c.ShowAlbum(album));
 		}
 	}
 }

@@ -165,6 +165,8 @@
     <Compile Include="Playlists\PlaylistsViewModel.cs" />
     <Compile Include="Playlists\PlaylistViewModel.cs" />
     <Compile Include="Requests\AddToCurrentPlaylistRequest.cs" />
+    <Compile Include="Requests\PlayDropLocationRequest.cs" />
+    <Compile Include="Requests\PlaylistDropLocationRequest.cs" />
     <Compile Include="Requests\PlayNowRequest.cs" />
     <Compile Include="Requests\PlayRequest.cs" />
     <Compile Include="Storage\MusicLibraryHandler.cs" />

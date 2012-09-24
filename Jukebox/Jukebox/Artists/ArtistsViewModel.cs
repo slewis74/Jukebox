@@ -52,19 +52,15 @@ namespace Jukebox.Artists
 			}
 		}
 	}
-	
-	public class DisplayArtistCommand : Command<Artist>
-	{
-        private readonly Lazy<INavigator> _navigator;
 
-	    public DisplayArtistCommand(Lazy<INavigator> navigator)
-        {
-            _navigator = navigator;
-        }
+    public class DisplayArtistCommand : NavigationCommand<Artist>
+	{
+	    public DisplayArtistCommand(Lazy<INavigator> navigator) : base(navigator)
+        {}
 
 	    public override void Execute(Artist parameter)
 		{
-			_navigator.Value.Navigate<ArtistController>(c => c.ShowArtist(parameter));
+			Navigator.Value.Navigate<ArtistController>(c => c.ShowArtist(parameter));
 		}
 	}
 }

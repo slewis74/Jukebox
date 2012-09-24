@@ -1,12 +1,12 @@
 ﻿using System;
-using Jukebox.MainPage;
+using Jukebox.Requests;
 using Slew.WinRT.Pages;
+using Slew.WinRT.PresentationBus;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 
 namespace Jukebox.Albums
 {
-	public sealed partial class AlbumView : IHaveBottomAppBar
+	public sealed partial class AlbumView : IHaveBottomAppBar, IPublish
 	{
         public AlbumView()
 		{
@@ -15,6 +15,8 @@ namespace Jukebox.Albums
             Loaded += AlbumViewLoaded;
 		}
 
+        public IPresentationBus PresentationBus { get; set; }
+
 		public Type BottomAppBarContentType
 		{
 			get { return typeof (AlbumViewBottomAppBar); }
@@ -22,20 +24,13 @@ namespace Jukebox.Albums
 
         void AlbumViewLoaded(object sender, RoutedEventArgs e)
         {
-            var parent = GetTopLevelParent() as Page;
-            var z = parent as IAcceptPlaylistDragging;
+            var playDropLocationRequest = new PlayDropLocationRequest();
+            PresentationBus.Publish(playDropLocationRequest);
 
-            ((AlbumViewModel) DataContext).SetLocations(z.GetPlayDropLocation(), z.GetPlaylistDropLocation());
-        }
+            var playlistDropLocationRequest = new PlaylistDropLocationRequest();
+            PresentationBus.Publish(playlistDropLocationRequest);
 
-        private FrameworkElement GetTopLevelParent()
-        {
-            var parent = Parent as FrameworkElement;
-            while (parent != null && parent is IAcceptPlaylistDragging == false)
-            {
-                parent = parent.Parent as FrameworkElement;
-            }
-            return parent;
+            ((AlbumViewModel)DataContext).SetLocations(playDropLocationRequest.Location, playlistDropLocationRequest.Location);
         }
 	}
 }

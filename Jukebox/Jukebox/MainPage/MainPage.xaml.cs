@@ -4,6 +4,7 @@ using System.Threading;
 using Jukebox.MainPage.Events;
 using Jukebox.MainPage.Requests;
 using Jukebox.Requests;
+using Slew.WinRT.Container;
 using Slew.WinRT.Pages;
 using Slew.WinRT.PresentationBus;
 using Slew.WinRT.Requests;
@@ -17,14 +18,15 @@ using Windows.UI.Xaml.Media;
 namespace Jukebox.MainPage
 {
     public sealed partial class MainPage : 
-        IAcceptPlaylistDragging, 
         IPublish,
         IHandlePresentationRequest<NavigationRequest>,
         IHandlePresentationRequest<PlayFileRequest>,
         IHandlePresentationRequest<StopPlayingRequest>,
         IHandlePresentationRequest<PausePlayingRequest>,
-        IHandlePresentationRequest<RestartPlayingRequest>
-	{
+        IHandlePresentationRequest<RestartPlayingRequest>,
+        IHandlePresentationRequest<PlayDropLocationRequest>,
+        IHandlePresentationRequest<PlaylistDropLocationRequest>
+    {
         private readonly SynchronizationContext _synchronizationContext = SynchronizationContext.Current;
         
         public MainPage()
@@ -38,6 +40,8 @@ namespace Jukebox.MainPage
             MediaControl.StopPressed += (sender, o) => DispatchCall(s => DoStopPlaying());
             MediaControl.PreviousTrackPressed += (sender, o) => DispatchCall(s => PresentationBus.Publish(new PreviousTrackRequest()));
             MediaControl.NextTrackPressed += (sender, o) => DispatchCall(s => PresentationBus.Publish(new NextTrackRequest()));
+
+            BrowsingFrame.Navigated += (sender, args) => PropertyInjector.Resolve(() => args.Content);
 		}
 
         public IPresentationBus PresentationBus { get; set; }
@@ -155,7 +159,13 @@ namespace Jukebox.MainPage
 			PageCommands.Children.Add(frameworkElement);
 		}
 
-        public Location GetPlayDropLocation()
+        public void Handle(PlayDropLocationRequest request)
+        {
+            request.IsHandled = true;
+            request.Location = GetPlayDropLocation();
+        }
+
+        private Location GetPlayDropLocation()
         {
             var position = playPauseGrid.TransformToVisual(this).TransformPoint(new Point(0, 0));
 
@@ -168,7 +178,13 @@ namespace Jukebox.MainPage
             return location;
         }
 
-        public Location GetPlaylistDropLocation()
+        public void Handle(PlaylistDropLocationRequest request)
+        {
+            request.IsHandled = true;
+            request.Location = GetPlaylistDropLocation();
+        }
+
+        private Location GetPlaylistDropLocation()
         {
             var position = playlistControl.TransformToVisual(this).TransformPoint(new Point(0, 0));
 
@@ -181,10 +197,4 @@ namespace Jukebox.MainPage
             return location;
         }
 	}
-
-    public interface IAcceptPlaylistDragging
-    {
-        Location GetPlayDropLocation();
-        Location GetPlaylistDropLocation();
-    }
 }

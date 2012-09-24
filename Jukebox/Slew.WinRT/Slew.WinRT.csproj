@@ -135,6 +135,7 @@
     <Compile Include="ViewModels\Command.cs" />
     <Compile Include="ViewModels\ICanHandleNavigation.cs" />
     <Compile Include="ViewModels\ICanRequestNavigation.cs" />
+    <Compile Include="ViewModels\NavigationCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="WinRtBehaviors">
