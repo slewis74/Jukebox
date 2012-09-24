@@ -1,28 +1,34 @@
 ﻿using System.Linq;
-using Jukebox.Common;
 using Jukebox.Model;
+using Jukebox.Requests;
+using Slew.WinRT.Container;
 using Slew.WinRT.Data;
 using Slew.WinRT.Pages;
+using Slew.WinRT.PresentationBus;
 using Slew.WinRT.ViewModels;
 
 namespace Jukebox.Albums
 {
-	public class AlbumViewModel : CanContributeToPlaylistBase
+    public class AlbumViewModel : CanRequestNavigationBase
 	{
-		public AlbumViewModel(Album album, IHandlePlaylists handlesPlaylists)
-			: base(handlesPlaylists)
+		public AlbumViewModel(Album album)
 		{
 			Album = album;
 
             AlbumLocationCommandMappings = new AsyncObservableCollection<LocationCommandMapping>();
             TrackLocationCommandMappings = new AsyncObservableCollection<LocationCommandMapping>();
 
-			PlaySong = new PlaySongCommand(handlesPlaylists);
-			PlayAlbum = new PlayAlbumCommand(handlesPlaylists);
-            AddSong = new AddSongCommand(handlesPlaylists);
-            AddAlbum = new AddAlbumCommand(handlesPlaylists);
+			PlaySong = PropertyInjector.Resolve(()=> new PlaySongCommand());
+			PlayAlbum = PropertyInjector.Resolve(()=> new PlayAlbumCommand());
+            AddSong = PropertyInjector.Resolve(()=> new AddSongCommand());
+            AddAlbum = PropertyInjector.Resolve(()=> new AddAlbumCommand());
 
-            Tracks = new AsyncObservableCollection<TrackViewModel>(Album.Songs.OrderBy(s => s.DiscNumber).ThenBy(s => s.TrackNumber).Select(t => new TrackViewModel(t, TrackLocationCommandMappings)));
+            Tracks = new AsyncObservableCollection<TrackViewModel>(
+                Album.Songs
+                .OrderBy(s => s.DiscNumber)
+                .ThenBy(s => s.TrackNumber)
+                .Select(t => 
+                    PropertyInjector.Resolve(()=> new TrackViewModel(t, TrackLocationCommandMappings))));
 		}
 
         public Album Album { get; private set; }
@@ -63,63 +69,44 @@ namespace Jukebox.Albums
 	    }
 	}
 
-    public class PlaySongCommand : Command<TrackViewModel>
+    public class PlaySongCommand : Command<TrackViewModel>, IPublish
 	{
-		private readonly IHandlePlaylists _handlesPlaylists;
-
-		public PlaySongCommand(IHandlePlaylists handlesPlaylists)
-		{
-			_handlesPlaylists = handlesPlaylists;
-		}
+        public IPresentationBus PresentationBus { get; set; }
 
         public override void Execute(TrackViewModel parameter)
 		{
-			_handlesPlaylists.PlayNow(parameter.Song);
+            PresentationBus.Publish(new PlaySongNowRequest { Scope = parameter.Song });
 		}
 	}
 
-    public class PlayAlbumCommand : Command<AlbumViewModel>
+    public class PlayAlbumCommand : Command<AlbumViewModel>, IPublish
 	{
-		private readonly IHandlePlaylists _handlesPlaylists;
-
-		public PlayAlbumCommand(IHandlePlaylists handlesPlaylists)
-		{
-			_handlesPlaylists = handlesPlaylists;
-		}
+        public IPresentationBus PresentationBus { get; set; }
 
         public override void Execute(AlbumViewModel parameter)
 		{
-			_handlesPlaylists.PlayNow(parameter.Album);
+            PresentationBus.Publish(new PlayAlbumNowRequest { Scope = parameter.Album });
 		}
+
 	}
 
-    public class AddSongCommand : Command<TrackViewModel>
+    public class AddSongCommand : Command<TrackViewModel>, IPublish
     {
-        private readonly IHandlePlaylists _handlesPlaylists;
-
-        public AddSongCommand(IHandlePlaylists handlesPlaylists)
-        {
-            _handlesPlaylists = handlesPlaylists;
-        }
+        public IPresentationBus PresentationBus { get; set; }
 
         public override void Execute(TrackViewModel parameter)
         {
-            _handlesPlaylists.AddToCurrentPlaylist(parameter.Song);
+            PresentationBus.Publish(new AddSongToCurrentPlaylistRequest { Song = parameter.Song });
         }
     }
 
-    public class AddAlbumCommand : Command<AlbumViewModel>
+    public class AddAlbumCommand : Command<AlbumViewModel>, IPublish
     {
-        private readonly IHandlePlaylists _handlesPlaylists;
-
-        public AddAlbumCommand(IHandlePlaylists handlesPlaylists)
-        {
-            _handlesPlaylists = handlesPlaylists;
-        }
+        public IPresentationBus PresentationBus { get; set; }
 
         public override void Execute(AlbumViewModel parameter)
         {
-            _handlesPlaylists.AddToCurrentPlaylist(parameter.Album);
+            PresentationBus.Publish(new AddAlbumToCurrentPlaylistRequest { Album = parameter.Album });
         }
     }
 }

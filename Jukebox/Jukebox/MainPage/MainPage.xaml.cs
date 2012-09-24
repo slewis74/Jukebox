@@ -1,7 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading;
+using Jukebox.MainPage.Events;
+using Jukebox.MainPage.Requests;
+using Jukebox.Requests;
 using Slew.WinRT.Pages;
+using Slew.WinRT.PresentationBus;
+using Slew.WinRT.Requests;
 using Windows.Foundation;
 using Windows.Media;
 using Windows.Storage;
@@ -9,9 +14,16 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
-namespace Jukebox
+namespace Jukebox.MainPage
 {
-    public sealed partial class MainPage : IAcceptPlaylistDragging
+    public sealed partial class MainPage : 
+        IAcceptPlaylistDragging, 
+        IPublish,
+        IHandlePresentationRequest<NavigationRequest>,
+        IHandlePresentationRequest<PlayFileRequest>,
+        IHandlePresentationRequest<StopPlayingRequest>,
+        IHandlePresentationRequest<PausePlayingRequest>,
+        IHandlePresentationRequest<RestartPlayingRequest>
 	{
         private readonly SynchronizationContext _synchronizationContext = SynchronizationContext.Current;
         
@@ -20,13 +32,16 @@ namespace Jukebox
 			InitializeComponent();
 			Loaded += MainPageLoaded;
 			MediaElement.MediaFailed += MediaElement_MediaFailed;
-            MediaControl.PlayPressed += (sender, o) => DispatchCall(s => MediaElement.Play());
-		    MediaControl.PausePressed += (sender, o) => DispatchCall(s => MediaElement.Pause());
+            MediaControl.PlayPressed += (sender, o) => DispatchCall(s => DoPlay());
+		    MediaControl.PausePressed += (sender, o) => DispatchCall(s => DoPausePlaying());
 		    MediaControl.PlayPauseTogglePressed += (sender, o) => DispatchCall(TogglePlayPause);
-            MediaControl.StopPressed += (sender, o) => DispatchCall(s => MediaElement.Stop());
-            MediaControl.PreviousTrackPressed += (sender, o) => DispatchCall(s => ViewModel.PreviousTrack());
-            MediaControl.NextTrackPressed += (sender, o) => DispatchCall(s => ViewModel.NextTrack());
+            MediaControl.StopPressed += (sender, o) => DispatchCall(s => DoStopPlaying());
+            MediaControl.PreviousTrackPressed += (sender, o) => DispatchCall(s => PresentationBus.Publish(new PreviousTrackRequest()));
+            MediaControl.NextTrackPressed += (sender, o) => DispatchCall(s => PresentationBus.Publish(new NextTrackRequest()));
 		}
+
+        public IPresentationBus PresentationBus { get; set; }
+        private MainPageViewModel ViewModel { get { return (MainPageViewModel)DataContext; } }
 
         private void DispatchCall(SendOrPostCallback call)
         {
@@ -53,21 +68,33 @@ namespace Jukebox
 			Debug.WriteLine(string.Format("MediaFailed: {0}", e.ErrorMessage));
 		}
 
-        private MainPageViewModel ViewModel { get { return (MainPageViewModel) DataContext; } }
-
 		void MainPageLoaded(object sender, RoutedEventArgs e)
 		{
-            var mainPageViewModel = ViewModel;
-
-			mainPageViewModel.NavigateRequest += (s, e1) => BrowsingFrame.Navigate(e1.ViewType, e1.Parameter);
-
-			mainPageViewModel.DisplayArtists.Execute(null);
-
-			mainPageViewModel.StopPlaying += (s, _) => MediaElement.Stop();
-			mainPageViewModel.RestartPlaying += (s, _) => MediaElement.Play();
-			mainPageViewModel.PausePlaying += (s, _) => MediaElement.Pause();
-			mainPageViewModel.PlayFile += (s, storageFile) => DoPlay(storageFile);
+		    ViewModel.DisplayArtists.Execute(null);
 		}
+
+        public void Handle(NavigationRequest request)
+        {
+            BrowsingFrame.Navigate(request.Args.ViewType, request.Args.Parameter);
+        }
+
+        public void Handle(PlayFileRequest request)
+        {
+            DoPlay(request.StorageFile);
+        }
+
+        public void Handle(StopPlayingRequest request)
+        {
+            DoStopPlaying();
+        }
+        public void Handle(PausePlayingRequest request)
+        {
+            DoPausePlaying();
+        }
+        public void Handle(RestartPlayingRequest request)
+        {
+            DoPlay();
+        }
 
 		protected override void GoBack(object sender, RoutedEventArgs e)
 		{
@@ -81,13 +108,25 @@ namespace Jukebox
 			var stream = await storageFile.OpenAsync(FileAccessMode.Read);
 
 			MediaElement.SetSource(stream, storageFile.FileType);
-			MediaElement.Play();
+		    DoPlay();
+		}
+        private void DoPlay()
+        {
+            MediaElement.Play();
+        }
+
+        private void DoStopPlaying()
+        {
+            MediaElement.Stop();
+        }
+        private void DoPausePlaying()
+        {
+            MediaElement.Pause();
         }
 
 		private void MediaElementMediaEnded1(object sender, RoutedEventArgs e)
 		{
-			var mainPageViewModel = (MainPageViewModel)DataContext;
-			mainPageViewModel.SongFinished();
+            PresentationBus.Publish(new SongEndedEvent());
 		}
 
 		private void BrowsingFrameNavigated1(object sender, Windows.UI.Xaml.Navigation.NavigationEventArgs e)

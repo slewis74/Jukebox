@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Jukebox.MainPage;
 using Jukebox.Model;
 using Jukebox.Storage;
+using Slew.WinRT.Container;
 using Slew.WinRT.Data;
+using Slew.WinRT.PresentationBus;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
@@ -23,6 +26,9 @@ namespace Jukebox
 
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
+            var bus = new PresentationBus();
+            PropertyInjector.PresentationBus = bus;
+
             var musicLibraryHandler = new MusicLibraryHandler();
             _artists = new DistinctAsyncObservableCollection<Artist>(musicLibraryHandler.LoadContent());
 
@@ -47,10 +53,11 @@ namespace Jukebox
                 //TODO: Load state from previously suspended application
             }
 
-            Window.Current.Content = new MainPage
+            var mainPageViewModel = PropertyInjector.Resolve(() => new MainPageViewModel(_artists, _playlists, currentPlaylist, playlistHandler));
+            Window.Current.Content = PropertyInjector.Resolve(() => new MainPage.MainPage
         	                             {
-                                             DataContext = new MainPageViewModel(_artists, _playlists, currentPlaylist, playlistHandler)
-        	                             };
+                                             DataContext = mainPageViewModel
+        	                             });
             Window.Current.Activate();
 
             Task.Factory.StartNew(() => DoBackgroundProcessing(musicLibraryHandler));

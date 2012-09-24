@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Jukebox.Common;
 using Jukebox.Model;
 using Slew.WinRT.Data;
 using Slew.WinRT.Pages;
@@ -8,13 +7,12 @@ using Slew.WinRT.ViewModels;
 
 namespace Jukebox.Artists
 {
-	public class ArtistsViewModel : CanContributeToPlaylistBase
+    public class ArtistsViewModel : CanRequestNavigationBase
 	{
         private readonly DistinctAsyncObservableCollection<Artist> _artists;
 	    private AsyncObservableCollection<GroupedData<Artist>> _groups;
 
-        public ArtistsViewModel(DistinctAsyncObservableCollection<Artist> artists, IHandlePlaylists handlesPlaylists)
-			: base(handlesPlaylists)
+        public ArtistsViewModel(DistinctAsyncObservableCollection<Artist> artists)
 		{
 			_artists = artists;
             _artists.CollectionChanged += (sender, args) => NotifyChanged(() => GroupedItems);

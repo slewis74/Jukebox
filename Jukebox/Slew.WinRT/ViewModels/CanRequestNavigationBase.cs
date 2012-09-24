@@ -1,6 +1,8 @@
 ﻿using System;
 using Slew.WinRT.Data;
 using Slew.WinRT.Pages;
+using Slew.WinRT.PresentationBus;
+using Slew.WinRT.Requests;
 
 namespace Slew.WinRT.ViewModels
 {
@@ -13,18 +15,32 @@ namespace Slew.WinRT.ViewModels
     {
         public event EventHandler<NavigationRequestEventArgs> NavigateRequest;
 
+        public IPresentationBus PresentationBus { get; set; }
+
         public void Navigate(Type viewType)
         {
+            var navigationRequestEventArgs = new NavigationRequestEventArgs(viewType);
+            if (PresentationBus != null)
+            {
+                PresentationBus.Publish(new NavigationRequest(navigationRequestEventArgs));
+            }
+            
             if (NavigateRequest == null)
                 return;
-            NavigateRequest(this, new NavigationRequestEventArgs(viewType));
+            NavigateRequest(this, navigationRequestEventArgs);
         }
 
         public void Navigate(Type viewType, object parameter)
         {
+            var navigationRequestEventArgs = new NavigationRequestEventArgs(viewType, parameter);
+            if (PresentationBus != null)
+            {
+                PresentationBus.Publish(new NavigationRequest(navigationRequestEventArgs));
+            }
+            
             if (NavigateRequest == null)
                 return;
-            NavigateRequest(this, new NavigationRequestEventArgs(viewType, parameter));
+            NavigateRequest(this, navigationRequestEventArgs);
         }
     }
 

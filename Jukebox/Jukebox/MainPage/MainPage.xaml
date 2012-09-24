@@ -1,5 +1,5 @@
 ﻿<Pages:LayoutAwarePage
-    x:Class="Jukebox.MainPage"
+    x:Class="Jukebox.MainPage.MainPage"
 	x:Name="pageRoot"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"

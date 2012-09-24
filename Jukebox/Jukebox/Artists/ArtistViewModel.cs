@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using Jukebox.Albums;
-using Jukebox.Common;
 using Jukebox.Model;
 using Slew.WinRT.Pages;
 using Slew.WinRT.ViewModels;
 
 namespace Jukebox.Artists
 {
-	public class ArtistViewModel : CanContributeToPlaylistBase
+	public class ArtistViewModel : CanRequestNavigationBase
 	{
 		private readonly Artist _artist;
 
-		public ArtistViewModel(Artist artist, IHandlePlaylists handlesPlaylists) : base(handlesPlaylists)
+		public ArtistViewModel(Artist artist)
 		{
 			_artist = artist;
 			DisplayAlbum = new DisplayAlbumCommand(new Lazy<INavigator>(() => Navigator));

@@ -140,7 +140,6 @@
     <Compile Include="Artists\ArtistViewModel.cs" />
     <Compile Include="Common\BooleanToVisibilityConverter.cs" />
     <Compile Include="Common\BooleanNegationConverter.cs" />
-    <Compile Include="Common\CanContributeToPlaylistBase.cs" />
     <Compile Include="Common\JukeboxController.cs" />
     <Compile Include="Common\JukeboxControllerFactory.cs" />
     <Compile Include="Common\RichTextColumns.cs" />
@@ -148,10 +147,12 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataPersistence\SongPersister.cs" />
-    <Compile Include="MainPage.xaml.cs">
+    <Compile Include="MainPage\Events\SongEndedEvent.cs" />
+    <Compile Include="MainPage\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainPageViewModel.cs" />
+    <Compile Include="MainPage\MainPageViewModel.cs" />
+    <Compile Include="MainPage\Requests\StopPlayingRequest.cs" />
     <Compile Include="Model\Album.cs" />
     <Compile Include="Model\Artist.cs" />
     <Compile Include="Model\Genre.cs" />
@@ -163,6 +164,9 @@
     </Compile>
     <Compile Include="Playlists\PlaylistsViewModel.cs" />
     <Compile Include="Playlists\PlaylistViewModel.cs" />
+    <Compile Include="Requests\AddToCurrentPlaylistRequest.cs" />
+    <Compile Include="Requests\PlayNowRequest.cs" />
+    <Compile Include="Requests\PlayRequest.cs" />
     <Compile Include="Storage\MusicLibraryHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Storage\PlaylistHandler.cs" />
@@ -237,7 +241,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="MainPage.xaml">
+    <Page Include="MainPage\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -247,6 +251,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Events\" />
     <Folder Include="NowPlaying\" />
   </ItemGroup>
   <ItemGroup>

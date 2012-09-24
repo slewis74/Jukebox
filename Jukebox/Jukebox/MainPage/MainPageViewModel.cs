@@ -2,23 +2,28 @@
 using System.Linq;
 using Jukebox.Artists;
 using Jukebox.Common;
+using Jukebox.MainPage.Events;
+using Jukebox.MainPage.Requests;
 using Jukebox.Model;
 using Jukebox.Playlists;
+using Jukebox.Requests;
 using Jukebox.Storage;
+using Slew.WinRT.Container;
 using Slew.WinRT.Data;
 using Slew.WinRT.Pages;
+using Slew.WinRT.PresentationBus;
 using Slew.WinRT.ViewModels;
-using Windows.Storage;
 
-namespace Jukebox
+namespace Jukebox.MainPage
 {
-	public class MainPageViewModel : CanHandleNavigationBase, IHandlePlaylists
+	public class MainPageViewModel :
+        CanHandleNavigationBase,
+        IHandlePresentationRequest<PlayRequest>,
+        IHandlePresentationRequest<PauseRequest>,
+        IHandlePresentationRequest<StopRequest>,
+        IHandlePresentationRequest<PlaySongNowRequest>,
+        IHandlePresentationEvent<SongEndedEvent>
 	{
-	    public event EventHandler<StorageFile> PlayFile;
-		public event EventHandler RestartPlaying;
-		public event EventHandler PausePlaying;
-		public event EventHandler StopPlaying;
-
         private readonly DistinctAsyncObservableCollection<Playlist> _playlists;
         private readonly PlaylistHandler _playlistHandler;
 
@@ -33,12 +38,13 @@ namespace Jukebox
             _playlists = playlists;
             _playlistHandler = playlistHandler;
             
-            Navigator = new Navigator(new JukeboxControllerFactory(this), this);
+            Navigator = new Navigator(new JukeboxControllerFactory(), this);
+
 			DisplayArtists = new DisplayArtistsCommand(Navigator, _artists);
 
-            PlayCommand = new PlayCommand(this);
-            PauseCommand = new PauseCommand(this);
-            PlaylistsCommand = new PlaylistsCommand(Navigator, _playlists);
+            PlayCommand = PropertyInjector.Resolve(() => new PlayCommand());
+            PauseCommand = PropertyInjector.Resolve(() => new PauseCommand());
+            PlaylistsCommand = PropertyInjector.Resolve(() => new PlaylistsCommand(Navigator, _playlists));
 		}
 
         public INavigator Navigator { get; set; }
@@ -118,7 +124,7 @@ namespace Jukebox
 	        set { IsPlaying = !value; }
 	    }
 
-	    public void SongFinished()
+	    public void Handle(SongEndedEvent e)
 		{
             if (CurrentPlaylist != null && CurrentPlaylist.CanMoveNext(false))
 			{
@@ -127,7 +133,7 @@ namespace Jukebox
 			}
 		}
 
-		private void StopAndClearCurrentPlaylist()
+		private void StopAndResetCurrentPlaylist()
 		{
 			OnStopPlaying();
             CurrentPlaylist = null;
@@ -155,7 +161,7 @@ namespace Jukebox
 			}
 		}
 
-        public void Play()
+        public void Handle(PlayRequest request)
         {
             if (IsPlaying)
                 return;
@@ -171,66 +177,52 @@ namespace Jukebox
                 }
             }
         }
-        public void Pause()
+        public void Handle(PauseRequest request)
         {
             if (IsNotPlaying)
                 return;
             OnPausePlaying();
         }
-        public void Stop()
+        public void Handle(StopRequest request)
         {
             if (IsNotPlaying)
                 return;
             OnStopPlaying();
         }
 
-		public void PlayNow(Song song)
-		{
-			StopAndClearCurrentPlaylist();
-            OnPlayFile(song);
-		}
-
-		public void PlayNow(Album album) { }
-		public void PlayNow(Artist artist) { }
+        public void Handle(PlaySongNowRequest request)
+        {
+            request.IsHandled = true;
+            StopAndResetCurrentPlaylist();
+            OnPlayFile(request.Scope);
+        }
 
 		private async void OnPlayFile(Song song)
 		{
             IsPaused = false;
             IsPlaying = true;
-            if (PlayFile != null)
-			{
-				PlayFile(this, await song.GetStorageFileAsync());
-			}
+		    PresentationBus.Publish(new PlayFileRequest(await song.GetStorageFileAsync()));
 		}
 
         private void OnRestartPlaying()
         {
             IsPlaying = true;
             IsPaused = false;
-            if (RestartPlaying != null)
-            {
-                RestartPlaying(this, EventArgs.Empty);
-            }
+            PresentationBus.Publish(new RestartPlayingRequest());
         }
 
         private void OnPausePlaying()
         {
             IsPlaying = false;
             IsPaused = true;
-            if (PausePlaying != null)
-            {
-                PausePlaying(this, EventArgs.Empty);
-            }
+            PresentationBus.Publish(new PausePlayingRequest());
         }
 
 		private void OnStopPlaying()
 		{
 		    IsPlaying = false;
 		    IsPaused = false;
-			if (StopPlaying != null)
-			{
-				StopPlaying(this, EventArgs.Empty);
-			}
+            PresentationBus.Publish(new StopPlayingRequest());
 		}
 
         public void PreviousTrack()
@@ -250,21 +242,6 @@ namespace Jukebox
 	    }
 	}
 
-	public interface IHandlePlaylists
-	{
-	    void Play();
-	    void Pause();
-	    void Stop();
-
-		void PlayNow(Song song);
-		void PlayNow(Album album);
-		void PlayNow(Artist artist);
-
-		void AddToCurrentPlaylist(Song song);
-		void AddToCurrentPlaylist(Album album);
-		void AddToCurrentPlaylist(Artist artist);
-	}
-
 	public class DisplayArtistsCommand : Command
 	{
 	    private readonly INavigator _navigator;
@@ -282,33 +259,23 @@ namespace Jukebox
 		}
 	}
 
-    public class PlayCommand : Command
+    public class PlayCommand : Command, IPublish
     {
-        private readonly IHandlePlaylists _handlePlaylists;
-
-        public PlayCommand(IHandlePlaylists handlePlaylists)
-        {
-            _handlePlaylists = handlePlaylists;
-        }
+        public IPresentationBus PresentationBus { get; set; }
 
         public override void Execute(object parameter)
         {
-            _handlePlaylists.Play();
+            PresentationBus.Publish(new PlayRequest());
         }
     }
 
-    public class PauseCommand : Command
+    public class PauseCommand : Command, IPublish
     {
-        private readonly IHandlePlaylists _handlePlaylists;
-
-        public PauseCommand(IHandlePlaylists handlePlaylists)
-        {
-            _handlePlaylists = handlePlaylists;
-        }
+        public IPresentationBus PresentationBus { get; set; }
 
         public override void Execute(object parameter)
         {
-            _handlePlaylists.Pause();
+            PresentationBus.Publish(new PauseRequest());
         }
     }
 

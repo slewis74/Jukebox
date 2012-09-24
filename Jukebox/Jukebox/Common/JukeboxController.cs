@@ -1,9 +1,14 @@
-﻿using Slew.WinRT.Pages;
+﻿using System;
+using Slew.WinRT.Container;
+using Slew.WinRT.Pages;
 
 namespace Jukebox.Common
 {
     public class JukeboxController : Controller
     {
-        public IHandlePlaylists HandlesPlaylists { get; set; }
+        protected T Resolve<T>(Func<T> objectCreationAction)
+        {
+            return PropertyInjector.Resolve(objectCreationAction);
+        }
     }
 }

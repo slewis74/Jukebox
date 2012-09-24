@@ -128,7 +128,9 @@
     <Compile Include="PresentationBus\IPublish.cs" />
     <Compile Include="PresentationBus\PresentationBus.cs" />
     <Compile Include="Container\PropertyInjector.cs" />
+    <Compile Include="PresentationBus\PresentationRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Requests\NavigationRequest.cs" />
     <Compile Include="ViewModels\CanRequestNavigationBase.cs" />
     <Compile Include="ViewModels\Command.cs" />
     <Compile Include="ViewModels\ICanHandleNavigation.cs" />
