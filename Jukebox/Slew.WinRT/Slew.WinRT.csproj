@@ -120,9 +120,11 @@
     <Compile Include="Pages\Navigator.cs" />
     <Compile Include="Pages\SuspensionManager.cs" />
     <Compile Include="PresentationBus\IHandlePresentationEvents.cs" />
+    <Compile Include="PresentationBus\IHandlePresentationRequest.cs" />
     <Compile Include="PresentationBus\IPresentationBus.cs" />
     <Compile Include="PresentationBus\IPresentationEvent.cs" />
     <Compile Include="PresentationBus\IHandlePresentationEvent.cs" />
+    <Compile Include="PresentationBus\IPresentationRequest.cs" />
     <Compile Include="PresentationBus\IPublish.cs" />
     <Compile Include="PresentationBus\PresentationBus.cs" />
     <Compile Include="Container\PropertyInjector.cs" />

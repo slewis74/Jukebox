@@ -135,9 +135,14 @@ namespace Slew.WinRT.PresentationBus
             public bool PublishEvent<T>(T presentationEvent) where T : IPresentationEvent
             {
                 var anySubscribersStillListening = false;
+                var presentationRequest = presentationEvent as IPresentationRequest;
+
                 foreach (var subscriber in _subscribers.Where(s => s.Target != null))
                 {
-                    ((IHandlePresentationEvent<T>)subscriber.Target).Handle(presentationEvent);
+                    if (presentationRequest == null || presentationRequest.IsHandled == false)
+                    {
+                        ((IHandlePresentationEvent<T>)subscriber.Target).Handle(presentationEvent);
+                    }
                     anySubscribersStillListening = true;
                 }
                 return anySubscribersStillListening;

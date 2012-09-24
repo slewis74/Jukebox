@@ -112,5 +112,80 @@ namespace Slew.WinRT.Tests
 
             Assert.IsFalse(TestClassWithHandlerAndStaticCalledCheck.HandleAWasCalled);
         }
+
+        private class TestRequest : IPresentationRequest
+        {
+            public bool IsHandled { get; set; }
+            public int Value { get; set; }
+        }
+
+        private class TestClassAWithRequestSubscriber : IHandlePresentationRequest<TestRequest>
+        {
+            public bool HandleWasCalled { get; set; }
+            public void Handle(TestRequest request)
+            {
+                HandleWasCalled = true;
+                request.IsHandled = true;
+                request.Value = 23;
+            }
+        }
+        private class TestClassBWithRequestSubscriber : IHandlePresentationRequest<TestRequest>
+        {
+            public bool HandleWasCalled { get; set; }
+            public void Handle(TestRequest request)
+            {
+                HandleWasCalled = true;
+            }
+        }
+
+        [TestMethod]
+        public void GivenTwoClassesThatHandleARequest_WhenTheRequestIsPublish_TheFirstClassHandleIsCalled()
+        {
+            var bus = new PresentationBus.PresentationBus();
+
+            var t1 = new TestClassAWithRequestSubscriber();
+            var t2 = new TestClassAWithRequestSubscriber();
+
+            bus.Subscribe(t1);
+            bus.Subscribe(t2);
+
+            bus.Publish(new TestRequest());
+
+            Assert.IsTrue(t1.HandleWasCalled);
+        }
+
+        [TestMethod]
+        public void GivenTwoClassesThatHandleARequest_WhenTheRequestIsPublish_TheFirstClassHandlesTheRequest()
+        {
+            var bus = new PresentationBus.PresentationBus();
+
+            var t1 = new TestClassAWithRequestSubscriber();
+            var t2 = new TestClassAWithRequestSubscriber();
+
+            bus.Subscribe(t1);
+            bus.Subscribe(t2);
+
+            var request = new TestRequest();
+
+            bus.Publish(request);
+
+            Assert.AreEqual(23, request.Value);
+        }
+
+        [TestMethod]
+        public void GivenTwoClassesThatHandleARequest_WhenTheRequestIsPublish_TheSecondClassHandleIsNotCalled()
+        {
+            var bus = new PresentationBus.PresentationBus();
+
+            var t1 = new TestClassAWithRequestSubscriber();
+            var t2 = new TestClassAWithRequestSubscriber();
+
+            bus.Subscribe(t1);
+            bus.Subscribe(t2);
+
+            bus.Publish(new TestRequest());
+
+            Assert.IsFalse(t2.HandleWasCalled);
+        }
     }
 }
