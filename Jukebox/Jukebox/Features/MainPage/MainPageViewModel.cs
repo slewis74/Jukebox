@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Windows.Input;
 using Jukebox.Common;
 using Jukebox.Features.Artists;
 using Jukebox.Features.MainPage.Events;
@@ -42,8 +43,8 @@ namespace Jukebox.Features.MainPage
 
 			DisplayArtists = new DisplayArtistsCommand(Navigator, _artists);
 
-            PlayCommand = PropertyInjector.Resolve(() => new PlayCommand());
-            PauseCommand = PropertyInjector.Resolve(() => new PauseCommand());
+            PlayCommand = PropertyInjector.Resolve(() => new PresentationRequestCommand<PlayRequest>());
+            PauseCommand = PropertyInjector.Resolve(() => new PresentationRequestCommand<PauseRequest>());
             PlaylistsCommand = PropertyInjector.Resolve(() => new PlaylistsCommand(Navigator, _playlists));
             NextTrackCommand = PropertyInjector.Resolve(() => new NextTrackCommand());
             PreviousTrackCommand = PropertyInjector.Resolve(() => new PreviousTrackCommand());
@@ -53,8 +54,8 @@ namespace Jukebox.Features.MainPage
 
 		public DisplayArtistsCommand DisplayArtists { get; private set; }
 
-        public PlayCommand PlayCommand { get; private set; }
-        public PauseCommand PauseCommand { get; private set; }
+        public ICommand PlayCommand { get; private set; }
+        public ICommand PauseCommand { get; private set; }
         public PlaylistsCommand PlaylistsCommand { get; private set; }
         public NextTrackCommand NextTrackCommand { get; private set; }
         public PreviousTrackCommand PreviousTrackCommand { get; private set; }
@@ -262,26 +263,6 @@ namespace Jukebox.Features.MainPage
             _navigator.Navigate<ArtistController>(c => c.ShowAll(_artists));
 		}
 	}
-
-    public class PlayCommand : Command, IPublish
-    {
-        public IPresentationBus PresentationBus { get; set; }
-
-        public override void Execute(object parameter)
-        {
-            PresentationBus.Publish(new PlayRequest());
-        }
-    }
-
-    public class PauseCommand : Command, IPublish
-    {
-        public IPresentationBus PresentationBus { get; set; }
-
-        public override void Execute(object parameter)
-        {
-            PresentationBus.Publish(new PauseRequest());
-        }
-    }
 
     public class PlaylistsCommand : Command
     {
