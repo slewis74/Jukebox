@@ -39,16 +39,11 @@
 			HorizontalAlignment="Center">
 			<Grid
                 x:Name="playPauseGrid">
-    			<StackPanel 
-					Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center"
-					>
-    				<Image
-    					HorizontalAlignment="Center"/>
-    				<TextBlock 
-    					Text="Test"
-    					HorizontalAlignment="Center"/>
-    			</StackPanel>
-    			<Button 
+                <Image
+                    Source="{Binding CurrentTrackAlbumImageSource}"
+                    Height="{StaticResource FourUnits}"
+                    Stretch="Uniform"/>
+                <Button 
                     x:Name="PlayButton" 
                     Style="{StaticResource PlayButtonStyle}"
                     Visibility="{Binding IsNotPlaying, Converter={StaticResource BooleanToVisibilityConverter}}"
@@ -67,9 +62,22 @@
 			Style="{StaticResource NextButtonStyle}"
             Command="{Binding NextTrackCommand}"/>
 
-		<Slider
-			Grid.Row="1"
-			Grid.ColumnSpan="3"/>
+        <Grid
+            Grid.Row="1"
+			Grid.ColumnSpan="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock 
+    			Text="{Binding CurrentTrackDescription}"
+                TextAlignment="Center"
+    			HorizontalAlignment="Center"/>
+
+            <Slider
+                Height="35"/>
+
+        </Grid>
 
     </Grid>
 </UserControl>

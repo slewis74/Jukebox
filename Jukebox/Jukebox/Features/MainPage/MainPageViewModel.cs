@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows.Input;
 using Jukebox.Common;
 using Jukebox.Features.Artists;
@@ -14,6 +13,7 @@ using Slew.WinRT.Data;
 using Slew.WinRT.Pages;
 using Slew.WinRT.PresentationBus;
 using Slew.WinRT.ViewModels;
+using Windows.UI.Xaml.Media;
 
 namespace Jukebox.Features.MainPage
 {
@@ -95,8 +95,6 @@ namespace Jukebox.Features.MainPage
             _playlistHandler.SaveData(_playlists, _currentPlaylist);
         }
 
-	    public Uri FileSource { get; set; }
-
 	    private readonly DistinctAsyncObservableCollection<Artist> _artists;
         public DistinctAsyncObservableCollection<Artist> Artists { get { return _artists; } }
 
@@ -112,6 +110,9 @@ namespace Jukebox.Features.MainPage
 	    }
 
 	    private bool _isPlaying;
+	    private ImageSource _currentTrackAlbumImageSource;
+	    private string _currentTrackDescription;
+
 	    public bool IsPlaying
 	    {
 	        get { return _isPlaying; }
@@ -128,6 +129,26 @@ namespace Jukebox.Features.MainPage
 	        get { return !IsPlaying; }
 	        set { IsPlaying = !value; }
 	    }
+
+        public ImageSource CurrentTrackAlbumImageSource
+        {
+            get { return _currentTrackAlbumImageSource; }
+            set
+            {
+                _currentTrackAlbumImageSource = value;
+                NotifyChanged(() => CurrentTrackAlbumImageSource);
+            }
+        }
+
+        public string CurrentTrackDescription
+        {
+            get { return _currentTrackDescription; }
+            set
+            {
+                _currentTrackDescription = value;
+                NotifyChanged(() => CurrentTrackDescription);
+            }
+        }
 
 	    public void Handle(SongEndedEvent e)
 		{
@@ -206,6 +227,8 @@ namespace Jukebox.Features.MainPage
 		{
             IsPaused = false;
             IsPlaying = true;
+		    CurrentTrackAlbumImageSource = song.Album.SmallBitmap;
+		    CurrentTrackDescription = string.Format("{0} - {1}", song.Album.Artist.Name, song.Title);
 		    PresentationBus.Publish(new PlayFileRequest(await song.GetStorageFileAsync()));
 		}
 

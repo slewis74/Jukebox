@@ -176,24 +176,5 @@ namespace Jukebox.Features.MainPage
             request.Location = location;
             request.IsHandled = true;
         }
-
-        public void Handle(PlaylistDropLocationRequest request)
-        {
-            request.IsHandled = true;
-            request.Location = GetPlaylistDropLocation();
-        }
-
-        private Location GetPlaylistDropLocation()
-        {
-            var position = playlistControl.TransformToVisual(this).TransformPoint(new Point(0, 0));
-
-            var location = new Location
-                               {
-                                   Position = position,
-                                   Size = new Size(playlistControl.ActualWidth, playlistControl.ActualHeight)
-                               };
-
-            return location;
-        }
 	}
 }

@@ -41,33 +41,14 @@
             </Grid.ColumnDefinitions>
 			<Button x:Name="backButton" Click="GoBack" IsEnabled="{Binding CanGoBack, ElementName=BrowsingFrame}" Style="{StaticResource BackButtonStyle}"/>
 			<TextBlock x:Name="pageTitle" Grid.Column="1" Text="{StaticResource AppName}" Style="{StaticResource PageHeaderTextStyle}"/>
-            
-            <Grid
-                Grid.Column="2"
-                Margin="0 10 0 10"
-                HorizontalAlignment="Center">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Grid
-                    Grid.Row="0"
-                    x:Name="playlistControl">
-                    <Rectangle 
-                        Width="75" Height="30"
-                    />
-                    <TextBlock 
-                        Style="{StaticResource BaselineTextStyle}"
-                        Text="Playlist"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center"
-                        />
-                </Grid>
-                <MainPage:NowPlayingView
-                    x:Name="NowPlayingView"/>
-            </Grid>
 
-			<MediaElement
+            <MainPage:NowPlayingView
+                x:Name="NowPlayingView"
+                Grid.Column="2"
+                HorizontalAlignment="Center"
+                Margin="0 10 0 10"/>
+
+            <MediaElement
 				Grid.Column="3"
 				x:Name="MediaElement"
                 AudioCategory="BackgroundCapableMedia"
