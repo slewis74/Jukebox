@@ -65,18 +65,10 @@
         <Grid
             Grid.Row="1"
 			Grid.ColumnSpan="3">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
             <TextBlock 
     			Text="{Binding CurrentTrackDescription}"
                 TextAlignment="Center"
     			HorizontalAlignment="Center"/>
-
-            <Slider
-                Height="35"/>
-
         </Grid>
 
     </Grid>
