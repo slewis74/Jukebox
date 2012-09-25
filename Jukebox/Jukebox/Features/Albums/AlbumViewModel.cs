@@ -40,6 +40,7 @@ namespace Jukebox.Features.Albums
         public AddAlbumCommand AddAlbum { get; private set; }
 
         public string Title { get { return _album.Title; } }
+        public string ArtistName { get { return _album.Artist.Name; } }
 
         public BitmapImage SmallBitmap { get { return _album.SmallBitmap; } }
         public BitmapImage LargeBitmap { get { return _album.LargeBitmap; } }

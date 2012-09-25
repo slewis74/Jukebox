@@ -10,9 +10,9 @@
 
     <StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-            <TextBlock Text="{Binding Song.TrackNumber}"/>
+            <TextBlock Text="{Binding TrackNumber}"/>
             <TextBlock Text=" - " Margin="5 0 0 0"/>
-            <TextBlock Text="{Binding Song.Title}" Margin="5 0 0 0"/>
+            <TextBlock Text="{Binding Title}" Margin="5 0 0 0"/>
         </StackPanel>
         <TextBlock Text="The track says 'Let me go!'"/>
     </StackPanel>

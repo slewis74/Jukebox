@@ -18,16 +18,20 @@
         </DataTemplate>
     </UserControl.Resources>
 
-    <StackPanel>
-        <Image Source="{Binding SmallBitmap}" Margin="20,0,18,0" MaxHeight="160" Stretch="UniformToFill"/>
-        <TextBlock Margin="20,20,18,30" Text="{Binding Title}" Style="{StaticResource BodyTextStyle}"/>
-        <ListView
-                    AutomationProperties.AutomationId="ItemListView"
-                    AutomationProperties.Name="Items In Group"
-                    Margin="12,0,-2,60"
-					SelectionMode="Single"
-                    ItemsSource="{Binding Tracks}"
-					SelectedItem="{Binding SelectedTrack, Mode=TwoWay}"
-                    ItemTemplate="{StaticResource Standard80ItemTemplate}"/>
-    </StackPanel>
+    <ScrollViewer
+        Style="{StaticResource VerticalScrollViewerStyle}">
+
+        <StackPanel>
+            <Image Source="{Binding SmallBitmap}" Margin="20,0,18,0" MaxHeight="160" Stretch="UniformToFill"/>
+            <TextBlock Margin="20,20,18,30" Text="{Binding Title}" Style="{StaticResource BodyTextStyle}"/>
+            <ListView
+                        AutomationProperties.AutomationId="ItemListView"
+                        AutomationProperties.Name="Items In Group"
+                        Margin="12,0,-2,60"
+					    SelectionMode="Single"
+                        ItemsSource="{Binding Tracks}"
+					    SelectedItem="{Binding SelectedTrack, Mode=TwoWay}"
+                        ItemTemplate="{StaticResource Standard80ItemTemplate}"/>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

@@ -6,7 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 	xmlns:Pages="using:Slew.WinRT.Pages" 
-    xmlns:snapped="using:Jukebox.Features.Artists.Snapped" 
+    xmlns:snapped="using:Jukebox.Features.Artists.Snapped"
+    xmlns:designTime="using:Jukebox.Features.Artists.DesignTime"
     mc:Ignorable="d"
     >
     
@@ -15,7 +16,8 @@
         <CollectionViewSource
             x:Name="groupedItemsViewSource"
 			IsSourceGrouped="True"
-            Source="{Binding GroupedItems}"/>
+            Source="{Binding GroupedItems}"
+            d:DataContext="{Binding Source={d:DesignInstance Type=designTime:DesignTimeGroupedItems, IsDesignTimeCreatable=True}}"/>
 		
 		<DataTemplate x:Key="ArtistItemTemplate">
 			<Button 

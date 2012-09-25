@@ -152,6 +152,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataPersistence\SongPersister.cs" />
+    <Compile Include="Features\Artists\DesignTime\DesignTimeArtistViewModel.cs" />
     <Compile Include="Features\Artists\Snapped\SnappedArtistsView.xaml.cs">
       <DependentUpon>SnappedArtistsView.xaml</DependentUpon>
     </Compile>
@@ -206,15 +207,9 @@
     </Content>
     <Content Include="Assets\WideLog.png" />
     <Content Include="Images\Jukebox.small.png" />
-    <Content Include="Images\no_image_large.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\no_image_medium.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\no_image_small.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Images\no_image_large.png" />
+    <Content Include="Images\no_image_medium.png" />
+    <Content Include="Images\no_image_small.png" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

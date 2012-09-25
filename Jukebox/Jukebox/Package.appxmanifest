@@ -16,7 +16,7 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Jukebox.App">
-      <VisualElements DisplayName="Jukebox" Logo="Assets\Logo.png" SmallLogo="Assets\SmallLogo.png" Description="Jukebox" ForegroundText="light" BackgroundColor="#6495ED">
+      <VisualElements DisplayName="Jukebox" Logo="Assets\Logo.png" SmallLogo="Assets\SmallLogo.png" Description="Jukebox" ForegroundText="light" BackgroundColor="#819FD8">
         <LockScreen Notification="badgeAndTileText" BadgeLogo="Images\Jukebox.small.png" />
         <DefaultTile ShowName="allLogos" WideLogo="Assets\WideLog.png" />
         <SplashScreen Image="Assets\SplashScreen.png" />

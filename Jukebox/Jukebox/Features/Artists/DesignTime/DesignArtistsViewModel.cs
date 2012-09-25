@@ -1,4 +1,5 @@
-﻿using Jukebox.Model;
+﻿using System.Collections.Generic;
+using Jukebox.Model;
 using Slew.WinRT.Data;
 
 namespace Jukebox.Features.Artists.DesignTime
@@ -22,6 +23,32 @@ namespace Jukebox.Features.Artists.DesignTime
                 return _groups;
             }
         }
-         
+    }
+
+    public class DesignTimeArtist
+    {
+        public string Name { get; set; }
+    }
+
+    public class DesignTimeGroupedItems : List<GroupedData<DesignTimeArtist>> 
+    {
+        public DesignTimeGroupedItems()
+        {
+            var designTimeArtists = new GroupedData<DesignTimeArtist>
+                                        {
+                                            Key = "A"
+                                        };
+            designTimeArtists.Add(new DesignTimeArtist { Name = "Artist A"});
+            designTimeArtists.Add(new DesignTimeArtist { Name = "Artist A1"});
+            Add(designTimeArtists);
+
+            designTimeArtists = new GroupedData<DesignTimeArtist>
+            {
+                Key = "B"
+            };
+            designTimeArtists.Add(new DesignTimeArtist { Name = "Artist B" });
+            designTimeArtists.Add(new DesignTimeArtist { Name = "Artist B1" });
+            Add(designTimeArtists);
+        }
     }
 }
