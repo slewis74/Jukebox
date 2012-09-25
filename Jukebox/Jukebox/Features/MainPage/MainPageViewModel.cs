@@ -281,29 +281,15 @@ namespace Jukebox.Features.MainPage
         }
     }
 
-    public class NextTrackCommand : Command, IPublish
+    public class NextTrackCommand : PresentationRequestCommand<NextTrackRequest>
     {
-        public IPresentationBus PresentationBus { get; set; }
-
-        public override void Execute(object parameter)
-        {
-            PresentationBus.Publish(new PlayRequest());
-        }
-
         public override bool CanExecute(object parameter)
         {
             return false;
         }
     }
-    public class PreviousTrackCommand : Command, IPublish
+    public class PreviousTrackCommand : PresentationRequestCommand<PreviousTrackRequest>
     {
-        public IPresentationBus PresentationBus { get; set; }
-
-        public override void Execute(object parameter)
-        {
-            PresentationBus.Publish(new PlayRequest());
-        }
-
         public override bool CanExecute(object parameter)
         {
             return false;
