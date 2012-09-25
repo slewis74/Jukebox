@@ -169,8 +169,9 @@ namespace Slew.WinRT.Pages
 
             _isOverLocation = LocationCommandMappings
                 .FirstOrDefault(lcm =>
-                (lcm.Location.Position.X <= currentXPosition && currentXPosition <= (lcm.Location.Position.X + lcm.Location.Size.Width)) &&
-                (lcm.Location.Position.Y <= currentYPosition && currentYPosition <= (lcm.Location.Position.Y + lcm.Location.Size.Height)));
+                    lcm.Location != null && 
+                    (lcm.Location.Position.X <= currentXPosition && currentXPosition <= (lcm.Location.Position.X + lcm.Location.Size.Width)) &&
+                    (lcm.Location.Position.Y <= currentYPosition && currentYPosition <= (lcm.Location.Position.Y + lcm.Location.Size.Height)));
 
             e.Handled = true;
         }

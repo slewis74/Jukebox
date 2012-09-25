@@ -3,6 +3,7 @@
     public class PresentationRequest : IPresentationRequest
     {
         public bool IsHandled { get; set; }
+        public bool MustBeHandled { get; protected set; }
     }
 
     public class PresentationRequest<T> : PresentationRequest

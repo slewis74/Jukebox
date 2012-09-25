@@ -128,6 +128,7 @@
     <Compile Include="PresentationBus\IPublish.cs" />
     <Compile Include="PresentationBus\PresentationBus.cs" />
     <Compile Include="Container\PropertyInjector.cs" />
+    <Compile Include="PresentationBus\PresentationEvent.cs" />
     <Compile Include="PresentationBus\PresentationRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Requests\NavigationRequest.cs" />

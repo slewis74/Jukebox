@@ -145,6 +145,11 @@ namespace Slew.WinRT.PresentationBus
                     }
                     anySubscribersStillListening = true;
                 }
+
+                if (presentationEvent.MustBeHandled && presentationEvent.IsHandled == false)
+                {
+                    throw new InvalidOperationException(string.Format("Event {0} was not handled.", presentationEvent.GetType().Name));
+                }
                 return anySubscribersStillListening;
             }
         }

@@ -20,18 +20,20 @@ namespace Jukebox.Features.MainPage
     public sealed partial class MainPage : 
         IPublish,
         IHandlePresentationRequest<NavigationRequest>,
+        IHandlePresentationRequest<PositionTransformRequest>,
         IHandlePresentationRequest<PlayFileRequest>,
         IHandlePresentationRequest<StopPlayingRequest>,
         IHandlePresentationRequest<PausePlayingRequest>,
-        IHandlePresentationRequest<RestartPlayingRequest>,
-        IHandlePresentationRequest<PlayDropLocationRequest>,
-        IHandlePresentationRequest<PlaylistDropLocationRequest>
+        IHandlePresentationRequest<RestartPlayingRequest>
     {
         private readonly SynchronizationContext _synchronizationContext = SynchronizationContext.Current;
         
         public MainPage()
 		{
 			InitializeComponent();
+
+            PropertyInjector.Resolve(() => NowPlayingView);
+
 			Loaded += MainPageLoaded;
 			MediaElement.MediaFailed += MediaElement_MediaFailed;
             MediaControl.PlayPressed += (sender, o) => DispatchCall(s => DoPlay());
@@ -159,23 +161,20 @@ namespace Jukebox.Features.MainPage
 			PageCommands.Children.Add(frameworkElement);
 		}
 
-        public void Handle(PlayDropLocationRequest request)
+        public void Handle(PositionTransformRequest request)
         {
-            request.IsHandled = true;
-            request.Location = GetPlayDropLocation();
-        }
+            var element = request.Args;
 
-        private Location GetPlayDropLocation()
-        {
-            var position = playPauseGrid.TransformToVisual(this).TransformPoint(new Point(0, 0));
+            var position = element.TransformToVisual(this).TransformPoint(new Point(0, 0));
 
             var location = new Location
-                               {
-                                   Position = position,
-                                   Size = new Size(playPauseGrid.ActualWidth, playPauseGrid.ActualHeight)
-                               };
+            {
+                Position = position,
+                Size = new Size(element.ActualWidth, element.ActualHeight)
+            };
 
-            return location;
+            request.Location = location;
+            request.IsHandled = true;
         }
 
         public void Handle(PlaylistDropLocationRequest request)

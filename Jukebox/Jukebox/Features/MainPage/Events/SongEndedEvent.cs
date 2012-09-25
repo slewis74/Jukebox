@@ -2,7 +2,7 @@
 
 namespace Jukebox.Features.MainPage.Events
 {
-    public class SongEndedEvent : IPresentationEvent
+    public class SongEndedEvent : PresentationEvent
     {
     }
 }

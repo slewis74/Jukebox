@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:Pages="using:Slew.WinRT.Pages"
+    xmlns:MainPage="using:Jukebox.Features.MainPage"
     mc:Ignorable="d">
 
 	<Page.BottomAppBar>
@@ -35,46 +36,22 @@
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="Auto"/>
 				<ColumnDefinition Width="Auto"/>
-				<ColumnDefinition Width="Auto"/>
-				<ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
 			<Button x:Name="backButton" Click="GoBack" IsEnabled="{Binding CanGoBack, ElementName=BrowsingFrame}" Style="{StaticResource BackButtonStyle}"/>
 			<TextBlock x:Name="pageTitle" Grid.Column="1" Text="{StaticResource AppName}" Style="{StaticResource PageHeaderTextStyle}"/>
             
             <Grid
                 Grid.Column="2"
-                x:Name="playPauseGrid"
-                Margin="0 0 0 34">
-                <Button 
-                    Content="Play"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Bottom"
-                    Width="75"
-                    Visibility="{Binding IsNotPlaying, Converter={StaticResource BooleanToVisibilityConverter}}"
-                    Command="{Binding PlayCommand}"/>
-                <Button 
-                    Content="Pause"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Bottom"
-                    Width="75"
-                    Visibility="{Binding IsPlaying, Converter={StaticResource BooleanToVisibilityConverter}}"
-                    Command="{Binding PauseCommand}"/>
-            </Grid>
-            
-            <Grid
-                Grid.Column="3"
-                Margin="20 20 0 34">
+                Margin="0 10 0 10"
+                HorizontalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Button 
-                    Grid.Row="0"
-                    Content="Playlists"
-                    Command="{Binding PlaylistsCommand}"/>
                 <Grid
-                    Grid.Row="1"
+                    Grid.Row="0"
                     x:Name="playlistControl">
                     <Rectangle 
                         Width="75" Height="30"
@@ -86,10 +63,12 @@
                         HorizontalAlignment="Center"
                         />
                 </Grid>
+                <MainPage:NowPlayingView
+                    x:Name="NowPlayingView"/>
             </Grid>
 
 			<MediaElement
-				Grid.Column="4"
+				Grid.Column="3"
 				x:Name="MediaElement"
                 AudioCategory="BackgroundCapableMedia"
 				MediaEnded="MediaElementMediaEnded1"/>

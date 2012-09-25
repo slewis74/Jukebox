@@ -14,6 +14,7 @@
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>Jukebox_TemporaryKey.pfx</PackageCertificateKeyFile>
     <PackageCertificateThumbprint>32592A89130763CE2A239F25FD8FB8A0166C5356</PackageCertificateThumbprint>
+    <ExpressionBlendVersion>5.0.30709.0</ExpressionBlendVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -164,6 +165,9 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\MainPage\MainPageViewModel.cs" />
+    <Compile Include="Features\MainPage\NowPlayingView.xaml.cs">
+      <DependentUpon>NowPlayingView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Features\MainPage\Requests\StopPlayingRequest.cs" />
     <Compile Include="Model\Album.cs" />
     <Compile Include="Model\Artist.cs" />
@@ -181,6 +185,7 @@
     <Compile Include="Requests\PlaylistDropLocationRequest.cs" />
     <Compile Include="Requests\PlayNowRequest.cs" />
     <Compile Include="Requests\PlayRequest.cs" />
+    <Compile Include="Requests\PositionTransformRequest.cs" />
     <Compile Include="Storage\MusicLibraryHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Storage\PlaylistHandler.cs" />
@@ -264,6 +269,15 @@
     <Page Include="Features\MainPage\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Features\MainPage\NowPlayingView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Features\MainPage\Resources\NowPlayingStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="Features\Playlists\PlaylistsView.xaml">
       <SubType>Designer</SubType>

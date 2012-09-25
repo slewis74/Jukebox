@@ -45,7 +45,9 @@ namespace Jukebox.Features.MainPage
             PlayCommand = PropertyInjector.Resolve(() => new PlayCommand());
             PauseCommand = PropertyInjector.Resolve(() => new PauseCommand());
             PlaylistsCommand = PropertyInjector.Resolve(() => new PlaylistsCommand(Navigator, _playlists));
-		}
+            NextTrackCommand = PropertyInjector.Resolve(() => new NextTrackCommand());
+            PreviousTrackCommand = PropertyInjector.Resolve(() => new PreviousTrackCommand());
+        }
 
         public INavigator Navigator { get; set; }
 
@@ -54,6 +56,8 @@ namespace Jukebox.Features.MainPage
         public PlayCommand PlayCommand { get; private set; }
         public PauseCommand PauseCommand { get; private set; }
         public PlaylistsCommand PlaylistsCommand { get; private set; }
+        public NextTrackCommand NextTrackCommand { get; private set; }
+        public PreviousTrackCommand PreviousTrackCommand { get; private set; }
 
 	    private Playlist _currentPlaylist;
 	    public Playlist CurrentPlaylist
@@ -295,4 +299,34 @@ namespace Jukebox.Features.MainPage
             _navigator.Navigate<PlaylistController>(c => c.ShowAll(_playlists));
         }
     }
+
+    public class NextTrackCommand : Command, IPublish
+    {
+        public IPresentationBus PresentationBus { get; set; }
+
+        public override void Execute(object parameter)
+        {
+            PresentationBus.Publish(new PlayRequest());
+        }
+
+        public override bool CanExecute(object parameter)
+        {
+            return false;
+        }
+    }
+    public class PreviousTrackCommand : Command, IPublish
+    {
+        public IPresentationBus PresentationBus { get; set; }
+
+        public override void Execute(object parameter)
+        {
+            PresentationBus.Publish(new PlayRequest());
+        }
+
+        public override bool CanExecute(object parameter)
+        {
+            return false;
+        }
+    }
+
 }

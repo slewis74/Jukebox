@@ -23,9 +23,8 @@ namespace Slew.WinRT.Tests
             Assert.IsTrue(t.HandleWasCalled);
         }
 
-        private class TestEvent : IPresentationEvent<int>
+        private class TestEvent : PresentationEvent<int>
         {
-            public int Data { get; set; }
         }
 
         private class TestClassWithHandler : TestClass, IHandlePresentationEvent<TestEvent>
@@ -55,9 +54,8 @@ namespace Slew.WinRT.Tests
             Assert.IsFalse(TestClassWithHandlerAndStaticCalledCheck.HandleWasCalled);
         }
 
-        private class TestEventA : IPresentationEvent<int>
+        private class TestEventA : PresentationEvent<int>
         {
-            public int Data { get; set; }
         }
 
         private class TestClassWithHandlerAndStaticCalledCheck : TestClass, IHandlePresentationEvent<TestEvent>, IHandlePresentationEvent<TestEventA>
@@ -113,9 +111,8 @@ namespace Slew.WinRT.Tests
             Assert.IsFalse(TestClassWithHandlerAndStaticCalledCheck.HandleAWasCalled);
         }
 
-        private class TestRequest : IPresentationRequest
+        private class TestRequest : PresentationRequest
         {
-            public bool IsHandled { get; set; }
             public int Value { get; set; }
         }
 
