@@ -8,7 +8,7 @@ namespace Jukebox.Common
     {
         protected T Resolve<T>(Func<T> objectCreationAction)
         {
-            return PropertyInjector.Resolve(objectCreationAction);
+            return PropertyInjector.Inject(objectCreationAction);
         }
     }
 }

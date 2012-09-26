@@ -115,6 +115,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events\CurrentTrackChangedEvent.cs" />
     <Compile Include="Features\Albums\AlbumController.cs" />
     <Compile Include="Features\Albums\AlbumFloatingView.xaml.cs">
       <DependentUpon>AlbumFloatingView.xaml</DependentUpon>
@@ -294,9 +295,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Events\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Reference Include="WinRtBehaviors">
       <HintPath>..\Packages\WinRtBehaviours\WinRtBehaviors.dll</HintPath>

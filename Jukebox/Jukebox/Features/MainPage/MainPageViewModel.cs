@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Windows.Input;
 using Jukebox.Common;
+using Jukebox.Events;
 using Jukebox.Features.Artists;
 using Jukebox.Features.MainPage.Events;
 using Jukebox.Features.MainPage.Requests;
@@ -23,7 +24,8 @@ namespace Jukebox.Features.MainPage
         IHandlePresentationRequest<PauseRequest>,
         IHandlePresentationRequest<StopRequest>,
         IHandlePresentationRequest<PlaySongNowRequest>,
-        IHandlePresentationEvent<SongEndedEvent>
+        IHandlePresentationEvent<SongEndedEvent>,
+        IHandlePresentationEvent<CurrentTrackChangedEvent>
 	{
         private readonly DistinctAsyncObservableCollection<Playlist> _playlists;
         private readonly PlaylistHandler _playlistHandler;
@@ -43,11 +45,11 @@ namespace Jukebox.Features.MainPage
 
 			DisplayArtists = new DisplayArtistsCommand(Navigator, _artists);
 
-            PlayCommand = PropertyInjector.Resolve(() => new PresentationRequestCommand<PlayRequest>());
-            PauseCommand = PropertyInjector.Resolve(() => new PresentationRequestCommand<PauseRequest>());
-            PlaylistsCommand = PropertyInjector.Resolve(() => new PlaylistsCommand(Navigator, _playlists));
-            NextTrackCommand = PropertyInjector.Resolve(() => new NextTrackCommand());
-            PreviousTrackCommand = PropertyInjector.Resolve(() => new PreviousTrackCommand());
+            PlayCommand = PropertyInjector.Inject(() => new PresentationRequestCommand<PlayRequest>());
+            PauseCommand = PropertyInjector.Inject(() => new PresentationRequestCommand<PauseRequest>());
+            PlaylistsCommand = PropertyInjector.Inject(() => new PlaylistsCommand(Navigator, _playlists));
+            NextTrackCommand = PropertyInjector.Inject(() => new NextTrackCommand());
+            PreviousTrackCommand = PropertyInjector.Inject(() => new PreviousTrackCommand());
         }
 
         public INavigator Navigator { get; set; }
@@ -68,32 +70,11 @@ namespace Jukebox.Features.MainPage
 	        {
                 if (_currentPlaylist == value)
                     return;
-
-                if (_currentPlaylist != null)
-                {
-                    _currentPlaylist.CurrentTrackChanged -= CurrentPlaylistOnCurrentTrackChanged;
-                }
                 
                 _currentPlaylist = value;
                 NotifyChanged(() => CurrentPlaylist);
-                
-                if (_currentPlaylist != null)
-                {
-                    _currentPlaylist.CurrentTrackChanged += CurrentPlaylistOnCurrentTrackChanged;
-                }
 	        }
 	    }
-
-	    private void CurrentPlaylistOnCurrentTrackChanged(object sender, Song song)
-	    {
-            if (song == null)
-                OnStopPlaying();
-            else
-            {
-                OnPlayFile(song);
-            }
-            _playlistHandler.SaveData(_playlists, _currentPlaylist);
-        }
 
 	    private readonly DistinctAsyncObservableCollection<Artist> _artists;
         public DistinctAsyncObservableCollection<Artist> Artists { get { return _artists; } }
@@ -155,20 +136,69 @@ namespace Jukebox.Features.MainPage
             if (CurrentPlaylist != null && CurrentPlaylist.CanMoveNext(false))
 			{
                 CurrentPlaylist.MoveToNextTrack(false);
-                OnPlayFile(CurrentPlaylist.CurrentTrack);
+                PlayFile(CurrentPlaylist.CurrentTrack);
 			}
 		}
 
-		private void StopAndResetCurrentPlaylist()
+        public void Handle(CurrentTrackChangedEvent e)
+        {
+            var song = e.Data;
+
+            if (song == null)
+                StopPlaying();
+            else
+            {
+                PlayFile(song);
+            }
+            _playlistHandler.SaveData(_playlists, _currentPlaylist);
+        }
+
+        public void Handle(PlayRequest request)
+        {
+            StartPlaying();
+        }
+
+        public void Handle(PauseRequest request)
+        {
+            if (IsNotPlaying)
+                return;
+            PausePlaying();
+        }
+        public void Handle(StopRequest request)
+        {
+            if (IsNotPlaying)
+                return;
+            StopPlaying();
+        }
+
+        public void Handle(PlaySongNowRequest request)
+        {
+            request.IsHandled = true;
+            StopAndResetDefaultPlaylist();
+            AddToCurrentPlaylist(request.Scope);
+            StartPlaying();
+        }
+
+        public void Handle(PlayAlbumNowRequest request)
+        {
+            request.IsHandled = true;
+            StopAndResetDefaultPlaylist();
+            AddToCurrentPlaylist(request.Scope);
+            StartPlaying();
+        }
+
+		private void StopAndResetDefaultPlaylist()
 		{
-			OnStopPlaying();
-            CurrentPlaylist = null;
-		}
+			StopPlaying();
+		    CurrentPlaylist = _playlists.Single(p => p.Name == "Default");
+            CurrentPlaylist.Clear();
+            _playlistHandler.SaveData(_playlists, CurrentPlaylist);
+        }
 
 		public void AddToCurrentPlaylist(Song song)
 		{
             CurrentPlaylist.Add(song);
-            _playlistHandler.SaveData(_playlists, _currentPlaylist);
+            _playlistHandler.SaveData(_playlists, CurrentPlaylist);
 		}
 
 		public void AddToCurrentPlaylist(Album album)
@@ -187,43 +217,25 @@ namespace Jukebox.Features.MainPage
 			}
 		}
 
-        public void Handle(PlayRequest request)
+        private void StartPlaying()
         {
             if (IsPlaying)
                 return;
+
             if (IsPaused)
-                OnRestartPlaying();
+                RestartPlaying();
             else
             {
-                if (_currentPlaylist.CurrentTrack == null)
+                if (CurrentPlaylist.CurrentTrack == null)
                     NextTrack();
                 else
                 {
-                    OnPlayFile(_currentPlaylist.CurrentTrack);
+                    PlayFile(CurrentPlaylist.CurrentTrack);
                 }
             }
         }
-        public void Handle(PauseRequest request)
-        {
-            if (IsNotPlaying)
-                return;
-            OnPausePlaying();
-        }
-        public void Handle(StopRequest request)
-        {
-            if (IsNotPlaying)
-                return;
-            OnStopPlaying();
-        }
-
-        public void Handle(PlaySongNowRequest request)
-        {
-            request.IsHandled = true;
-            StopAndResetCurrentPlaylist();
-            OnPlayFile(request.Scope);
-        }
-
-		private async void OnPlayFile(Song song)
+        
+		private async void PlayFile(Song song)
 		{
             IsPaused = false;
             IsPlaying = true;
@@ -232,21 +244,21 @@ namespace Jukebox.Features.MainPage
 		    PresentationBus.Publish(new PlayFileRequest(await song.GetStorageFileAsync()));
 		}
 
-        private void OnRestartPlaying()
+        private void RestartPlaying()
         {
             IsPlaying = true;
             IsPaused = false;
             PresentationBus.Publish(new RestartPlayingRequest());
         }
 
-        private void OnPausePlaying()
+        private void PausePlaying()
         {
             IsPlaying = false;
             IsPaused = true;
             PresentationBus.Publish(new PausePlayingRequest());
         }
 
-		private void OnStopPlaying()
+		private void StopPlaying()
 		{
 		    IsPlaying = false;
 		    IsPaused = false;

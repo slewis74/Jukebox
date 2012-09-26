@@ -1,25 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Jukebox.Events;
 using Slew.WinRT.Data;
+using Slew.WinRT.PresentationBus;
 
 namespace Jukebox.Model
 {
     [DebuggerDisplay("Playlist {Name}")]
-    public class Playlist : DistinctAsyncObservableCollection<Song>
+    public class Playlist : DistinctAsyncObservableCollection<Song>, IPublish
     {
-        public event EventHandler<Song> CurrentTrackChanged;
-
         public Playlist(string name)
         {
             Name = name;
         }
 
-        public Playlist(IEnumerable<Song> list, string name) : base(list)
-        {
-            Name = name;
-        }
+        public IPresentationBus PresentationBus { get; set; }
 
         public string Name { get; set; }
 
@@ -134,8 +130,7 @@ namespace Jukebox.Model
 
         public void OnCurrentTrackChanged(Song e)
         {
-            var handler = CurrentTrackChanged;
-            if (handler != null) handler(this, e);
+            PresentationBus.Publish(new CurrentTrackChangedEvent(e));
         }
     }
 }

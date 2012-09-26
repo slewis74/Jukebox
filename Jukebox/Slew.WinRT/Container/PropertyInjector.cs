@@ -7,7 +7,7 @@ namespace Slew.WinRT.Container
     {
         public static IPresentationBus PresentationBus { get; set; }
 
-        public static T Resolve<T>(Func<T> objectCreationAction)
+        public static T Inject<T>(Func<T> objectCreationAction)
         {
             var obj = objectCreationAction();
 

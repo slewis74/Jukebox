@@ -10,7 +10,7 @@ namespace Slew.WinRT.Tests
         [TestMethod]
         public void GivenASimpleClass_WhenResolved_TheObjectCanBeCreated()
         {
-            var t = PropertyInjector.Resolve(() => new TestClass { Id = 13 });
+            var t = PropertyInjector.Inject(() => new TestClass { Id = 13 });
 
             Assert.IsNotNull(t);
         }
@@ -18,7 +18,7 @@ namespace Slew.WinRT.Tests
         [TestMethod]
         public void GivenASimpleClass_WhenResolved_TheObjectIsInitialized()
         {
-            var t = PropertyInjector.Resolve(() => new TestClass { Id = 13 });
+            var t = PropertyInjector.Inject(() => new TestClass { Id = 13 });
 
             Assert.AreEqual(13, t.Id);
         }
@@ -34,7 +34,7 @@ namespace Slew.WinRT.Tests
             var bus = new PresentationBus.PresentationBus();
             PropertyInjector.PresentationBus = bus;
 
-            var t = PropertyInjector.Resolve(() => new TestClassWithBus());
+            var t = PropertyInjector.Inject(() => new TestClassWithBus());
 
             Assert.AreEqual(bus, t.PresentationBus);
         }
@@ -50,16 +50,17 @@ namespace Slew.WinRT.Tests
             var bus = new PresentationBus.PresentationBus();
             PropertyInjector.PresentationBus = bus;
 
-            var t = PropertyInjector.Resolve(() => new TestClassWithHandler());
+            var t = PropertyInjector.Inject(() => new TestClassWithHandler());
 
-            bus.Publish(new TestEvent { Data =  12 });
+            bus.Publish(new TestEvent(12));
 
             Assert.IsTrue(t.HandleWasCalled);
         }
 
         private class TestEvent : PresentationEvent<int>
         {
-            public int Data { get; set; }
+            public TestEvent(int data) : base(data)
+            {}
         }
          
         private class TestClassWithHandler : TestClass, IHandlePresentationEvent<TestEvent>
@@ -80,17 +81,20 @@ namespace Slew.WinRT.Tests
             var bus = new PresentationBus.PresentationBus();
             PropertyInjector.PresentationBus = bus;
 
-            var t = PropertyInjector.Resolve(() => new TestClassWithHandlerAndStaticCalledCheck());
+            var t = PropertyInjector.Inject(() => new TestClassWithHandlerAndStaticCalledCheck());
 
             bus.UnSubscribe(t);
 
-            bus.Publish(new TestEvent { Data = 12 });
+            bus.Publish(new TestEvent(12));
 
             Assert.IsFalse(TestClassWithHandlerAndStaticCalledCheck.HandleWasCalled);
         }
 
         private class TestEventA : PresentationEvent<int>
         {
+            public TestEventA(int data) : base(data)
+            {
+            }
         }
 
         private class TestClassWithHandlerAndStaticCalledCheck : TestClass, IHandlePresentationEvent<TestEvent>, IHandlePresentationEvent<TestEventA>

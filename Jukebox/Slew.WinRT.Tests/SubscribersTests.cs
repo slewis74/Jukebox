@@ -18,13 +18,15 @@ namespace Slew.WinRT.Tests
 
             var t = new TestClassWithHandler();
             bus.Subscribe(t);
-            bus.Publish(new TestEvent { Data = 12 });
+            bus.Publish(new TestEvent(12));
 
             Assert.IsTrue(t.HandleWasCalled);
         }
 
         private class TestEvent : PresentationEvent<int>
         {
+            public TestEvent(int data) : base(data)
+            {}
         }
 
         private class TestClassWithHandler : TestClass, IHandlePresentationEvent<TestEvent>
@@ -49,13 +51,15 @@ namespace Slew.WinRT.Tests
             bus.Subscribe(t);
             bus.UnSubscribe(t);
 
-            bus.Publish(new TestEvent { Data = 12 });
+            bus.Publish(new TestEvent(12));
 
             Assert.IsFalse(TestClassWithHandlerAndStaticCalledCheck.HandleWasCalled);
         }
 
         private class TestEventA : PresentationEvent<int>
         {
+            public TestEventA(int data) : base(data)
+            {}
         }
 
         private class TestClassWithHandlerAndStaticCalledCheck : TestClass, IHandlePresentationEvent<TestEvent>, IHandlePresentationEvent<TestEventA>
@@ -90,7 +94,7 @@ namespace Slew.WinRT.Tests
 
             bus.Subscribe(t);
 
-            bus.Publish(new TestEvent { Data = 12 });
+            bus.Publish(new TestEvent(12));
 
             Assert.IsTrue(TestClassWithHandlerAndStaticCalledCheck.HandleWasCalled);
         }
@@ -106,7 +110,7 @@ namespace Slew.WinRT.Tests
 
             bus.Subscribe(t);
 
-            bus.Publish(new TestEvent { Data = 12 });
+            bus.Publish(new TestEvent(12));
 
             Assert.IsFalse(TestClassWithHandlerAndStaticCalledCheck.HandleAWasCalled);
         }

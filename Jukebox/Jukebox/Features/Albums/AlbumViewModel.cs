@@ -21,17 +21,17 @@ namespace Jukebox.Features.Albums
             AlbumLocationCommandMappings = new AsyncObservableCollection<LocationCommandMapping>();
             TrackLocationCommandMappings = new AsyncObservableCollection<LocationCommandMapping>();
 
-			PlaySong = PropertyInjector.Resolve(()=> new PlaySongCommand());
-			PlayAlbum = PropertyInjector.Resolve(()=> new PlayAlbumCommand());
-            AddSong = PropertyInjector.Resolve(()=> new AddSongCommand());
-            AddAlbum = PropertyInjector.Resolve(()=> new AddAlbumCommand());
+			PlaySong = PropertyInjector.Inject(()=> new PlaySongCommand());
+			PlayAlbum = PropertyInjector.Inject(()=> new PlayAlbumCommand());
+            AddSong = PropertyInjector.Inject(()=> new AddSongCommand());
+            AddAlbum = PropertyInjector.Inject(()=> new AddAlbumCommand());
 
             Tracks = new AsyncObservableCollection<TrackViewModel>(
                 album.Songs
                 .OrderBy(s => s.DiscNumber)
                 .ThenBy(s => s.TrackNumber)
                 .Select(t => 
-                    PropertyInjector.Resolve(()=> new TrackViewModel(t, TrackLocationCommandMappings))));
+                    PropertyInjector.Inject(()=> new TrackViewModel(t, TrackLocationCommandMappings))));
 		}
 
 		public PlaySongCommand PlaySong { get; private set; }

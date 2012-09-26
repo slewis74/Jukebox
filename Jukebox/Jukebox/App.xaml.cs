@@ -36,14 +36,25 @@ namespace Jukebox
             var playlists = new List<Playlist>();
             var currentPlaylist = _artists.Any() == false ? null : playlistHandler.LoadContent(_artists, playlists);
             _playlists = new DistinctAsyncObservableCollection<Playlist>(playlists);
+            if (_playlists.Any() == false)
+            {
+                currentPlaylist = PropertyInjector.Inject(() => new Playlist("Default"));
+                _playlists.Add(currentPlaylist);
+                playlistHandler.SaveData(_playlists, currentPlaylist);
+            }
+            else if (currentPlaylist == null)
+            {
+                currentPlaylist = _playlists.Single(p => p.Name == "Default");
+                playlistHandler.SaveData(_playlists, currentPlaylist);
+            }
 
             if (args.PreviousExecutionState == ApplicationExecutionState.Terminated)
             {
                 //TODO: Load state from previously suspended application
             }
 
-            var mainPageViewModel = PropertyInjector.Resolve(() => new MainPageViewModel(_artists, _playlists, currentPlaylist, playlistHandler));
-            Window.Current.Content = PropertyInjector.Resolve(() => new MainPage
+            var mainPageViewModel = PropertyInjector.Inject(() => new MainPageViewModel(_artists, _playlists, currentPlaylist, playlistHandler));
+            Window.Current.Content = PropertyInjector.Inject(() => new MainPage
         	                             {
                                              DataContext = mainPageViewModel
         	                             });
