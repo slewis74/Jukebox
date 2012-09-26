@@ -27,7 +27,7 @@ namespace Jukebox.Storage
             {
                 var playlistContainer = playlistsContainer.Containers[playlistKey];
 
-                var playlist = PropertyInjector.Inject(() => new Playlist((string)playlistContainer.Values["Name"]));
+                var playlist = PropertyInjector.Inject(() => new Playlist((string)playlistContainer.Values["Name"], false));
 
                 var songsContainer = playlistContainer.Containers["Songs"];
                 foreach (var songKey in songsContainer.Values.Keys.OrderBy(Convert.ToInt32))

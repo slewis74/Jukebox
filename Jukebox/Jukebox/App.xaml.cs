@@ -38,7 +38,7 @@ namespace Jukebox
             _playlists = new DistinctAsyncObservableCollection<Playlist>(playlists);
             if (_playlists.Any() == false)
             {
-                currentPlaylist = PropertyInjector.Inject(() => new Playlist("Default"));
+                currentPlaylist = PropertyInjector.Inject(() => new Playlist("Default", false));
                 _playlists.Add(currentPlaylist);
                 playlistHandler.SaveData(_playlists, currentPlaylist);
             }

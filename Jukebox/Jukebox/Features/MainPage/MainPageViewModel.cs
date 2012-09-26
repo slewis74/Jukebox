@@ -14,7 +14,6 @@ using Slew.WinRT.Data;
 using Slew.WinRT.Pages;
 using Slew.WinRT.PresentationBus;
 using Slew.WinRT.ViewModels;
-using Windows.UI.Xaml.Media;
 
 namespace Jukebox.Features.MainPage
 {
@@ -24,8 +23,11 @@ namespace Jukebox.Features.MainPage
         IHandlePresentationRequest<PauseRequest>,
         IHandlePresentationRequest<StopRequest>,
         IHandlePresentationRequest<PlaySongNowRequest>,
+        IHandlePresentationRequest<PlayAlbumNowRequest>,
         IHandlePresentationEvent<SongEndedEvent>,
-        IHandlePresentationEvent<CurrentTrackChangedEvent>
+        IHandlePresentationEvent<CurrentTrackChangedEvent>,
+        IHandlePresentationRequest<PreviousTrackRequest>,
+        IHandlePresentationRequest<NextTrackRequest>
 	{
         private readonly DistinctAsyncObservableCollection<Playlist> _playlists;
         private readonly PlaylistHandler _playlistHandler;
@@ -40,16 +42,16 @@ namespace Jukebox.Features.MainPage
             _artists = artists;
             _playlists = playlists;
             _playlistHandler = playlistHandler;
-            
+
             Navigator = new Navigator(new JukeboxControllerFactory(), this);
 
 			DisplayArtists = new DisplayArtistsCommand(Navigator, _artists);
-
+            
             PlayCommand = PropertyInjector.Inject(() => new PresentationRequestCommand<PlayRequest>());
             PauseCommand = PropertyInjector.Inject(() => new PresentationRequestCommand<PauseRequest>());
             PlaylistsCommand = PropertyInjector.Inject(() => new PlaylistsCommand(Navigator, _playlists));
-            NextTrackCommand = PropertyInjector.Inject(() => new NextTrackCommand());
-            PreviousTrackCommand = PropertyInjector.Inject(() => new PreviousTrackCommand());
+            NextTrackCommand = PropertyInjector.Inject(() => new NextTrackCommand(CurrentPlaylist.CanMoveNext));
+            PreviousTrackCommand = PropertyInjector.Inject(() => new PreviousTrackCommand(CurrentPlaylist.CanMovePrevious));
         }
 
         public INavigator Navigator { get; set; }
@@ -91,9 +93,6 @@ namespace Jukebox.Features.MainPage
 	    }
 
 	    private bool _isPlaying;
-	    private ImageSource _currentTrackAlbumImageSource;
-	    private string _currentTrackDescription;
-
 	    public bool IsPlaying
 	    {
 	        get { return _isPlaying; }
@@ -111,16 +110,7 @@ namespace Jukebox.Features.MainPage
 	        set { IsPlaying = !value; }
 	    }
 
-        public ImageSource CurrentTrackAlbumImageSource
-        {
-            get { return _currentTrackAlbumImageSource; }
-            set
-            {
-                _currentTrackAlbumImageSource = value;
-                NotifyChanged(() => CurrentTrackAlbumImageSource);
-            }
-        }
-
+        private string _currentTrackDescription;
         public string CurrentTrackDescription
         {
             get { return _currentTrackDescription; }
@@ -133,9 +123,9 @@ namespace Jukebox.Features.MainPage
 
 	    public void Handle(SongEndedEvent e)
 		{
-            if (CurrentPlaylist != null && CurrentPlaylist.CanMoveNext(false))
+            if (CurrentPlaylist != null && CurrentPlaylist.CanMoveNext)
 			{
-                CurrentPlaylist.MoveToNextTrack(false);
+                CurrentPlaylist.MoveToNextTrack();
                 PlayFile(CurrentPlaylist.CurrentTrack);
 			}
 		}
@@ -169,6 +159,15 @@ namespace Jukebox.Features.MainPage
             if (IsNotPlaying)
                 return;
             StopPlaying();
+        }
+
+        public void Handle(PreviousTrackRequest request)
+        {
+            PreviousTrack();
+        }
+        public void Handle(NextTrackRequest request)
+        {
+            NextTrack();
         }
 
         public void Handle(PlaySongNowRequest request)
@@ -239,12 +238,10 @@ namespace Jukebox.Features.MainPage
 		{
             IsPaused = false;
             IsPlaying = true;
-		    CurrentTrackAlbumImageSource = song.Album.SmallBitmap;
-		    CurrentTrackDescription = string.Format("{0} - {1}", song.Album.Artist.Name, song.Title);
 		    PresentationBus.Publish(new PlayFileRequest(await song.GetStorageFileAsync()));
 		}
 
-        private void RestartPlaying()
+	    private void RestartPlaying()
         {
             IsPlaying = true;
             IsPaused = false;
@@ -267,6 +264,10 @@ namespace Jukebox.Features.MainPage
 
         public void PreviousTrack()
         {
+            if (CurrentPlaylist != null)
+            {
+                CurrentPlaylist.MoveToPreviousTrack();
+            }
         }
 
 	    public void NextTrack()
@@ -277,7 +278,7 @@ namespace Jukebox.Features.MainPage
             }
             if (CurrentPlaylist != null)
             {
-                CurrentPlaylist.MoveToNextTrack(false);
+                CurrentPlaylist.MoveToNextTrack();
             }
 	    }
 	}
@@ -316,18 +317,49 @@ namespace Jukebox.Features.MainPage
         }
     }
 
-    public class NextTrackCommand : PresentationRequestCommand<NextTrackRequest>
+    public class NextTrackCommand : 
+        PresentationRequestCommand<NextTrackRequest>,
+        IHandlePresentationEvent<CurrentTrackChangedEvent>
     {
+        private bool _canMoveNext;
+
+        public NextTrackCommand(bool canMoveNext)
+        {
+            _canMoveNext = canMoveNext;
+        }
+
         public override bool CanExecute(object parameter)
         {
-            return false;
+            return _canMoveNext;
+        }
+
+        public void Handle(CurrentTrackChangedEvent e)
+        {
+            _canMoveNext = e.CanMoveNext;
+            RaiseCanExecuteChanged();
         }
     }
-    public class PreviousTrackCommand : PresentationRequestCommand<PreviousTrackRequest>
+
+    public class PreviousTrackCommand : 
+        PresentationRequestCommand<PreviousTrackRequest>,
+        IHandlePresentationEvent<CurrentTrackChangedEvent>
     {
+        private bool _canMovePrevious;
+
+        public PreviousTrackCommand(bool canMovePrevious)
+        {
+            _canMovePrevious = canMovePrevious;
+        }
+
         public override bool CanExecute(object parameter)
         {
-            return false;
+            return _canMovePrevious;
+        }
+
+        public void Handle(CurrentTrackChangedEvent e)
+        {
+            _canMovePrevious = e.CanMovePrevious;
+            RaiseCanExecuteChanged();
         }
     }
 

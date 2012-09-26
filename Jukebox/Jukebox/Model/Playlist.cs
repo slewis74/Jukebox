@@ -10,8 +10,11 @@ namespace Jukebox.Model
     [DebuggerDisplay("Playlist {Name}")]
     public class Playlist : DistinctAsyncObservableCollection<Song>, IPublish
     {
-        public Playlist(string name)
+        private readonly bool _isRandomPlayMode;
+
+        public Playlist(string name, bool isRandomPlayMode)
         {
+            _isRandomPlayMode = isRandomPlayMode;
             Name = name;
         }
 
@@ -45,33 +48,40 @@ namespace Jukebox.Model
             }
         }
 
-        public bool CanMovePrevious(bool random)
+        public bool CanMovePrevious
         {
-            // Don't allow PreviousTrack in random play mode.
-            return random == false && _currentTrack != this.First();
+            get
+            {
+                // Don't allow PreviousTrack in random play mode.
+                return _isRandomPlayMode == false && _currentTrack != this.First();
+            }
         }
 
-        public void MoveToPreviousTrack(bool random)
+        public void MoveToPreviousTrack()
         {
-            if (CanMovePrevious(random) == false)
+            if (CanMovePrevious == false)
                 return;
 
             var currentTrackIndex = IndexOf(_currentTrack);
             CurrentTrack = this[currentTrackIndex - 1];
         }
 
-        public bool CanMoveNext(bool random)
+        public bool CanMoveNext
         {
-            return random || _currentTrack != this.LastOrDefault();
+            get
+            {
+                // In random play mode, there must still be more than 1 item to be able to move next.
+                return (_isRandomPlayMode && Count > 1) || _currentTrack != this.LastOrDefault();
+            }
         }
 
-        public void MoveToNextTrack(bool random)
+        public void MoveToNextTrack()
         {
-            if (CanMoveNext(random) == false)
+            if (CanMoveNext == false)
                 return;
             
             int index;
-            if (random == false)
+            if (_isRandomPlayMode == false)
             {
                 index = IndexOf(_currentTrack) + 1;
             }
@@ -106,7 +116,7 @@ namespace Jukebox.Model
             var currentTrackIndex = CurrentTrackIndex;
             if (index == currentTrackIndex)
             {
-                if (CanMoveNext(false))
+                if (CanMoveNext)
                 {
                     trackIndexToMoveTo = currentTrackIndex.Value + 1;
                 }
@@ -130,7 +140,7 @@ namespace Jukebox.Model
 
         public void OnCurrentTrackChanged(Song e)
         {
-            PresentationBus.Publish(new CurrentTrackChangedEvent(e));
+            PresentationBus.Publish(new CurrentTrackChangedEvent(e, CanMovePrevious, CanMoveNext));
         }
     }
 }
