@@ -23,7 +23,7 @@
 			</Grid>
 		</AppBar>
 	</Page.BottomAppBar>
-	
+    
 	<Grid 
         Style="{StaticResource LayoutRootStyle}" Background="{StaticResource ThemeBackground}">
 		<Grid.RowDefinitions>

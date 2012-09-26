@@ -45,7 +45,7 @@ namespace Jukebox.Model
                 SynchronizationContext.Post(x =>
                                                 {
                                                     SmallBitmap = new BitmapImage();
-                                                    GetBitmap(_smallBitmap, 256);
+                                                    GetBitmap(_smallBitmap, 200);
                                                 }, null);
             }
             if (_largeBitmap == null)
@@ -53,7 +53,7 @@ namespace Jukebox.Model
                 SynchronizationContext.Post(x =>
                                                 {
                                                     LargeBitmap = new BitmapImage();
-                                                    GetBitmap(_largeBitmap, 512);
+                                                    GetBitmap(_largeBitmap, 300);
                                                 }, null);
             }
 		}

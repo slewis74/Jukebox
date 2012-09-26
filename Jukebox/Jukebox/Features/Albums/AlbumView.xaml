@@ -79,7 +79,8 @@
                 Grid.Column="1"
                 AutomationProperties.AutomationId="ItemGridView"
                 AutomationProperties.Name="Items In Group"
-			    SelectionMode="Single"
+			    SelectionMode="Single" 
+                IsHoldingEnabled="True"
                 ItemsSource="{Binding Source={StaticResource itemsViewSource}}"
 			    SelectedItem="{Binding SelectedTrack, Mode=TwoWay}"
                 ItemTemplate="{StaticResource TrackTemplate}">

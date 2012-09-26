@@ -11,6 +11,7 @@ using Slew.WinRT.Requests;
 using Windows.Foundation;
 using Windows.Media;
 using Windows.Storage;
+using Windows.UI.ApplicationSettings;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -31,6 +32,8 @@ namespace Jukebox.Features.MainPage
         public MainPage()
 		{
 			InitializeComponent();
+
+            SettingsPane.GetForCurrentView().CommandsRequested += MainPage_CommandsRequested;
 
             PropertyInjector.Resolve(() => NowPlayingView);
 
@@ -61,12 +64,24 @@ namespace Jukebox.Features.MainPage
             }
         }
 
+        void MainPage_CommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
+        {
+            args.Request.ApplicationCommands.Add(new SettingsCommand("ShuffleMode", "Shuffle", command => { }));
+            args.Request.ApplicationCommands.Add(new SettingsCommand("ManagePlaylists", "Playlists", command => { }));
+        }
+
         private void TogglePlayPause(object state)
         {
             if (MediaElement.CurrentState == MediaElementState.Paused)
+            {
                 MediaElement.Play();
+                ViewModel.IsPlaying = true;
+            }
             else
+            {
                 MediaElement.Pause();
+                ViewModel.IsPlaying = false;
+            }
         }
 
 		void MediaElement_MediaFailed(object sender, ExceptionRoutedEventArgs e)
