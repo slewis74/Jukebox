@@ -6,7 +6,7 @@ namespace Jukebox.Common
 {
     public class JukeboxController : Controller
     {
-        protected T Resolve<T>(Func<T> objectCreationAction)
+        protected T Inject<T>(Func<T> objectCreationAction)
         {
             return PropertyInjector.Inject(objectCreationAction);
         }

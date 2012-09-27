@@ -8,7 +8,7 @@ namespace Jukebox.Features.Albums
     {
          public ActionResult ShowAlbum(Album album)
          {
-             return new PageActionResult(typeof(AlbumView), Resolve(()=> new AlbumViewModel(album)));
+             return new PageActionResult(typeof(AlbumView), Inject(()=> new AlbumViewModel(album)));
          }
     }
 }

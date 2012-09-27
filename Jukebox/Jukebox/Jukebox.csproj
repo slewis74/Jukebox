@@ -115,7 +115,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Events\CurrentTrackChangedEvent.cs" />
+    <Compile Include="Events\PlaylistContentChangedEvent.cs" />
+    <Compile Include="Events\PlaylistCurrentTrackChangedEvent.cs" />
     <Compile Include="Features\Albums\AlbumController.cs" />
     <Compile Include="Features\Albums\AlbumFloatingView.xaml.cs">
       <DependentUpon>AlbumFloatingView.xaml</DependentUpon>

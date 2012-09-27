@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 using System.Windows.Input;
 using Jukebox.Common;
 using Jukebox.Events;
@@ -25,7 +26,7 @@ namespace Jukebox.Features.MainPage
         IHandlePresentationRequest<PlaySongNowRequest>,
         IHandlePresentationRequest<PlayAlbumNowRequest>,
         IHandlePresentationEvent<SongEndedEvent>,
-        IHandlePresentationEvent<CurrentTrackChangedEvent>,
+        IHandlePresentationEvent<PlaylistCurrentTrackChangedEvent>,
         IHandlePresentationRequest<PreviousTrackRequest>,
         IHandlePresentationRequest<NextTrackRequest>
 	{
@@ -130,9 +131,12 @@ namespace Jukebox.Features.MainPage
 			}
 		}
 
-        public void Handle(CurrentTrackChangedEvent e)
+        public void Handle(PlaylistCurrentTrackChangedEvent e)
         {
-            var song = e.Data;
+            if (e.Data != _currentPlaylist)
+                return;
+
+            var song = e.Song;
 
             if (song == null)
                 StopPlaying();
@@ -140,7 +144,8 @@ namespace Jukebox.Features.MainPage
             {
                 PlayFile(song);
             }
-            _playlistHandler.SaveData(_playlists, _currentPlaylist);
+            Debug.WriteLine("Track changed, saving playlist data");
+            _playlistHandler.SaveCurrentTrackForPlaylist(_currentPlaylist);
         }
 
         public void Handle(PlayRequest request)
@@ -191,30 +196,34 @@ namespace Jukebox.Features.MainPage
 			StopPlaying();
 		    CurrentPlaylist = _playlists.Single(p => p.Name == "Default");
             CurrentPlaylist.Clear();
-            _playlistHandler.SaveData(_playlists, CurrentPlaylist);
         }
 
 		public void AddToCurrentPlaylist(Song song)
 		{
             CurrentPlaylist.Add(song);
+            Debug.WriteLine("Song added to playlist, saving data");
             _playlistHandler.SaveData(_playlists, CurrentPlaylist);
 		}
 
 		public void AddToCurrentPlaylist(Album album)
 		{
-			foreach (var song in album.Songs.OrderBy(s => s.TrackNumber))
+            foreach (var song in album.Songs.OrderBy(s => s.DiscNumber).ThenBy(s => s.TrackNumber))
 			{
-				AddToCurrentPlaylist(song);
-			}
-		}
+                CurrentPlaylist.Add(song);
+            }
+            Debug.WriteLine("Album added to playlist, saving data");
+            _playlistHandler.SaveData(_playlists, CurrentPlaylist);
+        }
 
 		public void AddToCurrentPlaylist(Artist artist)
 		{
 			foreach (var song in artist.Albums.SelectMany(a => a.Songs).OrderBy(s => s.Album.Title).ThenBy(s => s.TrackNumber))
 			{
-				AddToCurrentPlaylist(song);
-			}
-		}
+                CurrentPlaylist.Add(song);
+            }
+            Debug.WriteLine("Artist added to playlist, saving data");
+            _playlistHandler.SaveData(_playlists, CurrentPlaylist);
+        }
 
         private void StartPlaying()
         {
@@ -319,7 +328,8 @@ namespace Jukebox.Features.MainPage
 
     public class NextTrackCommand : 
         PresentationRequestCommand<NextTrackRequest>,
-        IHandlePresentationEvent<CurrentTrackChangedEvent>
+        IHandlePresentationEvent<PlaylistCurrentTrackChangedEvent>,
+        IHandlePresentationEvent<PlaylistContentChangedEvent>
     {
         private bool _canMoveNext;
 
@@ -333,7 +343,12 @@ namespace Jukebox.Features.MainPage
             return _canMoveNext;
         }
 
-        public void Handle(CurrentTrackChangedEvent e)
+        public void Handle(PlaylistCurrentTrackChangedEvent e)
+        {
+            _canMoveNext = e.CanMoveNext;
+            RaiseCanExecuteChanged();
+        }
+        public void Handle(PlaylistContentChangedEvent e)
         {
             _canMoveNext = e.CanMoveNext;
             RaiseCanExecuteChanged();
@@ -342,7 +357,8 @@ namespace Jukebox.Features.MainPage
 
     public class PreviousTrackCommand : 
         PresentationRequestCommand<PreviousTrackRequest>,
-        IHandlePresentationEvent<CurrentTrackChangedEvent>
+        IHandlePresentationEvent<PlaylistCurrentTrackChangedEvent>,
+        IHandlePresentationEvent<PlaylistContentChangedEvent>
     {
         private bool _canMovePrevious;
 
@@ -356,11 +372,15 @@ namespace Jukebox.Features.MainPage
             return _canMovePrevious;
         }
 
-        public void Handle(CurrentTrackChangedEvent e)
+        public void Handle(PlaylistCurrentTrackChangedEvent e)
+        {
+            _canMovePrevious = e.CanMovePrevious;
+            RaiseCanExecuteChanged();
+        }
+        public void Handle(PlaylistContentChangedEvent e)
         {
             _canMovePrevious = e.CanMovePrevious;
             RaiseCanExecuteChanged();
         }
     }
-
 }

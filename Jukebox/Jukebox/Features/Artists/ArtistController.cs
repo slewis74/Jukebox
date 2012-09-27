@@ -11,14 +11,14 @@ namespace Jukebox.Features.Artists
     {
         public ActionResult ShowAll(DistinctAsyncObservableCollection<Artist> artists)
         {
-            return new PageActionResult(typeof(ArtistsView), Resolve(() => new ArtistsViewModel(artists)));
+            return new PageActionResult(typeof(ArtistsView), Inject(() => new ArtistsViewModel(artists)));
         }
 
         public ActionResult ShowArtist(Artist artist)
         {
             if (artist.Albums.Count == 1)
-                return new PageActionResult(typeof(AlbumView), Resolve(() => new AlbumViewModel(artist.Albums.Single())));
-            return new PageActionResult(typeof(ArtistView), Resolve(() => new ArtistViewModel(artist)));
+                return new PageActionResult(typeof(AlbumView), Inject(() => new AlbumViewModel(artist.Albums.Single())));
+            return new PageActionResult(typeof(ArtistView), Inject(() => new ArtistViewModel(artist)));
         }
     }
 }

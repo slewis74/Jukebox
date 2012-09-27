@@ -53,7 +53,7 @@ namespace Jukebox.Model
             get
             {
                 // Don't allow PreviousTrack in random play mode.
-                return _isRandomPlayMode == false && _currentTrack != this.First();
+                return _isRandomPlayMode == false && _currentTrack != this.FirstOrDefault();
             }
         }
 
@@ -92,7 +92,25 @@ namespace Jukebox.Model
             }
             CurrentTrack = this[index];
         }
-        
+
+        public override void Add(Song item)
+        {
+            base.Add(item);
+            OnListChanged();
+        }
+
+        protected override void SetItem(int index, Song item)
+        {
+            base.SetItem(index, item);
+            OnListChanged();
+        }
+
+        protected override void MoveItem(int oldIndex, int newIndex)
+        {
+            base.MoveItem(oldIndex, newIndex);
+            OnListChanged();
+        }
+
         protected override void InsertItem(int index, Song item)
         {
             base.InsertItem(index, item);
@@ -102,12 +120,14 @@ namespace Jukebox.Model
             {
                 CurrentTrackIndex = 0;
             }
+            OnListChanged();
         }
 
         protected override void ClearItems()
         {
             base.ClearItems();
             CurrentTrack = null;
+            OnListChanged();
         }
 
         protected override void RemoveItem(int index)
@@ -136,11 +156,17 @@ namespace Jukebox.Model
             {
                 CurrentTrackIndex = trackIndexToMoveTo == -1 ? null : trackIndexToMoveTo;
             }
+            OnListChanged();
         }
 
-        public void OnCurrentTrackChanged(Song e)
+        private void OnListChanged()
         {
-            PresentationBus.Publish(new CurrentTrackChangedEvent(e, CanMovePrevious, CanMoveNext));
+            PresentationBus.Publish(new PlaylistContentChangedEvent(this, CanMovePrevious, CanMoveNext));
+        }
+
+        private void OnCurrentTrackChanged(Song e)
+        {
+            PresentationBus.Publish(new PlaylistCurrentTrackChangedEvent(this, e, CanMovePrevious, CanMoveNext));
         }
     }
 }

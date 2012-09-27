@@ -152,7 +152,7 @@ namespace Slew.WinRT.Data
             base.InsertItem(index, item);
         }
 
-        public new void Add(T item)
+        public new virtual void Add(T item)
         {
             if (Contains(item))
                 return;

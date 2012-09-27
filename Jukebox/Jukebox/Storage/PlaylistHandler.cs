@@ -35,11 +35,12 @@ namespace Jukebox.Storage
                     var songComposite = (ApplicationDataCompositeValue) songsContainer.Values[songKey];
                     var artistName = (string) songComposite["ArtistName"];
                     var albumTitle = (string) songComposite["AlbumTitle"];
-                    var trackNumber = (uint) songComposite["TrackNumber"];
+                    var discNumber = (uint)songComposite["DiscNumber"];
+                    var trackNumber = (uint)songComposite["TrackNumber"];
 
                     var artist = artists[artistName];
                     var album = artist.Albums.Single(a => a.Title == albumTitle);
-                    var song = album.Songs.Single(s => s.TrackNumber == trackNumber);
+                    var song = album.Songs.Single(s => s.DiscNumber == discNumber && s.TrackNumber == trackNumber);
 
                     playlist.Add(song);
                 }
@@ -81,6 +82,7 @@ namespace Jukebox.Storage
                     var songComposite = new ApplicationDataCompositeValue();
                     songComposite["ArtistName"] = song.Album.Artist.Name;
                     songComposite["AlbumTitle"] = song.Album.Title;
+                    songComposite["DiscNumber"] = song.DiscNumber;
                     songComposite["TrackNumber"] = song.TrackNumber;
 
                     songsContainer.Values[songIndex.ToString()] = songComposite;
@@ -89,6 +91,19 @@ namespace Jukebox.Storage
             }
 
             playlistsContainer.Values["CurrentPlaylistName"] = currentPlaylist.Name;
+        }
+
+        public void SaveCurrentTrackForPlaylist(Playlist playlist)
+        {
+            Task.Factory.StartNew(() => DoSaveCurrentTrackForPlaylist(playlist));
+        }
+
+        private void DoSaveCurrentTrackForPlaylist(Playlist playlist)
+        {
+            var playlistsContainer = ApplicationData.Current.LocalSettings.CreateContainer("Playlists", ApplicationDataCreateDisposition.Always);
+            var playlistContainer = playlistsContainer.CreateContainer(playlist.Name, ApplicationDataCreateDisposition.Always);
+
+            playlistContainer.Values["CurrentTrackIndex"] = playlist.CurrentTrackIndex;
         }
     }
 }
