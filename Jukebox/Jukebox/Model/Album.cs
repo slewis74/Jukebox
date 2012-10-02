@@ -34,26 +34,33 @@ namespace Jukebox.Model
 
 		public ObservableCollection<Song> Songs { get; private set; }
 
+        private bool _loadingSmallBitmap;
+        private bool _loadingLargeBitmap;
+
 		public void AddSong(Song song)
 		{
 			if (Songs.Contains(song))
 				return;
 			Songs.Add(song);
 
-            if (_smallBitmap == null)
+            if (_smallBitmap == null && _loadingSmallBitmap == false)
             {
+                _loadingSmallBitmap = true;
                 SynchronizationContext.Post(x =>
                                                 {
                                                     SmallBitmap = new BitmapImage();
                                                     GetBitmap(_smallBitmap, 200);
+                                                    _loadingSmallBitmap = false;
                                                 }, null);
             }
-            if (_largeBitmap == null)
+            if (_largeBitmap == null && _loadingLargeBitmap == false)
             {
+                _loadingLargeBitmap = true;
                 SynchronizationContext.Post(x =>
                                                 {
                                                     LargeBitmap = new BitmapImage();
                                                     GetBitmap(_largeBitmap, 300);
+                                                    _loadingLargeBitmap = false;
                                                 }, null);
             }
 		}

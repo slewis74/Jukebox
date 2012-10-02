@@ -183,7 +183,7 @@ namespace Jukebox.Storage
                         songComposite["Path"] = song.Path;
                         songComposite["Duration"] = song.Duration.Ticks;
 
-                        songsContainer.Values[song.TrackNumber.ToString()] = songComposite;
+                        songsContainer.Values[string.Format("{0}", song.DiscNumber * 1000 + song.TrackNumber)] = songComposite;
                     }
                 }
             }

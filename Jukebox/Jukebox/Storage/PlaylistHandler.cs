@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Jukebox.Model;
@@ -40,9 +41,15 @@ namespace Jukebox.Storage
 
                     var artist = artists[artistName];
                     var album = artist.Albums.Single(a => a.Title == albumTitle);
-                    var song = album.Songs.Single(s => s.DiscNumber == discNumber && s.TrackNumber == trackNumber);
-
-                    playlist.Add(song);
+                    var song = album.Songs.SingleOrDefault(s => s.DiscNumber == discNumber && s.TrackNumber == trackNumber);
+                    if (song != null)
+                    {
+                        playlist.Add(song);
+                    }
+                    else
+                    {
+                        Debug.WriteLine(string.Format("Unable to locate playlist track Disc {0}, Track {1} on album {2}", discNumber, trackNumber, albumTitle));
+                    }
                 }
                 playlist.CurrentTrackIndex = (int?)playlistContainer.Values["CurrentTrackIndex"];
 
