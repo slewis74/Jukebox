@@ -1,5 +1,4 @@
 using System;
-using Slew.WinRT.ViewModels;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
 
@@ -30,29 +29,15 @@ namespace Slew.WinRT.Pages
 			}
 
 		    FrameworkElement content = null;
-			if (this is IHaveBottomAppBar)
-			{
-				var contentType = ((IHaveBottomAppBar)this).BottomAppBarContentType;
-				content = (FrameworkElement)Activator.CreateInstance(contentType);
-				content.DataContext = DataContext;
-			}
+		    var haveBottomAppBar = this as IHaveBottomAppBar;
+		    if (haveBottomAppBar != null)
+		    {
+		        var contentType = haveBottomAppBar.BottomAppBarContentType;
+		        content = (FrameworkElement)Activator.CreateInstance(contentType);
+		        content.DataContext = DataContext;
+		    }
             OnProvideAppBarContent(content);
         }
-
-		void HandleNavigateRequest(object sender, NavigationRequestEventArgs e)
-		{
-			Frame.Navigate(e.ViewType, e.Parameter);
-		}
-
-		protected override void OnNavigatedFrom(NavigationEventArgs e)
-		{
-			base.OnNavigatedFrom(e);
-
-			var canNavigate = DataContext as CanHandleNavigationBase;
-			if (canNavigate == null)
-				return;
-			canNavigate.NavigateRequest -= HandleNavigateRequest;
-		}
 
 		private void OnProvideAppBarContent(FrameworkElement frameworkElement)
 		{

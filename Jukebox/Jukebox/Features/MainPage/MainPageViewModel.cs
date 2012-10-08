@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
-using Jukebox.Common;
 using Jukebox.Events;
 using Jukebox.Features.Artists;
 using Jukebox.Features.MainPage.Events;
@@ -19,7 +18,8 @@ using Slew.WinRT.ViewModels;
 namespace Jukebox.Features.MainPage
 {
 	public class MainPageViewModel :
-        CanHandleNavigationBase,
+        CanRequestNavigationBase,
+        IPublish,
         IHandlePresentationRequest<PlayRequest>,
         IHandlePresentationRequest<PauseRequest>,
         IHandlePresentationRequest<StopRequest>,
@@ -44,18 +44,16 @@ namespace Jukebox.Features.MainPage
             _playlists = playlists;
             _playlistHandler = playlistHandler;
 
-            Navigator = new Navigator(new JukeboxControllerFactory(), this);
-
-			DisplayArtists = new DisplayArtistsCommand(Navigator, _artists);
+			DisplayArtists = PropertyInjector.Inject(() => new DisplayArtistsCommand(_artists));
             
             PlayCommand = PropertyInjector.Inject(() => new PresentationRequestCommand<PlayRequest>());
             PauseCommand = PropertyInjector.Inject(() => new PresentationRequestCommand<PauseRequest>());
-            PlaylistsCommand = PropertyInjector.Inject(() => new PlaylistsCommand(Navigator, _playlists));
+            PlaylistsCommand = PropertyInjector.Inject(() => new PlaylistsCommand(_playlists));
             NextTrackCommand = PropertyInjector.Inject(() => new NextTrackCommand(CurrentPlaylist.CanMoveNext));
             PreviousTrackCommand = PropertyInjector.Inject(() => new PreviousTrackCommand(CurrentPlaylist.CanMovePrevious));
         }
 
-        public INavigator Navigator { get; set; }
+        public IPresentationBus PresentationBus { get; set; }
 
 		public DisplayArtistsCommand DisplayArtists { get; private set; }
 
@@ -292,37 +290,37 @@ namespace Jukebox.Features.MainPage
 	    }
 	}
 
-	public class DisplayArtistsCommand : Command
+    public class DisplayArtistsCommand : Command, ICanRequestNavigation
 	{
-	    private readonly INavigator _navigator;
         private readonly DistinctAsyncObservableCollection<Artist> _artists;
 
-        public DisplayArtistsCommand(INavigator navigator, DistinctAsyncObservableCollection<Artist> artists)
+        public DisplayArtistsCommand(DistinctAsyncObservableCollection<Artist> artists)
 		{
-		    _navigator = navigator;
 			_artists = artists;
 		}
 
+        public INavigator Navigator { get; set; }
+
 		public override void Execute(object parameter)
 		{
-            _navigator.Navigate<ArtistController>(c => c.ShowAll(_artists));
+            Navigator.Navigate<ArtistController>(c => c.ShowAll(_artists));
 		}
 	}
 
-    public class PlaylistsCommand : Command
+    public class PlaylistsCommand : Command, ICanRequestNavigation
     {
-        private readonly INavigator _navigator;
         private readonly DistinctAsyncObservableCollection<Playlist> _playlists;
 
-        public PlaylistsCommand(INavigator navigator, DistinctAsyncObservableCollection<Playlist> playlists)
+        public PlaylistsCommand(DistinctAsyncObservableCollection<Playlist> playlists)
         {
-            _navigator = navigator;
             _playlists = playlists;
         }
 
+        public INavigator Navigator { get; set; }
+
         public override void Execute(object parameter)
         {
-            _navigator.Navigate<PlaylistController>(c => c.ShowAll(_playlists));
+            Navigator.Navigate<PlaylistController>(c => c.ShowAll(_playlists));
         }
     }
 

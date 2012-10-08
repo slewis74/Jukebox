@@ -33,7 +33,7 @@ namespace Jukebox.Features.MainPage
 		{
 			InitializeComponent();
 
-            SettingsPane.GetForCurrentView().CommandsRequested += MainPage_CommandsRequested;
+            SettingsPane.GetForCurrentView().CommandsRequested += MainPageCommandsRequested;
 
             PropertyInjector.Inject(() => NowPlayingView);
 
@@ -64,10 +64,15 @@ namespace Jukebox.Features.MainPage
             }
         }
 
-        void MainPage_CommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
+        void MainPageCommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
         {
             args.Request.ApplicationCommands.Add(new SettingsCommand("ShuffleMode", "Shuffle", command => { }));
-            args.Request.ApplicationCommands.Add(new SettingsCommand("ManagePlaylists", "Playlists", command => { }));
+            args.Request.ApplicationCommands.Add(new SettingsCommand("ManagePlaylists", "Playlists", command => DoManagePlaylists()));
+        }
+
+        private void DoManagePlaylists()
+        {
+            
         }
 
         private void TogglePlayPause(object state)

@@ -32,7 +32,7 @@ namespace Slew.WinRT.Tests
         public void GivenAClassThatPublishes_WhenResolved_ThePresentationBusPropertyIsSet()
         {
             var bus = new PresentationBus.PresentationBus();
-            PropertyInjector.PresentationBus = bus;
+            PropertyInjector.AddRule(new PublisherInjectorRule(bus));
 
             var t = PropertyInjector.Inject(() => new TestClassWithBus());
 
@@ -48,7 +48,7 @@ namespace Slew.WinRT.Tests
         public void GivenAClassThatSubscribes_WhenTheEventIsPublished_TheHandlerGetsCalled()
         {
             var bus = new PresentationBus.PresentationBus();
-            PropertyInjector.PresentationBus = bus;
+            PropertyInjector.AddRule(new SubscriberInjectorRule(bus));
 
             var t = PropertyInjector.Inject(() => new TestClassWithHandler());
 
@@ -79,7 +79,7 @@ namespace Slew.WinRT.Tests
             TestClassWithHandlerAndStaticCalledCheck.HandleWasCalled = false;
             
             var bus = new PresentationBus.PresentationBus();
-            PropertyInjector.PresentationBus = bus;
+            PropertyInjector.AddRule(new SubscriberInjectorRule(bus));
 
             var t = PropertyInjector.Inject(() => new TestClassWithHandlerAndStaticCalledCheck());
 

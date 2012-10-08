@@ -2,19 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Slew.WinRT.PresentationBus;
+using Slew.WinRT.Requests;
 using Slew.WinRT.ViewModels;
 
 namespace Slew.WinRT.Pages
 {
     public class Navigator : INavigator
     {
+        private readonly IPresentationBus _presentationBus;
         private readonly IControllerFactory _controllerFactory;
-        private readonly ICanHandleNavigation _canHandleNavigation;
 
-        public Navigator(IControllerFactory controllerFactory, ICanHandleNavigation canHandleNavigation)
+        public Navigator(
+            IPresentationBus presentationBus, 
+            IControllerFactory controllerFactory)
         {
+            _presentationBus = presentationBus;
             _controllerFactory = controllerFactory;
-            _canHandleNavigation = canHandleNavigation;
         }
 
         public void Navigate<TController>(Expression<Func<TController, ActionResult>> action)
@@ -22,7 +26,7 @@ namespace Slew.WinRT.Pages
         {
             var instance = _controllerFactory.Create<TController>();
 
-            var body = action.Body as MethodCallExpression;
+            var body = (MethodCallExpression)action.Body;
             var parameterValues = new List<object>();
             var parameters = body.Method.GetParameters();
             var arguments = body.Arguments;
@@ -41,12 +45,13 @@ namespace Slew.WinRT.Pages
             var pageResult = result as PageActionResult;
             if (pageResult != null)
             {
-                if (pageResult.Parameter is ICanRequestNavigation)
+                var canRequestNavigation = pageResult.Parameter as ICanRequestNavigation;
+                if (canRequestNavigation != null)
                 {
-                    ((ICanRequestNavigation) pageResult.Parameter).Navigator = this;
+                    canRequestNavigation.Navigator = this;
                 }
 
-                _canHandleNavigation.Navigate(pageResult.PageType, pageResult.Parameter);
+                _presentationBus.Publish(new NavigationRequest(new NavigationRequestEventArgs(pageResult.PageType, pageResult.Parameter)));
             }
         }
     }
@@ -79,6 +84,12 @@ namespace Slew.WinRT.Pages
 
         public Type PageType { get; set; }
         public object Parameter { get; set; }
+    }
+
+    public class SettingsPageActionResult : PageActionResult
+    {
+        public SettingsPageActionResult(Type pageType, object parameter) : base(pageType, parameter)
+        {}
     }
 
     public interface IControllerFactory

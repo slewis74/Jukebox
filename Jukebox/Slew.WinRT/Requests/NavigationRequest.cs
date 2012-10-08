@@ -1,5 +1,4 @@
 ﻿using Slew.WinRT.PresentationBus;
-using Slew.WinRT.ViewModels;
 
 namespace Slew.WinRT.Requests
 {

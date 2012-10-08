@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Jukebox.Common;
 using Jukebox.Features.MainPage;
 using Jukebox.Model;
 using Jukebox.Storage;
 using Slew.WinRT.Container;
 using Slew.WinRT.Data;
+using Slew.WinRT.Pages;
 using Slew.WinRT.PresentationBus;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -27,7 +29,11 @@ namespace Jukebox
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
             var bus = new PresentationBus();
-            PropertyInjector.PresentationBus = bus;
+            var navigator = new Navigator(bus, new JukeboxControllerFactory());
+
+            PropertyInjector.AddRule(new PublisherInjectorRule(bus));
+            PropertyInjector.AddRule(new SubscriberInjectorRule(bus));
+            PropertyInjector.AddRule(new CanRequestNavigationInjectorRule(navigator));
 
             var musicLibraryHandler = new MusicLibraryHandler();
             _artists = new DistinctAsyncObservableCollection<Artist>(musicLibraryHandler.LoadContent());
