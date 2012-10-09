@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using Jukebox.Features.Albums;
 using Jukebox.Model;
 using Slew.WinRT.Pages;
+using Slew.WinRT.Pages.Navigation;
 using Slew.WinRT.ViewModels;
 using Windows.UI.Xaml.Media.Imaging;
 

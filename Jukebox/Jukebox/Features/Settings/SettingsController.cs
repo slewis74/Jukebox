@@ -1,6 +1,6 @@
 ﻿using Jukebox.Common;
 using Jukebox.Features.Settings.Player;
-using Slew.WinRT.Pages;
+using Slew.WinRT.Pages.Navigation;
 
 namespace Jukebox.Features.Settings
 {

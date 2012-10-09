@@ -1,6 +1,6 @@
 using System;
 
-namespace Slew.WinRT.Pages
+namespace Slew.WinRT.Pages.Navigation
 {
     public interface IPageActionResult
     {

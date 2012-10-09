@@ -1,4 +1,5 @@
 using Slew.WinRT.Pages;
+using Slew.WinRT.Pages.Navigation;
 using Slew.WinRT.ViewModels;
 
 namespace Slew.WinRT.Container

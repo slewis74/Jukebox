@@ -8,6 +8,7 @@ using Jukebox.Storage;
 using Slew.WinRT.Container;
 using Slew.WinRT.Data;
 using Slew.WinRT.Pages;
+using Slew.WinRT.Pages.Navigation;
 using Slew.WinRT.PresentationBus;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;

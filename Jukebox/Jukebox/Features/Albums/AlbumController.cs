@@ -1,6 +1,6 @@
 ﻿using Jukebox.Common;
 using Jukebox.Model;
-using Slew.WinRT.Pages;
+using Slew.WinRT.Pages.Navigation;
 
 namespace Jukebox.Features.Albums
 {

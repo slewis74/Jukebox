@@ -6,7 +6,7 @@ using Slew.WinRT.PresentationBus;
 using Slew.WinRT.Requests;
 using Slew.WinRT.ViewModels;
 
-namespace Slew.WinRT.Pages
+namespace Slew.WinRT.Pages.Navigation
 {
     public class Navigator : INavigator
     {
@@ -53,57 +53,6 @@ namespace Slew.WinRT.Pages
 
                 _presentationBus.Publish(new NavigationRequest(new NavigationRequestEventArgs(pageResult.PageType, pageResult.Parameter)));
             }
-        }
-    }
-
-    public interface INavigator
-    {
-        void Navigate<TController>(Expression<Func<TController, ActionResult>> action) where TController : IController, new();
-    }
-
-    public interface IController
-    {
-        INavigator Navigator { get; set; }
-    }
-
-    public class Controller : IController
-    {
-        public INavigator Navigator { get; set; }
-    }
-
-    public abstract class ActionResult
-    {}
-
-    public class PageActionResult<T> : ActionResult, IPageActionResult
-    {
-        public PageActionResult(object parameter)
-        {
-            PageType = typeof(T);
-            Parameter = parameter;
-        }
-
-        public Type PageType { get; set; }
-        public object Parameter { get; set; }
-    }
-
-    public class SettingsPageActionResult<T> : PageActionResult<T>
-        where T : SettingsView
-    {
-        public SettingsPageActionResult(object parameter) : base(parameter)
-        {}
-    }
-
-    public interface IControllerFactory
-    {
-        TController Create<TController>() where TController : IController, new();
-    }
-
-    public class ControllerFactory : IControllerFactory
-    {
-        public virtual TController Create<TController>() where TController : IController, new()
-        {
-            var controller = new TController();
-            return controller;
         }
     }
 }

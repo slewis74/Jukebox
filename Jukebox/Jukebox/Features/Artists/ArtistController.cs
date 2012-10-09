@@ -3,7 +3,7 @@ using Jukebox.Common;
 using Jukebox.Features.Albums;
 using Jukebox.Model;
 using Slew.WinRT.Data;
-using Slew.WinRT.Pages;
+using Slew.WinRT.Pages.Navigation;
 
 namespace Jukebox.Features.Artists
 {

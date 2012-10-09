@@ -1,4 +1,4 @@
-﻿namespace Slew.WinRT.Pages
+﻿namespace Slew.WinRT.Pages.Settings
 {
     public class SettingsManager
     {

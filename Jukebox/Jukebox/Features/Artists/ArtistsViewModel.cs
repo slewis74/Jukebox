@@ -3,6 +3,7 @@ using System.Linq;
 using Jukebox.Model;
 using Slew.WinRT.Data;
 using Slew.WinRT.Pages;
+using Slew.WinRT.Pages.Navigation;
 using Slew.WinRT.ViewModels;
 
 namespace Jukebox.Features.Artists
