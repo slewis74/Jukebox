@@ -171,6 +171,11 @@
       <DependentUpon>NowPlayingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\MainPage\Requests\StopPlayingRequest.cs" />
+    <Compile Include="Features\Settings\Player\PlayerSettingsView.xaml.cs">
+      <DependentUpon>PlayerSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Settings\Player\PlayerSettingsViewModel.cs" />
+    <Compile Include="Features\Settings\SettingsController.cs" />
     <Compile Include="Model\Album.cs" />
     <Compile Include="Model\Artist.cs" />
     <Compile Include="Model\Genre.cs" />
@@ -282,6 +287,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="Features\Playlists\PlaylistsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Features\Settings\Player\PlayerSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

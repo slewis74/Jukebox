@@ -42,7 +42,7 @@ namespace Slew.WinRT.Pages
 
             var result = (ActionResult)body.Method.Invoke(instance, parameterValues.ToArray());
 
-            var pageResult = result as PageActionResult;
+            var pageResult = result as IPageActionResult;
             if (pageResult != null)
             {
                 var canRequestNavigation = pageResult.Parameter as ICanRequestNavigation;
@@ -74,11 +74,11 @@ namespace Slew.WinRT.Pages
     public abstract class ActionResult
     {}
 
-    public class PageActionResult : ActionResult
+    public class PageActionResult<T> : ActionResult, IPageActionResult
     {
-        public PageActionResult(Type pageType, object parameter)
+        public PageActionResult(object parameter)
         {
-            PageType = pageType;
+            PageType = typeof(T);
             Parameter = parameter;
         }
 
@@ -86,9 +86,10 @@ namespace Slew.WinRT.Pages
         public object Parameter { get; set; }
     }
 
-    public class SettingsPageActionResult : PageActionResult
+    public class SettingsPageActionResult<T> : PageActionResult<T>
+        where T : SettingsView
     {
-        public SettingsPageActionResult(Type pageType, object parameter) : base(pageType, parameter)
+        public SettingsPageActionResult(object parameter) : base(parameter)
         {}
     }
 

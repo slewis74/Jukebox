@@ -118,11 +118,13 @@
     <Compile Include="Data\AsyncObservableCollection.cs" />
     <Compile Include="Pages\DragDropBehaviour.cs" />
     <Compile Include="Pages\IHaveBottomAppBar.cs" />
+    <Compile Include="Pages\IPageActionResult.cs" />
     <Compile Include="Pages\LayoutAwarePage.cs" />
     <Compile Include="Pages\LayoutAwarePageWithNavigation.cs" />
     <Compile Include="Pages\Location.cs" />
     <Compile Include="Pages\Navigator.cs" />
     <Compile Include="Pages\SettingsManager.cs" />
+    <Compile Include="Pages\SettingsView.cs" />
     <Compile Include="Pages\SuspensionManager.cs" />
     <Compile Include="PresentationBus\IHandlePresentationEvents.cs" />
     <Compile Include="PresentationBus\IHandlePresentationRequest.cs" />
