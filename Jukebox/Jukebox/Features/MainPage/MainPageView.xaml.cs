@@ -18,7 +18,7 @@ using Windows.UI.Xaml.Media;
 
 namespace Jukebox.Features.MainPage
 {
-    public sealed partial class MainPage : 
+    public sealed partial class MainPageView : 
         IPublish,
         IHandlePresentationRequest<NavigationRequest>,
         IHandlePresentationRequest<PositionTransformRequest>,
@@ -29,7 +29,7 @@ namespace Jukebox.Features.MainPage
     {
         private readonly SynchronizationContext _synchronizationContext = SynchronizationContext.Current;
         
-        public MainPage()
+        public MainPageView()
 		{
 			InitializeComponent();
 
@@ -72,7 +72,6 @@ namespace Jukebox.Features.MainPage
 
         private void DoManagePlaylists()
         {
-            
         }
 
         private void TogglePlayPause(object state)

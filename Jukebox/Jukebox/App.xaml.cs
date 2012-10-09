@@ -61,7 +61,7 @@ namespace Jukebox
             }
 
             var mainPageViewModel = PropertyInjector.Inject(() => new MainPageViewModel(_artists, _playlists, currentPlaylist, playlistHandler));
-            Window.Current.Content = PropertyInjector.Inject(() => new MainPage
+            Window.Current.Content = PropertyInjector.Inject(() => new MainPageView
         	                             {
                                              DataContext = mainPageViewModel
         	                             });

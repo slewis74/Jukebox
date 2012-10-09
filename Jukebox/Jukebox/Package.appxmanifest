@@ -22,7 +22,7 @@
         <SplashScreen Image="Assets\SplashScreen.png" />
       </VisualElements>
       <Extensions>
-        <Extension Category="windows.backgroundTasks" StartPage="MainPage">
+        <Extension Category="windows.backgroundTasks" StartPage="MainPageView">
           <BackgroundTasks>
             <Task Type="controlChannel" />
             <Task Type="audio" />

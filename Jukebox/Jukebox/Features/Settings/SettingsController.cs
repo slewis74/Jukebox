@@ -6,9 +6,9 @@ namespace Jukebox.Features.Settings
 {
     public class SettingsController : JukeboxController
     {
-         public ActionResult PlaySettings()
+         public ActionResult PlayerSettings()
          {
-             return new SettingsPageActionResult<PlayerSettingsView>(Inject(() => new PlayerSettingsViewModel()));
+             return new SettingsPageActionResult<PlayerSettingsView, PlayerSettingsViewModel>();
          }
     }
 }

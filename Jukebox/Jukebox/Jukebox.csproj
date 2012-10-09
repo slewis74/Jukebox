@@ -163,8 +163,8 @@
       <DependentUpon>SnappedArtistView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\MainPage\Events\SongEndedEvent.cs" />
-    <Compile Include="Features\MainPage\MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
+    <Compile Include="Features\MainPage\MainPageView.xaml.cs">
+      <DependentUpon>MainPageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\MainPage\MainPageViewModel.cs" />
     <Compile Include="Features\MainPage\NowPlayingView.xaml.cs">
@@ -273,7 +273,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Features\MainPage\MainPage.xaml">
+    <Page Include="Features\MainPage\MainPageView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -1,11 +1,13 @@
+using Slew.WinRT.Container;
 using Slew.WinRT.Pages.Settings;
 
 namespace Slew.WinRT.Pages.Navigation
 {
-    public class SettingsPageActionResult<T> : PageActionResult<T>
-        where T : SettingsView
+    public class SettingsPageActionResult<TView, TViewModel> : PageActionResult<TView>
+        where TView : SettingsView
+        where TViewModel : new()
     {
-        public SettingsPageActionResult(object parameter) : base(parameter)
+        public SettingsPageActionResult() : base(PropertyInjector.Inject(() => new TViewModel()))
         {}
     }
 }

@@ -1,5 +1,5 @@
 ﻿<Pages:LayoutAwarePage
-    x:Class="Jukebox.Features.MainPage.MainPage"
+    x:Class="Jukebox.Features.MainPage.MainPageView"
 	x:Name="pageRoot"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -60,6 +60,29 @@
 			Grid.Row="1" 
 			Navigated="BrowsingFrameNavigated1" 
 			Navigating="BrowsingFrameNavigating1" />
+        
+        <Popup
+            HorizontalAlignment="Right" IsOpen="True" Width="323"
+            >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="120"/>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                
+                <Grid
+                    Grid.Row="0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button Style="{StaticResource BackButtonStyle}"/>
+                        <TextBlock Style="{StaticResource SubheaderTextStyle}" Text="Settings"/>
+                    </StackPanel>
+                </Grid>
+
+                <TextBlock 
+                    Grid.Row="1"
+                    Text="Popup"/>
+            </Grid>
+        </Popup>
     </Grid>
 
 	<VisualStateManager.VisualStateGroups>
