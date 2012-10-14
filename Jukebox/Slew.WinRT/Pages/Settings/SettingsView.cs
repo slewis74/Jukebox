@@ -4,6 +4,5 @@ namespace Slew.WinRT.Pages.Settings
 {
     public class SettingsView : UserControl
     {
-         
     }
 }

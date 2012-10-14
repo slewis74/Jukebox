@@ -146,7 +146,6 @@
     </Compile>
     <Compile Include="Features\Artists\ArtistViewModel.cs" />
     <Compile Include="Features\Artists\DesignTime\DesignArtistsViewModel.cs" />
-    <Compile Include="Common\BooleanToVisibilityConverter.cs" />
     <Compile Include="Common\BooleanNegationConverter.cs" />
     <Compile Include="Common\JukeboxController.cs" />
     <Compile Include="Common\JukeboxControllerFactory.cs" />
@@ -256,15 +255,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Common\Converters.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Page>
-    <Page Include="Common\StandardStyles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Features\Artists\Snapped\SnappedArtistsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -293,11 +283,6 @@
     <Page Include="Features\Settings\Player\PlayerSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Resources\StandardLayout.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="Resources\Theme.xaml">
       <SubType>Designer</SubType>

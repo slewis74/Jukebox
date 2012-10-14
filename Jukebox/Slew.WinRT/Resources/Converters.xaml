@@ -1,8 +1,7 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:c="using:Jukebox.Common"
-    xmlns:local="using:Jukebox.Common">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:c="using:Slew.WinRT.Pages.Converters">
 
     <c:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 </ResourceDictionary>

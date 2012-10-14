@@ -128,10 +128,14 @@
     <Compile Include="Pages\LayoutAwarePage.cs" />
     <Compile Include="Pages\LayoutAwarePageWithNavigation.cs" />
     <Compile Include="Pages\Location.cs" />
+    <Compile Include="Pages\Navigation\ISettingsPageActionResult.cs" />
     <Compile Include="Pages\Navigation\Navigator.cs" />
     <Compile Include="Pages\Navigation\PageActionResult.cs" />
+    <Compile Include="Pages\Settings\ISettingsManager.cs" />
     <Compile Include="Pages\Settings\SettingsManager.cs" />
     <Compile Include="Pages\Navigation\SettingsPageActionResult.cs" />
+    <Compile Include="Pages\Settings\SettingsPopupView.cs" />
+    <Compile Include="Pages\Settings\SettingsPopupViewModel.cs" />
     <Compile Include="Pages\Settings\SettingsView.cs" />
     <Compile Include="Pages\SuspensionManager.cs" />
     <Compile Include="PresentationBus\IHandlePresentationEvents.cs" />
@@ -148,6 +152,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Requests\NavigationRequest.cs" />
     <Compile Include="Requests\NavigationRequestEventArgs.cs" />
+    <Compile Include="Requests\DisplaySettingsRequest.cs" />
+    <Compile Include="Pages\Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="ViewModels\CanRequestNavigationBase.cs" />
     <Compile Include="ViewModels\Command.cs" />
     <Compile Include="ViewModels\ICanHandleNavigation.cs" />
@@ -159,6 +165,22 @@
     <Reference Include="WinRtBehaviors">
       <HintPath>..\Packages\WinRtBehaviours\WinRtBehaviors.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Resources\StandardLayout.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="Resources\StandardStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Converters.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>

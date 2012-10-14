@@ -6,8 +6,10 @@ using Jukebox.Features.MainPage.Requests;
 using Jukebox.Requests;
 using Slew.WinRT.Container;
 using Slew.WinRT.Pages;
+using Slew.WinRT.Pages.Navigation;
 using Slew.WinRT.PresentationBus;
 using Slew.WinRT.Requests;
+using Slew.WinRT.ViewModels;
 using Windows.Foundation;
 using Windows.Media;
 using Windows.Storage;
@@ -20,6 +22,7 @@ namespace Jukebox.Features.MainPage
 {
     public sealed partial class MainPageView : 
         IPublish,
+        ICanRequestNavigation,
         IHandlePresentationRequest<NavigationRequest>,
         IHandlePresentationRequest<PositionTransformRequest>,
         IHandlePresentationRequest<PlayFileRequest>,
@@ -50,6 +53,7 @@ namespace Jukebox.Features.MainPage
 		}
 
         public IPresentationBus PresentationBus { get; set; }
+        public INavigator Navigator { get; set; }
         private MainPageViewModel ViewModel { get { return (MainPageViewModel)DataContext; } }
 
         private void DispatchCall(SendOrPostCallback call)
@@ -66,12 +70,9 @@ namespace Jukebox.Features.MainPage
 
         void MainPageCommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
         {
-            args.Request.ApplicationCommands.Add(new SettingsCommand("ShuffleMode", "Shuffle", command => { }));
-            args.Request.ApplicationCommands.Add(new SettingsCommand("ManagePlaylists", "Playlists", command => DoManagePlaylists()));
-        }
-
-        private void DoManagePlaylists()
-        {
+            var viewType = BrowsingFrame.Content.GetType();
+            var request = new DisplaySettingsRequest(viewType, args.Request);
+            PresentationBus.Publish(request);
         }
 
         private void TogglePlayPause(object state)

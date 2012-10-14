@@ -6,8 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:Pages="using:Slew.WinRT.Pages"
-    xmlns:MainPage="using:Jukebox.Features.MainPage"
-    mc:Ignorable="d">
+    xmlns:MainPage="using:Jukebox.Features.MainPage" xmlns:Settings="using:Slew.WinRT.Pages.Settings" mc:Ignorable="d">
 
 	<Page.BottomAppBar>
 		<AppBar x:Name="GlobalAppBar" Padding="10,0,10,0">
@@ -30,9 +29,13 @@
 			<RowDefinition Height="{StaticResource ApplicationHeaderHeight}"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
 
 		<Grid
-			Grid.Row="0">
+			Grid.Row="0" Grid.Column="0">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="Auto"/>
 				<ColumnDefinition Width="Auto"/>
@@ -57,32 +60,9 @@
 
 		<Frame
 			x:Name="BrowsingFrame"
-			Grid.Row="1" 
+			Grid.Row="1" Grid.Column="0"
 			Navigated="BrowsingFrameNavigated1" 
 			Navigating="BrowsingFrameNavigating1" />
-        
-        <Popup
-            HorizontalAlignment="Right" IsOpen="True" Width="323"
-            >
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="120"/>
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                
-                <Grid
-                    Grid.Row="0">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <Button Style="{StaticResource BackButtonStyle}"/>
-                        <TextBlock Style="{StaticResource SubheaderTextStyle}" Text="Settings"/>
-                    </StackPanel>
-                </Grid>
-
-                <TextBlock 
-                    Grid.Row="1"
-                    Text="Popup"/>
-            </Grid>
-        </Popup>
     </Grid>
 
 	<VisualStateManager.VisualStateGroups>

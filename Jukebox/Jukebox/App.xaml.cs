@@ -3,12 +3,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Jukebox.Common;
 using Jukebox.Features.MainPage;
+using Jukebox.Features.Settings;
 using Jukebox.Model;
 using Jukebox.Storage;
 using Slew.WinRT.Container;
 using Slew.WinRT.Data;
-using Slew.WinRT.Pages;
 using Slew.WinRT.Pages.Navigation;
+using Slew.WinRT.Pages.Settings;
 using Slew.WinRT.PresentationBus;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -20,6 +21,7 @@ namespace Jukebox
     {
         private DistinctAsyncObservableCollection<Artist> _artists;
         private DistinctAsyncObservableCollection<Playlist> _playlists;
+        private SettingsManager _settingsManager;
 
         public App()
         {
@@ -35,6 +37,9 @@ namespace Jukebox
             PropertyInjector.AddRule(new PublisherInjectorRule(bus));
             PropertyInjector.AddRule(new SubscriberInjectorRule(bus));
             PropertyInjector.AddRule(new CanRequestNavigationInjectorRule(navigator));
+
+            _settingsManager = PropertyInjector.Inject(() => new SettingsManager());
+            _settingsManager.Add<SettingsController>("PlayerSettings", "Player Settings", c => c.PlayerSettings());
 
             var musicLibraryHandler = new MusicLibraryHandler();
             _artists = new DistinctAsyncObservableCollection<Artist>(musicLibraryHandler.LoadContent());

@@ -1,0 +1,29 @@
+﻿using Slew.WinRT.Container;
+using Slew.WinRT.Data;
+using Slew.WinRT.Pages.Navigation;
+using Slew.WinRT.ViewModels;
+
+namespace Slew.WinRT.Pages.Settings
+{
+    public class SettingsPopupViewModel : BindableBase
+    {
+        public SettingsPopupViewModel()
+        {
+            Back = PropertyInjector.Inject(() => new SettingsBackCommand());
+        }
+
+        public SettingsBackCommand Back { get; private set; }
+    }
+
+    public class SettingsBackCommand : 
+        Command, 
+        ICanRequestNavigation
+    {
+        public INavigator Navigator { get; set; }
+
+        public override void Execute(object parameter)
+        {
+            Navigator.SettingsNavigateBack();
+        }
+    }
+}
