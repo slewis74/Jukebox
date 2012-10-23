@@ -8,8 +8,28 @@
     xmlns:Pages="using:Slew.WinRT.Pages"
     xmlns:MainPage="using:Jukebox.Features.MainPage" xmlns:Settings="using:Slew.WinRT.Pages.Settings" mc:Ignorable="d">
 
+    <Page.TopAppBar>
+        <AppBar x:Name="GlobalTopAppBar">
+            <Grid Margin="10">
+                <StackPanel>
+                    <ListView
+                        ItemsSource="{Binding Playlists}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="{StaticResource TenUnits}" Height="{StaticResource FiveUnits}">
+                                    <TextBlock 
+                                        Text="{Binding Name}"
+                                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+            </Grid>
+        </AppBar>
+    </Page.TopAppBar>
 	<Page.BottomAppBar>
-		<AppBar x:Name="GlobalAppBar" Padding="10,0,10,0">
+		<AppBar x:Name="GlobalBottomAppBar" Padding="10,0,10,0">
 			<Grid>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="auto"/>

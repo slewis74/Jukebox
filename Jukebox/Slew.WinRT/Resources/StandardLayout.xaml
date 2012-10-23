@@ -7,8 +7,10 @@
     <x:Double x:Key="OneUnit">20</x:Double>
     <x:Double x:Key="TwoUnits">40</x:Double>
     <x:Double x:Key="FourUnits">80</x:Double>
+    <x:Double x:Key="FiveUnits">100</x:Double>
     <x:Double x:Key="SixUnits">120</x:Double>
     <x:Double x:Key="SevenUnits">140</x:Double>
+    <x:Double x:Key="TenUnits">200</x:Double>
     
     <GridLength x:Key="ApplicationHeaderHeight">140</GridLength>
     

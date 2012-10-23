@@ -1,14 +1,11 @@
-﻿using System.Diagnostics;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows.Input;
 using Jukebox.Events;
 using Jukebox.Features.Artists;
-using Jukebox.Features.MainPage.Events;
 using Jukebox.Features.MainPage.Requests;
 using Jukebox.Features.Playlists;
 using Jukebox.Model;
 using Jukebox.Requests;
-using Jukebox.Storage;
 using Slew.WinRT.Container;
 using Slew.WinRT.Data;
 using Slew.WinRT.Pages.Navigation;
@@ -25,32 +22,26 @@ namespace Jukebox.Features.MainPage
         IHandlePresentationRequest<StopRequest>,
         IHandlePresentationRequest<PlaySongNowRequest>,
         IHandlePresentationRequest<PlayAlbumNowRequest>,
-        IHandlePresentationEvent<SongEndedEvent>,
-        IHandlePresentationEvent<PlaylistCurrentTrackChangedEvent>,
-        IHandlePresentationRequest<PreviousTrackRequest>,
-        IHandlePresentationRequest<NextTrackRequest>
+        IHandlePresentationEvent<NowPlayingCurrentTrackChangedEvent>
 	{
         private readonly DistinctAsyncObservableCollection<Playlist> _playlists;
-        private readonly PlaylistHandler _playlistHandler;
 
         public MainPageViewModel(
             DistinctAsyncObservableCollection<Artist> artists,
-            DistinctAsyncObservableCollection<Playlist> playlists, 
-            Playlist currentPlaylist, 
-            PlaylistHandler playlistHandler)
+            DistinctAsyncObservableCollection<Playlist> playlists,
+            NowPlayingPlaylist currentPlaylist)
 		{
-            CurrentPlaylist = currentPlaylist;
+            NowPlayingPlaylist = currentPlaylist;
             _artists = artists;
             _playlists = playlists;
-            _playlistHandler = playlistHandler;
 
 			DisplayArtists = PropertyInjector.Inject(() => new DisplayArtistsCommand(_artists));
             
             PlayCommand = PropertyInjector.Inject(() => new PresentationRequestCommand<PlayRequest>());
             PauseCommand = PropertyInjector.Inject(() => new PresentationRequestCommand<PauseRequest>());
             PlaylistsCommand = PropertyInjector.Inject(() => new PlaylistsCommand(_playlists));
-            NextTrackCommand = PropertyInjector.Inject(() => new NextTrackCommand(CurrentPlaylist.CanMoveNext));
-            PreviousTrackCommand = PropertyInjector.Inject(() => new PreviousTrackCommand(CurrentPlaylist.CanMovePrevious));
+            NextTrackCommand = PropertyInjector.Inject(() => new NextTrackCommand(NowPlayingPlaylist.CanMoveNext));
+            PreviousTrackCommand = PropertyInjector.Inject(() => new PreviousTrackCommand(NowPlayingPlaylist.CanMovePrevious));
         }
 
         public IPresentationBus PresentationBus { get; set; }
@@ -59,21 +50,19 @@ namespace Jukebox.Features.MainPage
 
         public ICommand PlayCommand { get; private set; }
         public ICommand PauseCommand { get; private set; }
-        public PlaylistsCommand PlaylistsCommand { get; private set; }
-        public NextTrackCommand NextTrackCommand { get; private set; }
-        public PreviousTrackCommand PreviousTrackCommand { get; private set; }
+        public ICommand PlaylistsCommand { get; private set; }
+        public ICommand NextTrackCommand { get; private set; }
+        public ICommand PreviousTrackCommand { get; private set; }
 
-	    private Playlist _currentPlaylist;
-	    public Playlist CurrentPlaylist
+        public DistinctAsyncObservableCollection<Playlist> Playlists { get { return _playlists; }}
+
+        private NowPlayingPlaylist _nowPlayingPlaylist;
+        public NowPlayingPlaylist NowPlayingPlaylist
 	    {
-	        get { return _currentPlaylist; }
+	        get { return _nowPlayingPlaylist; }
 	        set
 	        {
-                if (_currentPlaylist == value)
-                    return;
-                
-                _currentPlaylist = value;
-                NotifyChanged(() => CurrentPlaylist);
+	            SetProperty(ref _nowPlayingPlaylist, value);
 	        }
 	    }
 
@@ -86,8 +75,7 @@ namespace Jukebox.Features.MainPage
 	        get { return _isPaused; }
 	        set
 	        {
-	            _isPaused = value;
-                NotifyChanged(() => IsPaused);
+	            SetProperty(ref _isPaused, value);
 	        }
 	    }
 
@@ -97,9 +85,10 @@ namespace Jukebox.Features.MainPage
 	        get { return _isPlaying; }
 	        set
 	        {
-	            _isPlaying = value;
-                NotifyChanged(() => IsPlaying);
-                NotifyChanged(() => IsNotPlaying);
+                if (SetProperty(ref _isPlaying, value))
+                {
+                    NotifyChanged(() => IsNotPlaying);
+                }
 	        }
 	    }
 
@@ -115,23 +104,13 @@ namespace Jukebox.Features.MainPage
             get { return _currentTrackDescription; }
             set
             {
-                _currentTrackDescription = value;
-                NotifyChanged(() => CurrentTrackDescription);
+                SetProperty(ref _currentTrackDescription, value);
             }
         }
 
-	    public void Handle(SongEndedEvent e)
-		{
-            if (CurrentPlaylist != null && CurrentPlaylist.CanMoveNext)
-			{
-                CurrentPlaylist.MoveToNextTrack();
-                PlayFile(CurrentPlaylist.CurrentTrack);
-			}
-		}
-
-        public void Handle(PlaylistCurrentTrackChangedEvent e)
+        public void Handle(NowPlayingCurrentTrackChangedEvent e)
         {
-            if (e.Data != _currentPlaylist)
+            if (e.Data != _nowPlayingPlaylist)
                 return;
 
             var song = e.Song;
@@ -142,8 +121,6 @@ namespace Jukebox.Features.MainPage
             {
                 PlayFile(song);
             }
-            Debug.WriteLine("Track changed, saving playlist data");
-            _playlistHandler.SaveCurrentTrackForPlaylist(_currentPlaylist);
         }
 
         public void Handle(PlayRequest request)
@@ -164,20 +141,11 @@ namespace Jukebox.Features.MainPage
             StopPlaying();
         }
 
-        public void Handle(PreviousTrackRequest request)
-        {
-            PreviousTrack();
-        }
-        public void Handle(NextTrackRequest request)
-        {
-            NextTrack();
-        }
-
         public void Handle(PlaySongNowRequest request)
         {
             request.IsHandled = true;
             StopAndResetDefaultPlaylist();
-            AddToCurrentPlaylist(request.Scope);
+            NowPlayingPlaylist.Add(request.Scope);
             StartPlaying();
         }
 
@@ -185,42 +153,25 @@ namespace Jukebox.Features.MainPage
         {
             request.IsHandled = true;
             StopAndResetDefaultPlaylist();
-            AddToCurrentPlaylist(request.Scope);
+            foreach (var song in request.Scope.Songs.OrderBy(s => s.DiscNumber).ThenBy(s => s.TrackNumber))
+            {
+                NowPlayingPlaylist.Add(song);
+            }
             StartPlaying();
         }
 
 		private void StopAndResetDefaultPlaylist()
 		{
 			StopPlaying();
-		    CurrentPlaylist = _playlists.Single(p => p.Name == "Default");
-            CurrentPlaylist.Clear();
+            NowPlayingPlaylist.Clear();
         }
 
-		public void AddToCurrentPlaylist(Song song)
-		{
-            CurrentPlaylist.Add(song);
-            Debug.WriteLine("Song added to playlist, saving data");
-            _playlistHandler.SaveData(_playlists, CurrentPlaylist);
-		}
-
-		public void AddToCurrentPlaylist(Album album)
-		{
-            foreach (var song in album.Songs.OrderBy(s => s.DiscNumber).ThenBy(s => s.TrackNumber))
-			{
-                CurrentPlaylist.Add(song);
-            }
-            Debug.WriteLine("Album added to playlist, saving data");
-            _playlistHandler.SaveData(_playlists, CurrentPlaylist);
-        }
-
-		public void AddToCurrentPlaylist(Artist artist)
+	    private void AddToCurrentPlaylist(Artist artist)
 		{
 			foreach (var song in artist.Albums.SelectMany(a => a.Songs).OrderBy(s => s.Album.Title).ThenBy(s => s.TrackNumber))
 			{
-                CurrentPlaylist.Add(song);
+                NowPlayingPlaylist.Add(song);
             }
-            Debug.WriteLine("Artist added to playlist, saving data");
-            _playlistHandler.SaveData(_playlists, CurrentPlaylist);
         }
 
         private void StartPlaying()
@@ -232,12 +183,7 @@ namespace Jukebox.Features.MainPage
                 RestartPlaying();
             else
             {
-                if (CurrentPlaylist.CurrentTrack == null)
-                    NextTrack();
-                else
-                {
-                    PlayFile(CurrentPlaylist.CurrentTrack);
-                }
+                PlayFile(NowPlayingPlaylist.CurrentTrack);
             }
         }
         
@@ -268,26 +214,6 @@ namespace Jukebox.Features.MainPage
 		    IsPaused = false;
             PresentationBus.Publish(new StopPlayingRequest());
 		}
-
-        public void PreviousTrack()
-        {
-            if (CurrentPlaylist != null)
-            {
-                CurrentPlaylist.MoveToPreviousTrack();
-            }
-        }
-
-	    public void NextTrack()
-	    {
-            if (CurrentPlaylist == null && _playlists.Any())
-            {
-                CurrentPlaylist = _playlists.Single(p => p.Name == "Default");
-            }
-            if (CurrentPlaylist != null)
-            {
-                CurrentPlaylist.MoveToNextTrack();
-            }
-	    }
 	}
 
     public class DisplayArtistsCommand : Command, ICanRequestNavigation
@@ -326,8 +252,8 @@ namespace Jukebox.Features.MainPage
 
     public class NextTrackCommand : 
         PresentationRequestCommand<NextTrackRequest>,
-        IHandlePresentationEvent<PlaylistCurrentTrackChangedEvent>,
-        IHandlePresentationEvent<PlaylistContentChangedEvent>
+        IHandlePresentationEvent<NowPlayingCurrentTrackChangedEvent>,
+        IHandlePresentationEvent<NowPlayingContentChangedEvent>
     {
         private bool _canMoveNext;
 
@@ -341,12 +267,12 @@ namespace Jukebox.Features.MainPage
             return _canMoveNext;
         }
 
-        public void Handle(PlaylistCurrentTrackChangedEvent e)
+        public void Handle(NowPlayingCurrentTrackChangedEvent e)
         {
             _canMoveNext = e.CanMoveNext;
             RaiseCanExecuteChanged();
         }
-        public void Handle(PlaylistContentChangedEvent e)
+        public void Handle(NowPlayingContentChangedEvent e)
         {
             _canMoveNext = e.CanMoveNext;
             RaiseCanExecuteChanged();
@@ -355,8 +281,8 @@ namespace Jukebox.Features.MainPage
 
     public class PreviousTrackCommand : 
         PresentationRequestCommand<PreviousTrackRequest>,
-        IHandlePresentationEvent<PlaylistCurrentTrackChangedEvent>,
-        IHandlePresentationEvent<PlaylistContentChangedEvent>
+        IHandlePresentationEvent<NowPlayingCurrentTrackChangedEvent>,
+        IHandlePresentationEvent<NowPlayingContentChangedEvent>
     {
         private bool _canMovePrevious;
 
@@ -370,12 +296,12 @@ namespace Jukebox.Features.MainPage
             return _canMovePrevious;
         }
 
-        public void Handle(PlaylistCurrentTrackChangedEvent e)
+        public void Handle(NowPlayingCurrentTrackChangedEvent e)
         {
             _canMovePrevious = e.CanMovePrevious;
             RaiseCanExecuteChanged();
         }
-        public void Handle(PlaylistContentChangedEvent e)
+        public void Handle(NowPlayingContentChangedEvent e)
         {
             _canMovePrevious = e.CanMovePrevious;
             RaiseCanExecuteChanged();

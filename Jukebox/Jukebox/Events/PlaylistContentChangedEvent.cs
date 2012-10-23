@@ -5,14 +5,9 @@ namespace Jukebox.Events
 {
     public class PlaylistContentChangedEvent : PresentationEvent<Playlist>
     {
-        public PlaylistContentChangedEvent(Playlist data, bool canMovePrevious, bool canMoveNext)
+        public PlaylistContentChangedEvent(Playlist data)
             : base(data)
         {
-            CanMovePrevious = canMovePrevious;
-            CanMoveNext = canMoveNext;
         }
-
-        public bool CanMovePrevious { get; set; }
-        public bool CanMoveNext { get; set; }
     }
 }

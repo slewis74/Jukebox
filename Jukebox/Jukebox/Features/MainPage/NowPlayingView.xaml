@@ -40,7 +40,7 @@
 			<Grid
                 x:Name="playPauseGrid">
                 <Image
-                    Source="{Binding CurrentPlaylist.CurrentTrack.Album.SmallBitmap}"
+                    Source="{Binding NowPlayingPlaylist.CurrentTrack.Album.SmallBitmap}"
                     Height="{StaticResource FourUnits}"
                     Stretch="Uniform"/>
                 <Button 
@@ -66,9 +66,9 @@
             Grid.Row="1"
 			Grid.ColumnSpan="3">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBlock Text="{Binding CurrentPlaylist.CurrentTrack.Album.Artist.Name}" />
+                <TextBlock Text="{Binding NowPlayingPlaylist.CurrentTrack.Album.Artist.Name}" />
                 <TextBlock Text=" - " VerticalAlignment="Center" Margin="5 0"/>
-                <TextBlock Text="{Binding CurrentPlaylist.CurrentTrack.Title}" />
+                <TextBlock Text="{Binding NowPlayingPlaylist.CurrentTrack.Title}" />
             </StackPanel>
         </Grid>
 

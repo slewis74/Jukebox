@@ -115,6 +115,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events\NowPlayingContentChangedEvent.cs" />
+    <Compile Include="Events\NowPlayingCurrentTrackChangedEvent.cs" />
     <Compile Include="Events\PlaylistContentChangedEvent.cs" />
     <Compile Include="Events\PlaylistCurrentTrackChangedEvent.cs" />
     <Compile Include="Features\Albums\AlbumController.cs" />
@@ -178,7 +180,9 @@
     <Compile Include="Model\Album.cs" />
     <Compile Include="Model\Artist.cs" />
     <Compile Include="Model\Genre.cs" />
+    <Compile Include="Model\NowPlayingPlaylist.cs" />
     <Compile Include="Model\Playlist.cs" />
+    <Compile Include="Model\PlaylistData.cs" />
     <Compile Include="Model\Song.cs" />
     <Compile Include="Features\Playlists\PlaylistController.cs" />
     <Compile Include="Features\Playlists\PlaylistsView.xaml.cs">
