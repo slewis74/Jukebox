@@ -1,14 +1,12 @@
 ﻿using System.Linq;
 using System.Windows.Input;
 using Jukebox.Events;
-using Jukebox.Features.Artists;
+using Jukebox.Features.MainPage.Commands;
 using Jukebox.Features.MainPage.Requests;
-using Jukebox.Features.Playlists;
 using Jukebox.Model;
 using Jukebox.Requests;
 using Slew.WinRT.Container;
 using Slew.WinRT.Data;
-using Slew.WinRT.Pages.Navigation;
 using Slew.WinRT.PresentationBus;
 using Slew.WinRT.ViewModels;
 
@@ -20,8 +18,6 @@ namespace Jukebox.Features.MainPage
         IHandlePresentationRequest<PlayRequest>,
         IHandlePresentationRequest<PauseRequest>,
         IHandlePresentationRequest<StopRequest>,
-        IHandlePresentationRequest<PlaySongNowRequest>,
-        IHandlePresentationRequest<PlayAlbumNowRequest>,
         IHandlePresentationEvent<NowPlayingCurrentTrackChangedEvent>
 	{
         private readonly DistinctAsyncObservableCollection<Playlist> _playlists;
@@ -141,31 +137,6 @@ namespace Jukebox.Features.MainPage
             StopPlaying();
         }
 
-        public void Handle(PlaySongNowRequest request)
-        {
-            request.IsHandled = true;
-            StopAndResetDefaultPlaylist();
-            NowPlayingPlaylist.Add(request.Scope);
-            StartPlaying();
-        }
-
-        public void Handle(PlayAlbumNowRequest request)
-        {
-            request.IsHandled = true;
-            StopAndResetDefaultPlaylist();
-            foreach (var song in request.Scope.Songs.OrderBy(s => s.DiscNumber).ThenBy(s => s.TrackNumber))
-            {
-                NowPlayingPlaylist.Add(song);
-            }
-            StartPlaying();
-        }
-
-		private void StopAndResetDefaultPlaylist()
-		{
-			StopPlaying();
-            NowPlayingPlaylist.Clear();
-        }
-
 	    private void AddToCurrentPlaylist(Artist artist)
 		{
 			foreach (var song in artist.Albums.SelectMany(a => a.Songs).OrderBy(s => s.Album.Title).ThenBy(s => s.TrackNumber))
@@ -215,96 +186,4 @@ namespace Jukebox.Features.MainPage
             PresentationBus.Publish(new StopPlayingRequest());
 		}
 	}
-
-    public class DisplayArtistsCommand : Command, ICanRequestNavigation
-	{
-        private readonly DistinctAsyncObservableCollection<Artist> _artists;
-
-        public DisplayArtistsCommand(DistinctAsyncObservableCollection<Artist> artists)
-		{
-			_artists = artists;
-		}
-
-        public INavigator Navigator { get; set; }
-
-		public override void Execute(object parameter)
-		{
-            Navigator.Navigate<ArtistController>(c => c.ShowAll(_artists));
-		}
-	}
-
-    public class PlaylistsCommand : Command, ICanRequestNavigation
-    {
-        private readonly DistinctAsyncObservableCollection<Playlist> _playlists;
-
-        public PlaylistsCommand(DistinctAsyncObservableCollection<Playlist> playlists)
-        {
-            _playlists = playlists;
-        }
-
-        public INavigator Navigator { get; set; }
-
-        public override void Execute(object parameter)
-        {
-            Navigator.Navigate<PlaylistController>(c => c.ShowAll(_playlists));
-        }
-    }
-
-    public class NextTrackCommand : 
-        PresentationRequestCommand<NextTrackRequest>,
-        IHandlePresentationEvent<NowPlayingCurrentTrackChangedEvent>,
-        IHandlePresentationEvent<NowPlayingContentChangedEvent>
-    {
-        private bool _canMoveNext;
-
-        public NextTrackCommand(bool canMoveNext)
-        {
-            _canMoveNext = canMoveNext;
-        }
-
-        public override bool CanExecute(object parameter)
-        {
-            return _canMoveNext;
-        }
-
-        public void Handle(NowPlayingCurrentTrackChangedEvent e)
-        {
-            _canMoveNext = e.CanMoveNext;
-            RaiseCanExecuteChanged();
-        }
-        public void Handle(NowPlayingContentChangedEvent e)
-        {
-            _canMoveNext = e.CanMoveNext;
-            RaiseCanExecuteChanged();
-        }
-    }
-
-    public class PreviousTrackCommand : 
-        PresentationRequestCommand<PreviousTrackRequest>,
-        IHandlePresentationEvent<NowPlayingCurrentTrackChangedEvent>,
-        IHandlePresentationEvent<NowPlayingContentChangedEvent>
-    {
-        private bool _canMovePrevious;
-
-        public PreviousTrackCommand(bool canMovePrevious)
-        {
-            _canMovePrevious = canMovePrevious;
-        }
-
-        public override bool CanExecute(object parameter)
-        {
-            return _canMovePrevious;
-        }
-
-        public void Handle(NowPlayingCurrentTrackChangedEvent e)
-        {
-            _canMovePrevious = e.CanMovePrevious;
-            RaiseCanExecuteChanged();
-        }
-        public void Handle(NowPlayingContentChangedEvent e)
-        {
-            _canMovePrevious = e.CanMovePrevious;
-            RaiseCanExecuteChanged();
-        }
-    }
 }

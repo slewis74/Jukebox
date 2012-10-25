@@ -9,7 +9,6 @@
     d:DesignWidth="400">
     
     <Grid>
-        <TextBlock Text="Player Settings"/>
-
+        <CheckBox IsChecked="{Binding IsRandomPlayMode, Mode=TwoWay}" Content="Random play" />
     </Grid>
 </Settings:SettingsView>

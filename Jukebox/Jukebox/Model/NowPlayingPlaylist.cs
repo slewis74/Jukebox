@@ -11,11 +11,14 @@ namespace Jukebox.Model
     public class NowPlayingPlaylist : Playlist,
         IHandlePresentationEvent<SongEndedEvent>,
         IHandlePresentationRequest<PreviousTrackRequest>,
-        IHandlePresentationRequest<NextTrackRequest>
+        IHandlePresentationRequest<NextTrackRequest>,
+        IHandlePresentationEvent<RandomPlayModeChangedEvent>,
+        IHandlePresentationRequest<PlaySongNowRequest>,
+        IHandlePresentationRequest<PlayAlbumNowRequest>
     {
         public const string NowPlayingName = "NowPlaying";
 
-        private readonly bool _isRandomPlayMode;
+        private bool _isRandomPlayMode;
 
         public NowPlayingPlaylist(bool isRandomPlayMode)
             : base(NowPlayingName)
@@ -132,27 +135,45 @@ namespace Jukebox.Model
             if (CanMoveNext == false)
                 return;
 
-            int index;
+            var index = IndexOf(_currentTrack);
             if (_isRandomPlayMode == false)
             {
-                index = IndexOf(_currentTrack) + 1;
+                index++;
             }
             else
             {
-                var r = new Random(DateTime.Now.Millisecond);
-                index = r.Next(0, Count);
+                var originalIndex = index;
+                do
+                {
+                    var r = new Random(DateTime.Now.Millisecond);
+                    index = r.Next(0, Count);
+                } while (originalIndex == index);
             }
             CurrentTrack = this[index];
         }
 
         protected override void OnListChanged()
         {
-            PresentationBus.Publish(new NowPlayingContentChangedEvent(this, CanMovePrevious, CanMoveNext));
+            PresentationBus.Publish(new NowPlayingContentChangedEvent(this));
+            OnCanMoveChanged();
         }
 
         protected void OnCurrentTrackChanged(Song e)
         {
-            PresentationBus.Publish(new NowPlayingCurrentTrackChangedEvent(this, e, CanMovePrevious, CanMoveNext));
+            PresentationBus.Publish(new NowPlayingCurrentTrackChangedEvent(this, e));
+            OnCanMoveChanged();
+        }
+
+        private void OnCanMoveChanged()
+        {
+            PresentationBus.Publish(new CanMovePreviousChangedEvent(this, CanMovePrevious));
+            PresentationBus.Publish(new CanMoveNextChangedEvent(this, CanMoveNext));
+        }
+
+        public void Handle(RandomPlayModeChangedEvent presentationEvent)
+        {
+            _isRandomPlayMode = presentationEvent.Data;
+            OnCanMoveChanged();
         }
 
         public void Handle(PreviousTrackRequest request)
@@ -170,6 +191,29 @@ namespace Jukebox.Model
             {
                 MoveToNextTrack();
             }
+        }
+
+        public void Handle(PlaySongNowRequest request)
+        {
+            request.IsHandled = true;
+            Clear();
+            Add(request.Scope);
+            CurrentTrack = this[0];
+        }
+
+        public void Handle(PlayAlbumNowRequest request)
+        {
+            request.IsHandled = true;
+            
+            StartLargeUpdate();
+            Clear();
+            foreach (var song in request.Scope.Songs.OrderBy(s => s.DiscNumber).ThenBy(s => s.TrackNumber))
+            {
+                Add(song);
+            }
+            CompleteLargeUpdate();
+
+            CurrentTrack = this[0];
         }
     }
 }

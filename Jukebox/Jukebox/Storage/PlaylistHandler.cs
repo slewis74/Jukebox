@@ -18,10 +18,10 @@ namespace Jukebox.Storage
     {
         public PlaylistData LoadContent(IEnumerable<Artist> artists, bool isRandomPlayMode)
         {
-            return LoadDataAsync(artists.ToDictionary(k => k.Name), isRandomPlayMode);
+            return LoadData(artists.ToDictionary(k => k.Name), isRandomPlayMode);
         }
 
-        private PlaylistData LoadDataAsync(IDictionary<string, Artist> artists, bool isRandomPlayMode)
+        private PlaylistData LoadData(IDictionary<string, Artist> artists, bool isRandomPlayMode)
         {
             if (ApplicationData.Current.LocalSettings.Containers.ContainsKey("Playlists") == false)
                 return null;
@@ -124,6 +124,7 @@ namespace Jukebox.Storage
             playlistContainer.Values["Name"] = playlistName;
 
             var songsContainer = playlistContainer.CreateContainer("Songs", ApplicationDataCreateDisposition.Always);
+            songsContainer.Values.Clear();
             var songIndex = 0;
             foreach (var song in playlist)
             {

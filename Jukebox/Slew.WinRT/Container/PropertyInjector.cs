@@ -21,6 +21,12 @@ namespace Slew.WinRT.Container
                 rule.Process(obj);
             }
 
+            var initializeAfterPropertyInjection = obj as IInitializeAfterPropertyInjection;
+            if (initializeAfterPropertyInjection != null)
+            {
+                initializeAfterPropertyInjection.Initialize();
+            }
+
             return obj;
         }
     }

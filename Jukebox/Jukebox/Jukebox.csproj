@@ -115,10 +115,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events\CanMoveNextChangedEvent.cs" />
+    <Compile Include="Events\CanMovePreviousChangedEvent.cs" />
     <Compile Include="Events\NowPlayingContentChangedEvent.cs" />
     <Compile Include="Events\NowPlayingCurrentTrackChangedEvent.cs" />
     <Compile Include="Events\PlaylistContentChangedEvent.cs" />
     <Compile Include="Events\PlaylistCurrentTrackChangedEvent.cs" />
+    <Compile Include="Events\RandomPlayModeChangedEvent.cs" />
     <Compile Include="Features\Albums\AlbumController.cs" />
     <Compile Include="Features\Albums\AlbumFloatingView.xaml.cs">
       <DependentUpon>AlbumFloatingView.xaml</DependentUpon>
@@ -163,14 +166,18 @@
     <Compile Include="Features\Artists\Snapped\SnappedArtistView.xaml.cs">
       <DependentUpon>SnappedArtistView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Features\MainPage\Commands\DisplayArtistsCommand.cs" />
     <Compile Include="Features\MainPage\Events\SongEndedEvent.cs" />
     <Compile Include="Features\MainPage\MainPageView.xaml.cs">
       <DependentUpon>MainPageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\MainPage\MainPageViewModel.cs" />
+    <Compile Include="Features\MainPage\Commands\NextTrackCommand.cs" />
     <Compile Include="Features\MainPage\NowPlayingView.xaml.cs">
       <DependentUpon>NowPlayingView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Features\MainPage\Commands\PlaylistsCommand.cs" />
+    <Compile Include="Features\MainPage\Commands\PreviousTrackCommand.cs" />
     <Compile Include="Features\MainPage\Requests\StopPlayingRequest.cs" />
     <Compile Include="Features\Settings\Player\PlayerSettingsView.xaml.cs">
       <DependentUpon>PlayerSettingsView.xaml</DependentUpon>
@@ -191,6 +198,7 @@
     <Compile Include="Features\Playlists\PlaylistsViewModel.cs" />
     <Compile Include="Features\Playlists\PlaylistViewModel.cs" />
     <Compile Include="Requests\AddToCurrentPlaylistRequest.cs" />
+    <Compile Include="Requests\IsRandomPlayModeRequest.cs" />
     <Compile Include="Requests\PlayDropLocationRequest.cs" />
     <Compile Include="Requests\PlaylistDropLocationRequest.cs" />
     <Compile Include="Requests\PlayNowRequest.cs" />
@@ -199,6 +207,7 @@
     <Compile Include="Storage\MusicLibraryHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Storage\PlaylistHandler.cs" />
+    <Compile Include="Storage\SettingsHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

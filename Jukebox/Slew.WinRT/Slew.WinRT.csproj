@@ -110,6 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Container\CanRequestNavigationInjectorRule.cs" />
+    <Compile Include="Container\IInitializeAfterPropertyInjection.cs" />
     <Compile Include="Container\IPropertyInjectorRule.cs" />
     <Compile Include="Container\PublisherInjectorRule.cs" />
     <Compile Include="Container\SubscriberInjectorRule.cs" />

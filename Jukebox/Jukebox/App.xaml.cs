@@ -22,6 +22,7 @@ namespace Jukebox
         private DistinctAsyncObservableCollection<Playlist> _playlists;
         private SettingsManager _settingsManager;
         private PlaylistHandler _playlistHandler;
+        private SettingsHandler _settingsHandler;
 
         public App()
         {
@@ -41,11 +42,14 @@ namespace Jukebox
             _settingsManager = PropertyInjector.Inject(() => new SettingsManager());
             _settingsManager.Add<SettingsController>("PlayerSettings", "Player Settings", c => c.PlayerSettings());
 
+            _settingsHandler = PropertyInjector.Inject(() => new SettingsHandler());
+            bool isRandomPlayMode = _settingsHandler.IsGetRandomPlayMode();
+
             var musicLibraryHandler = new MusicLibraryHandler();
             _artists = new DistinctAsyncObservableCollection<Artist>(musicLibraryHandler.LoadContent());
 
             PropertyInjector.Inject(() => _playlistHandler = new PlaylistHandler());
-            var playlistData = _playlistHandler.LoadContent(_artists, false);
+            var playlistData = _playlistHandler.LoadContent(_artists, isRandomPlayMode);
             _playlists = new DistinctAsyncObservableCollection<Playlist>(playlistData.Playlists);
 
             if (args.PreviousExecutionState == ApplicationExecutionState.Terminated)
