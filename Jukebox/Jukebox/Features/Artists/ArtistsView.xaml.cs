@@ -1,5 +1,6 @@
 ﻿using Jukebox.Model;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace Jukebox.Features.Artists
 {
@@ -8,9 +9,17 @@ namespace Jukebox.Features.Artists
 		public ArtistsView()
 		{
 			InitializeComponent();
-		}
+            Loaded += ArtistsViewLoaded;
+        }
 
-		private void MoreClicked(object sender, RoutedEventArgs e)
+        void ArtistsViewLoaded(object sender, RoutedEventArgs e)
+        {
+            var listViewBase = semanticZoom.ZoomedOutView as ListViewBase;
+            if (listViewBase != null)
+                listViewBase.ItemsSource = groupedItemsViewSource.View.CollectionGroups;
+        }
+
+	    private void MoreClicked(object sender, RoutedEventArgs e)
 		{
 			var artist = ((FrameworkElement)sender).DataContext as Artist;
 			if (artist == null) return;

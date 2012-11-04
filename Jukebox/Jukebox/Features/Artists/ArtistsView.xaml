@@ -46,48 +46,74 @@
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 
-		<!-- Horizontal scrolling grid used in most view states -->
-        <ScrollViewer
-            x:Name="itemGridScrollViewer"
-            AutomationProperties.AutomationId="GridScrollViewer"
+        <SemanticZoom
+            x:Name="semanticZoom"
             Grid.Row="1"
-            Margin="0,-4,0,0"
-			Style="{StaticResource HorizontalScrollViewerStyle}"
             >
-
-			<GridView
-                x:Name="itemGridView"
-				AutomationProperties.AutomationId="ItemsGridView"
-                AutomationProperties.Name="Items"
-                ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"
-				ItemTemplate="{StaticResource ArtistItemTemplate}"
-				SelectionMode="None"
-				>
-				<GridView.ItemsPanel>
-					<ItemsPanelTemplate>
-						<StackPanel Orientation="Horizontal"/>
-					</ItemsPanelTemplate>
-				</GridView.ItemsPanel>
+            <SemanticZoom.ZoomedOutView>
+                <GridView ScrollViewer.IsHorizontalScrollChainingEnabled="False">
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                Text="{Binding Group.Key}"
+                                Style="{StaticResource BasicTextStyle}"
+                                FontSize="24"/>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapGrid ItemWidth="75" ItemHeight="75" MaximumRowsOrColumns="1" VerticalChildrenAlignment="Center" />
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                    <GridView.ItemContainerStyle>
+                        <Style TargetType="GridViewItem">
+                            <Setter Property="Margin" Value="4" />
+                            <Setter Property="Padding" Value="10" />
+                            <Setter Property="BorderBrush" Value="Gray" />
+                            <Setter Property="BorderThickness" Value="1" />
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                            <Setter Property="VerticalContentAlignment" Value="Center" />
+                        </Style>
+                    </GridView.ItemContainerStyle>
+                </GridView>
+            </SemanticZoom.ZoomedOutView>
+            <SemanticZoom.ZoomedInView>
+			    <GridView
+                    x:Name="itemGridView"
+				    AutomationProperties.AutomationId="ItemsGridView"
+                    AutomationProperties.Name="Items"
+                    ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"
+				    ItemTemplate="{StaticResource ArtistItemTemplate}"
+				    SelectionMode="None"
+                    IsSwipeEnabled="True" ScrollViewer.IsHorizontalScrollChainingEnabled="False"
+				    >
+				    <GridView.ItemsPanel>
+					    <ItemsPanelTemplate>
+						    <StackPanel Orientation="Horizontal"/>
+					    </ItemsPanelTemplate>
+				    </GridView.ItemsPanel>
 				
-				<GridView.GroupStyle>
-					<GroupStyle>
-						<GroupStyle.HeaderTemplate>
-							<DataTemplate>
-								<Grid Background="White" Margin="10">
-									<TextBlock Text='{Binding Key}' Foreground="Gray" FontSize="25" Margin="5" />
-								</Grid>
-							</DataTemplate>
-						</GroupStyle.HeaderTemplate>
+				    <GridView.GroupStyle>
+					    <GroupStyle>
+						    <GroupStyle.HeaderTemplate>
+							    <DataTemplate>
+								    <Grid Background="White" Margin="10">
+									    <TextBlock Text='{Binding Key}' Foreground="Gray" FontSize="25" Margin="5" />
+								    </Grid>
+							    </DataTemplate>
+						    </GroupStyle.HeaderTemplate>
 
-						<GroupStyle.Panel>
-							<ItemsPanelTemplate>
-								<VariableSizedWrapGrid Orientation="Vertical" />
-							</ItemsPanelTemplate>
-						</GroupStyle.Panel>
-					</GroupStyle>
-				</GridView.GroupStyle>
-			</GridView>
-		</ScrollViewer>
+						    <GroupStyle.Panel>
+							    <ItemsPanelTemplate>
+								    <VariableSizedWrapGrid Orientation="Vertical" />
+							    </ItemsPanelTemplate>
+						    </GroupStyle.Panel>
+					    </GroupStyle>
+				    </GridView.GroupStyle>
+			    </GridView>
+
+            </SemanticZoom.ZoomedInView>
+        </SemanticZoom>
 
         <!-- Vertical scrolling list only used when snapped -->
         <ScrollViewer
@@ -120,7 +146,7 @@
                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="itemListScrollViewer" Storyboard.TargetProperty="Visibility">
                             <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
                         </ObjectAnimationUsingKeyFrames>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="itemGridScrollViewer" Storyboard.TargetProperty="Visibility">
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="semanticZoom" Storyboard.TargetProperty="Visibility">
                             <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
                         </ObjectAnimationUsingKeyFrames>
                     </Storyboard>
