@@ -21,11 +21,11 @@ namespace Jukebox.Features.Artists
 
 	    private void MoreClicked(object sender, RoutedEventArgs e)
 		{
-			var artist = ((FrameworkElement)sender).DataContext as Artist;
+			var artist = ((FrameworkElement)sender).DataContext as GroupedArtistViewModel;
 			if (artist == null) return;
 
 			var viewModel = (ArtistsViewModel)DataContext;
-			viewModel.DisplayArtist.Execute(artist);
+			viewModel.DisplayArtist.Execute(artist.Artist);
 		}
 	}
 }

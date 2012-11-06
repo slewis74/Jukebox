@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Jukebox.Model;
+using Slew.WinRT.Container;
 using Slew.WinRT.Data;
 using Windows.Storage;
 using Windows.Storage.Search;
@@ -39,26 +40,26 @@ namespace Jukebox.Storage
             foreach (var artistKey in artistsContainer.Containers.Keys.OrderBy(x => x))
             {
                 var artistContainer = artistsContainer.Containers[artistKey];
-                var artist = new Artist(_uicontext)
+                var artist = PropertyInjector.Inject(() => new Artist(_uicontext)
                                  {
                                      Name = (string)artistContainer.Values["Name"]
-                                 };
+                                 });
 
                 var albumsContainer = artistContainer.Containers["Albums"];
                 foreach (var albumContainerKey in albumsContainer.Containers.Keys.OrderBy(x => x))
                 {
                     var albumContainer = albumsContainer.Containers[albumContainerKey];
-                    var album = new Album(_uicontext)
+                    var album = PropertyInjector.Inject(() => new Album(_uicontext)
                                     {
                                         Title = (string)albumContainer.Values["Title"],
                                         Artist = artist,
-                                    };
+                                    });
 
                     var songsContainer = albumContainer.Containers["Songs"];
                     foreach (var songKey in songsContainer.Values.Keys.OrderBy(Convert.ToInt32))
                     {
                         var songComposite = (ApplicationDataCompositeValue)songsContainer.Values[songKey];
-                        var song = new Song(_uicontext)
+                        var song = PropertyInjector.Inject(() => new Song(_uicontext)
                                        {
                                            DiscNumber = (uint)songComposite["DiscNumber"],
                                            TrackNumber = (uint)songComposite["TrackNumber"],
@@ -66,7 +67,7 @@ namespace Jukebox.Storage
                                            Path = (string)songComposite["Path"],
                                            Album = album,
                                            Duration = new TimeSpan(songComposite.ContainsKey("Duration") ? (long)songComposite["Duration"] : 0)
-                                       };
+                                       });
                     }
                 }
                 artists.Add(artist);
@@ -107,20 +108,20 @@ namespace Jukebox.Storage
                             artist = newArtists.FirstOrDefault(x => string.Compare(x.Name, fileProps.Artist, StringComparison.CurrentCultureIgnoreCase) == 0);
                             if (artist == null)
                             {
-                                artist = new Artist(_uicontext)
+                                artist = PropertyInjector.Inject(() => new Artist(_uicontext)
                                              {
                                                  Name = fileProps.Artist
-                                             };
+                                             });
                                 newArtists.Add(artist);
                                 artists.Add(artist);
                             }
                         }
                         var album = artist.Albums.FirstOrDefault(x => string.Compare(x.Title, fileProps.Album, StringComparison.CurrentCultureIgnoreCase) == 0 && x.Artist == artist) ??
-                                    new Album(_uicontext)
+                                    PropertyInjector.Inject(() => new Album(_uicontext)
                                     {
                                         Title = fileProps.Album,
                                         Artist = artist
-                                    };
+                                    });
 
                         uint discNumber = 1;
                         if (f.Name[1] == '-')
@@ -131,7 +132,7 @@ namespace Jukebox.Storage
                         var song = album.Songs.FirstOrDefault(s => s.DiscNumber == discNumber && s.TrackNumber == fileProps.TrackNumber);
                         if (song == null)
                         {
-                            song = new Song(_uicontext)
+                            song = PropertyInjector.Inject(() => new Song(_uicontext)
                                        {
                                            Title = fileProps.Title,
                                            DiscNumber = discNumber,
@@ -139,7 +140,7 @@ namespace Jukebox.Storage
                                            Path = f.Path,
                                            Album = album,
                                            Duration = fileProps.Duration
-                                       };
+                                       });
                             // save new entry to app storage
                         }
                         song.SetStorageFile(f);

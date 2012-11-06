@@ -18,8 +18,25 @@
 			IsSourceGrouped="True"
             Source="{Binding GroupedItems}"
             d:DataContext="{Binding Source={d:DesignInstance Type=designTime:DesignTimeGroupedItems, IsDesignTimeCreatable=True}}"/>
-		
-		<DataTemplate x:Key="ArtistItemTemplate">
+
+        <Style x:Key="VariableGridViewItemStyle" TargetType="GridViewItem">
+            <Setter Property="Pages:SetterValueBindingHelper.PropertyBinding">
+                <Setter.Value>
+                    <Pages:SetterValueBindingHelper>
+                        <Pages:SetterValueBindingHelper
+                            Type="VariableSizedWrapGrid"
+                            Property="RowSpan"
+                            Binding="{Binding VerticalSize}" />
+                        <Pages:SetterValueBindingHelper
+                            Type="VariableSizedWrapGrid"
+                            Property="ColumnSpan"
+                            Binding="{Binding HorizontalSize}" />
+                    </Pages:SetterValueBindingHelper>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <DataTemplate x:Key="ArtistItemTemplate">
 			<Button 
 				Click="MoreClicked"
 				HorizontalAlignment="Left" 
@@ -29,7 +46,9 @@
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate>
-                                    <Image Source="{Binding LargeBitmap}" Height="250" Width="250" Stretch="UniformToFill"/>
+                                    <Border BorderThickness="1" BorderBrush="AntiqueWhite" VerticalAlignment="Top">
+                                        <Image Source="{Binding Artist.LargeBitmap}" Stretch="UniformToFill" />
+                                    </Border>
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
@@ -84,6 +103,7 @@
                     AutomationProperties.Name="Items"
                     ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"
 				    ItemTemplate="{StaticResource ArtistItemTemplate}"
+                    ItemContainerStyle="{StaticResource VariableGridViewItemStyle}"
 				    SelectionMode="None"
                     IsSwipeEnabled="True" ScrollViewer.IsHorizontalScrollChainingEnabled="False"
 				    >
@@ -105,7 +125,7 @@
 
 						    <GroupStyle.Panel>
 							    <ItemsPanelTemplate>
-								    <VariableSizedWrapGrid Orientation="Vertical" />
+								    <VariableSizedWrapGrid Orientation="Vertical" ItemHeight="150" ItemWidth="150" />
 							    </ItemsPanelTemplate>
 						    </GroupStyle.Panel>
 					    </GroupStyle>

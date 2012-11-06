@@ -132,6 +132,7 @@
     <Compile Include="Pages\Navigation\ISettingsPageActionResult.cs" />
     <Compile Include="Pages\Navigation\Navigator.cs" />
     <Compile Include="Pages\Navigation\PageActionResult.cs" />
+    <Compile Include="Pages\SetterValueBindingHelper.cs" />
     <Compile Include="Pages\Settings\ISettingsManager.cs" />
     <Compile Include="Pages\Settings\SettingsManager.cs" />
     <Compile Include="Pages\Navigation\SettingsPageActionResult.cs" />

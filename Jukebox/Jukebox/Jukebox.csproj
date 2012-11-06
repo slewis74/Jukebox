@@ -115,6 +115,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events\AlbumAddedEvent.cs" />
     <Compile Include="Events\CanMoveNextChangedEvent.cs" />
     <Compile Include="Events\CanMovePreviousChangedEvent.cs" />
     <Compile Include="Events\NowPlayingContentChangedEvent.cs" />
@@ -160,6 +161,7 @@
     </Compile>
     <Compile Include="DataPersistence\SongPersister.cs" />
     <Compile Include="Features\Artists\DesignTime\DesignTimeArtistViewModel.cs" />
+    <Compile Include="Features\Artists\GroupedArtistViewModel.cs" />
     <Compile Include="Features\Artists\Snapped\SnappedArtistsView.xaml.cs">
       <DependentUpon>SnappedArtistsView.xaml</DependentUpon>
     </Compile>

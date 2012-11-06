@@ -11,7 +11,7 @@ namespace Jukebox.Features.Artists
     public class ArtistsViewModel : CanRequestNavigationBase
 	{
         private readonly DistinctAsyncObservableCollection<Artist> _artists;
-	    private AsyncObservableCollection<GroupedData<Artist>> _groups;
+        private AsyncObservableCollection<GroupedData<GroupedArtistViewModel>> _groups;
 
         public ArtistsViewModel(DistinctAsyncObservableCollection<Artist> artists)
 		{
@@ -25,12 +25,12 @@ namespace Jukebox.Features.Artists
 
         public DistinctAsyncObservableCollection<Artist> Items { get { return _artists; } }
 
-        public AsyncObservableCollection<GroupedData<Artist>> GroupedItems
+        public AsyncObservableCollection<GroupedData<GroupedArtistViewModel>> GroupedItems
 		{
 			get
 			{
                 if (_groups == null)
-                    _groups = new AsyncObservableCollection<GroupedData<Artist>>();
+                    _groups = new AsyncObservableCollection<GroupedData<GroupedArtistViewModel>>();
                 
                 _groups.StartLargeUpdate();
                 _groups.Clear();
@@ -40,11 +40,15 @@ namespace Jukebox.Features.Artists
 							select new { GroupName = g.Key, Items = g };
 				foreach (var g in query)
 				{
-					var info = new GroupedData<Artist>
+                    var info = new GroupedData<GroupedArtistViewModel>
 					           	{
 					           		Key = g.GroupName
 					           	};
-					info.AddRange(g.Items);
+					info.AddRange(g.Items.Select(z => new GroupedArtistViewModel(z)));
+				    var size = 2;
+                    
+				    info[0].HorizontalSize = size;
+				    info[0].VerticalSize = size;
 					_groups.Add(info);
 				}
                 _groups.CompleteLargeUpdate();
