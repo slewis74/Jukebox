@@ -45,13 +45,13 @@
                     Stretch="Uniform"/>
                 <Button 
                     x:Name="PlayButton" 
-                    Style="{StaticResource PlayButtonStyle}"
+                    Style="{StaticResource LargePlayButtonStyle}"
                     Visibility="{Binding IsNotPlaying, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Command="{Binding PlayCommand}"/>
                 
 				<Button 
                     x:Name="PauseButton"
-                    Style="{StaticResource PauseButtonStyle}"
+                    Style="{StaticResource LargePauseButtonStyle}"
                     Visibility="{Binding IsPlaying, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Command="{Binding PauseCommand}"/>
     		</Grid>

@@ -124,22 +124,13 @@
     <Compile Include="Events\PlaylistCurrentTrackChangedEvent.cs" />
     <Compile Include="Events\RandomPlayModeChangedEvent.cs" />
     <Compile Include="Features\Albums\AlbumController.cs" />
-    <Compile Include="Features\Albums\AlbumFloatingView.xaml.cs">
-      <DependentUpon>AlbumFloatingView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Features\Albums\AlbumView.xaml.cs">
       <DependentUpon>AlbumView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Features\Albums\AlbumViewBottomAppBar.xaml.cs">
-      <DependentUpon>AlbumViewBottomAppBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\Albums\AlbumViewModel.cs" />
     <Compile Include="Features\Albums\DesignTime\DesignTimeAlbumViewModel.cs" />
     <Compile Include="Features\Albums\Snapped\SnappedAlbumView.xaml.cs">
       <DependentUpon>SnappedAlbumView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Features\Albums\TrackFloatingView.xaml.cs">
-      <DependentUpon>TrackFloatingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\Albums\TrackViewModel.cs" />
     <Compile Include="Features\Artists\ArtistController.cs" />
@@ -201,8 +192,6 @@
     <Compile Include="Features\Playlists\PlaylistViewModel.cs" />
     <Compile Include="Requests\AddToCurrentPlaylistRequest.cs" />
     <Compile Include="Requests\IsRandomPlayModeRequest.cs" />
-    <Compile Include="Requests\PlayDropLocationRequest.cs" />
-    <Compile Include="Requests\PlaylistDropLocationRequest.cs" />
     <Compile Include="Requests\PlayNowRequest.cs" />
     <Compile Include="Requests\PlayRequest.cs" />
     <Compile Include="Requests\PositionTransformRequest.cs" />
@@ -242,23 +231,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Features\Albums\AlbumFloatingView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Features\Albums\AlbumView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Features\Albums\AlbumViewBottomAppBar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Features\Albums\Snapped\SnappedAlbumView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Features\Albums\TrackFloatingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -298,6 +275,11 @@
     <Page Include="Features\Settings\Player\PlayerSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\ButtonStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="Resources\Theme.xaml">
       <SubType>Designer</SubType>

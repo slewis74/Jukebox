@@ -2,8 +2,9 @@
 using System.Collections.ObjectModel;
 using Jukebox.Features.Albums;
 using Jukebox.Model;
-using Slew.WinRT.Pages;
+using Jukebox.Requests;
 using Slew.WinRT.Pages.Navigation;
+using Slew.WinRT.PresentationBus;
 using Slew.WinRT.ViewModels;
 using Windows.UI.Xaml.Media.Imaging;
 
@@ -17,6 +18,8 @@ namespace Jukebox.Features.Artists
 		{
 			_artist = artist;
 			DisplayAlbum = new DisplayAlbumCommand(new Lazy<INavigator>(() => Navigator));
+
+            PlayArtist = new PlayArtistCommand();
 		}
 
 		public DisplayAlbumCommand DisplayAlbum { get; private set; }
@@ -27,6 +30,13 @@ namespace Jukebox.Features.Artists
 
         public BitmapImage SmallBitmap { get { return _artist.SmallBitmap; } }
         public BitmapImage LargeBitmap { get { return _artist.LargeBitmap; } }
+
+        public PlayArtistCommand PlayArtist { get; private set; }
+
+        public Artist GetArtist()
+        {
+            return _artist;
+        }
 	}
 
     public class DisplayAlbumCommand : NavigationCommand<Album>
@@ -39,4 +49,14 @@ namespace Jukebox.Features.Artists
 			Navigator.Value.Navigate<AlbumController>(c => c.ShowAlbum(album));
 		}
 	}
+
+    public class PlayArtistCommand : Command<ArtistViewModel>, IPublish
+    {
+        public IPresentationBus PresentationBus { get; set; }
+
+        public override void Execute(ArtistViewModel parameter)
+		{
+            PresentationBus.Publish(new PlayArtistNowRequest { Scope = parameter.GetArtist() });
+		}
+    }
 }

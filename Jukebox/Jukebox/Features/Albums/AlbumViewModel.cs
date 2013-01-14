@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using Jukebox.Model;
 using Jukebox.Requests;
-using Slew.WinRT.Container;
 using Slew.WinRT.Data;
 using Slew.WinRT.Pages;
 using Slew.WinRT.PresentationBus;
@@ -21,17 +20,16 @@ namespace Jukebox.Features.Albums
             AlbumLocationCommandMappings = new AsyncObservableCollection<LocationCommandMapping>();
             TrackLocationCommandMappings = new AsyncObservableCollection<LocationCommandMapping>();
 
-			PlaySong = PropertyInjector.Inject(()=> new PlaySongCommand());
-			PlayAlbum = PropertyInjector.Inject(()=> new PlayAlbumCommand());
-            AddSong = PropertyInjector.Inject(()=> new AddSongCommand());
-            AddAlbum = PropertyInjector.Inject(()=> new AddAlbumCommand());
+			PlaySong = new PlaySongCommand();
+			PlayAlbum = new PlayAlbumCommand();
+            AddSong = new AddSongCommand();
+            AddAlbum = new AddAlbumCommand();
 
             Tracks = new AsyncObservableCollection<TrackViewModel>(
                 album.Songs
                 .OrderBy(s => s.DiscNumber)
                 .ThenBy(s => s.TrackNumber)
-                .Select(t => 
-                    PropertyInjector.Inject(()=> new TrackViewModel(t, TrackLocationCommandMappings))));
+                .Select(t => new TrackViewModel(t, TrackLocationCommandMappings)));
 		}
 
 		public PlaySongCommand PlaySong { get; private set; }

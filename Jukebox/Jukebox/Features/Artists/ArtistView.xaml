@@ -20,7 +20,7 @@
             d:Source="{Binding Albums, Source={d:DesignInstance Type=designTime:DesignTimeArtistViewModel, IsDesignTimeCreatable=True}}"/>
 
         <DataTemplate x:Key="AlbumTemplate">
-            <Grid>
+            <Grid Width="550">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -30,12 +30,39 @@
                     Stretch="Uniform" 
                     Height="{StaticResource SmallBitmapSize}"
                     Margin="{StaticResource LeftMostControlMargin}"/>
-                <StackPanel 
+                
+                <Grid
                     Grid.Column="1"
-                    VerticalAlignment="Top"
                     Margin="{StaticResource RightMostControlMargin}">
-                    <TextBlock Text="{Binding Title}" Style="{StaticResource TitleTextStyle}" TextWrapping="NoWrap"/>
-                </StackPanel>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel 
+                        Grid.Row="0"
+                        VerticalAlignment="Top">
+                        <TextBlock Text="{Binding Title}" Style="{StaticResource TitleTextStyle}" TextWrapping="NoWrap"/>
+                    </StackPanel>
+                    <StackPanel 
+                        Grid.Row="1"
+                        Margin="{StaticResource VerticallyCentralControlMargin}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Button 
+                                Grid.Column="0"
+                                Style="{StaticResource PlayButtonStyle}" />
+                            <Button 
+                                Grid.Column="2"
+                                Style="{StaticResource PlusButtonStyle}" />
+                        </Grid>
+                    </StackPanel>
+                </Grid>
             </Grid>
         </DataTemplate>
 
@@ -67,6 +94,30 @@
                     Margin="{StaticResource BottomMostControlMargin}" 
                     HorizontalAlignment="Left"
                     />
+
+                <StackPanel 
+                    Grid.Row="1"
+                    Width="{StaticResource LargeBitmapSize}"
+                    HorizontalAlignment="Left"
+                    Margin="{StaticResource BottomMostControlMargin}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button 
+                            Grid.Column="0"
+                            Style="{StaticResource PlayButtonStyle}" 
+                            Command="{Binding PlayArtist}"
+                            CommandParameter="{Binding}"/>
+                        <Button 
+                            Grid.Column="2"
+                            Style="{StaticResource PlusButtonStyle}" />
+                    </Grid>
+                </StackPanel>
+
             </StackPanel>
             <ListView
                 Grid.Column="1"

@@ -14,7 +14,8 @@ namespace Jukebox.Model
         IHandlePresentationRequest<NextTrackRequest>,
         IHandlePresentationEvent<RandomPlayModeChangedEvent>,
         IHandlePresentationRequest<PlaySongNowRequest>,
-        IHandlePresentationRequest<PlayAlbumNowRequest>
+        IHandlePresentationRequest<PlayAlbumNowRequest>,
+        IHandlePresentationEvent<PlayArtistNowRequest>
     {
         public const string NowPlayingName = "NowPlaying";
 
@@ -210,6 +211,24 @@ namespace Jukebox.Model
             foreach (var song in request.Scope.Songs.OrderBy(s => s.DiscNumber).ThenBy(s => s.TrackNumber))
             {
                 Add(song);
+            }
+            CompleteLargeUpdate();
+
+            CurrentTrack = this[0];
+        }
+
+        public void Handle(PlayArtistNowRequest request)
+        {
+            request.IsHandled = true;
+            
+            StartLargeUpdate();
+            Clear();
+            foreach (var album in request.Scope.Albums)
+            {
+                foreach (var song in album.Songs.OrderBy(s => s.DiscNumber).ThenBy(s => s.TrackNumber))
+                {
+                    Add(song);
+                }
             }
             CompleteLargeUpdate();
 

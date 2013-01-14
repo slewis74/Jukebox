@@ -16,6 +16,8 @@
 
                 <ResourceDictionary Source="ms-appx:///Slew.WinRT/Resources/StandardLayout.xaml"/>
 
+                <ResourceDictionary Source="/Resources/ButtonStyles.xaml"/>
+                
                 <ResourceDictionary Source="/Resources/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 

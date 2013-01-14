@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Windows.Input;
+using Slew.WinRT.Container;
 
 namespace Slew.WinRT.ViewModels
 {
 	public abstract class Command : ICommand
 	{
 		public event EventHandler CanExecuteChanged;
+
+        protected Command()
+        {
+            PropertyInjector.Inject(() => this);
+        }
 
 		public virtual bool CanExecute(object parameter)
 		{
@@ -24,7 +30,7 @@ namespace Slew.WinRT.ViewModels
 
 	public abstract class Command<T> : Command
 	{
-		public virtual bool CanExecute(T parameter)
+	    public virtual bool CanExecute(T parameter)
 		{
 			return true;
 		}

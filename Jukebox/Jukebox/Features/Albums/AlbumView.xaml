@@ -22,19 +22,38 @@
             d:Source="{Binding Tracks, Source={d:DesignInstance Type=designTime:DesignTimeAlbumViewModel, IsDesignTimeCreatable=True}}"/>
 
         <DataTemplate x:Name="TrackTemplate">
-			<StackPanel 
-                Orientation="Horizontal"
-                Margin="{StaticResource OuterMostControlMargin}">
-				<TextBlock Text="{Binding TrackNumber}" Margin="{StaticResource LeftMostControlMargin}"/>
-                <TextBlock Text=" - " Margin="{StaticResource HorizontallyCentralControlMargin}"/>
-                <TextBlock Text="{Binding Title}" Margin="{StaticResource RightMostControlMargin}"/>
-                <WinRtBehaviors:Interaction.Behaviors>
-                    <b:DragDropBehaviour 
-                        FloatingControlTypeName="Jukebox.Features.Albums.TrackFloatingView,Jukebox"
-                        LocationCommandMappings="{Binding TrackLocationCommandMappings, Mode=TwoWay}"
-                        />
-                </WinRtBehaviors:Interaction.Behaviors>
-			</StackPanel>
+            <Grid Width="550">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Button 
+                    Grid.Column="0"
+                    Style="{StaticResource PlayButtonStyle}" 
+                    Margin="0 0 10 0"
+                    Command="{Binding DataContext.PlaySong, ElementName=pageRoot}"
+                    CommandParameter="{Binding}"/>
+                <StackPanel 
+                    Grid.Column="1"
+                    Orientation="Horizontal"
+                    VerticalAlignment="Center"
+                    Margin="{StaticResource OuterMostControlMargin}">
+                    <TextBlock Text="{Binding TrackNumber}" Margin="{StaticResource LeftMostControlMargin}"/>
+                    <TextBlock Text=" - " Margin="{StaticResource HorizontallyCentralControlMargin}"/>
+                    <TextBlock Text="{Binding Title}" Margin="{StaticResource RightMostControlMargin}"/>
+                </StackPanel>
+                <Button 
+                    Grid.Column="2"
+                    Style="{StaticResource PlusButtonStyle}" 
+                    Command="{Binding DataContext.AddSong, ElementName=pageRoot}"
+                    CommandParameter="{Binding}"/>
+                <Button 
+                    Grid.Column="2"
+                    Style="{StaticResource MinusButtonStyle}" 
+                    Command="{Binding DataContext.RemoveSong, ElementName=pageRoot}"
+                    CommandParameter="{Binding}"/>
+            </Grid>
 		</DataTemplate>
 	</UserControl.Resources>
 
@@ -52,12 +71,6 @@
             <StackPanel 
                 Grid.Column="0"
                 Width="{StaticResource GroupDetailLeftPanelWidth}">
-                <WinRtBehaviors:Interaction.Behaviors>
-                    <b:DragDropBehaviour 
-                        FloatingControlTypeName="Jukebox.Features.Albums.AlbumFloatingView,Jukebox"
-                        LocationCommandMappings="{Binding AlbumLocationCommandMappings, Mode=TwoWay}"
-                        />
-                </WinRtBehaviors:Interaction.Behaviors>
                 <TextBlock 
                     Text="{Binding ArtistName}" 
                     Style="{StaticResource SubheaderTextStyle}" 
@@ -73,16 +86,42 @@
                     Text="{Binding Title}" 
                     Style="{StaticResource BodyTextStyle}" 
                     Margin="{StaticResource BottomMostControlMargin}"/>
+
+                <Grid Margin="0 5 0 0" Width="{StaticResource LargeBitmapSize}" HorizontalAlignment="Left">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button
+                        Grid.Column="0"
+                        Style="{StaticResource PlayButtonStyle}"
+                        Command="{Binding PlayAlbum}"
+                        CommandParameter="{Binding}"/>
+
+                    <Button
+                        Grid.Column="2"
+                        Margin="0 0 5 0"
+                        Style="{StaticResource PlusButtonStyle}"
+                        Command="{Binding AddAlbum}"
+                        CommandParameter="{Binding}"/>
+                    <Button
+                        Grid.Column="3"
+                        Style="{StaticResource MinusButtonStyle}"
+                        Command="{Binding RemoveAlbum}"
+                        CommandParameter="{Binding}"/>
+                </Grid>
             </StackPanel>
 
             <ListView
                 Grid.Column="1"
                 AutomationProperties.AutomationId="ItemGridView"
                 AutomationProperties.Name="Items In Group"
-			    SelectionMode="Single" 
+			    SelectionMode="None" 
                 IsHoldingEnabled="True"
                 ItemsSource="{Binding Source={StaticResource itemsViewSource}}"
-			    SelectedItem="{Binding SelectedTrack, Mode=TwoWay}"
                 ItemTemplate="{StaticResource TrackTemplate}">
 
                 <ListView.ItemContainerStyle>
