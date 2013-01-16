@@ -1,5 +1,4 @@
-﻿using Slew.WinRT.Container;
-using Slew.WinRT.Data;
+﻿using Slew.WinRT.Data;
 using Slew.WinRT.Pages.Navigation;
 using Slew.WinRT.ViewModels;
 
@@ -9,7 +8,7 @@ namespace Slew.WinRT.Pages.Settings
     {
         public SettingsPopupViewModel()
         {
-            Back = PropertyInjector.Inject(() => new SettingsBackCommand());
+            Back = new SettingsBackCommand();
         }
 
         public SettingsBackCommand Back { get; private set; }

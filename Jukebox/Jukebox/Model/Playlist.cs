@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using Jukebox.Events;
+using Slew.WinRT.Container;
 using Slew.WinRT.Data;
 using Slew.WinRT.PresentationBus;
 
@@ -12,11 +13,13 @@ namespace Jukebox.Model
         public Playlist(string name)
         {
             Name = name;
+            PropertyInjector.Inject(() => this); 
         }
 
         public Playlist(string name, IEnumerable<Song> tracks) : base(tracks)
         {
             Name = name;
+            PropertyInjector.Inject(() => this);
         }
 
         public IPresentationBus PresentationBus { get; set; }

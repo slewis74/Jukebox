@@ -39,16 +39,16 @@ namespace Jukebox
             PropertyInjector.AddRule(new SubscriberInjectorRule(bus));
             PropertyInjector.AddRule(new CanRequestNavigationInjectorRule(navigator));
 
-            _settingsManager = PropertyInjector.Inject(() => new SettingsManager());
+            _settingsManager = new SettingsManager();
             _settingsManager.Add<SettingsController>("PlayerSettings", "Player Settings", c => c.PlayerSettings());
 
-            _settingsHandler = PropertyInjector.Inject(() => new SettingsHandler());
+            _settingsHandler = new SettingsHandler();
             bool isRandomPlayMode = _settingsHandler.IsGetRandomPlayMode();
 
             var musicLibraryHandler = new MusicLibraryHandler();
             _artists = new DistinctAsyncObservableCollection<Artist>(musicLibraryHandler.LoadContent());
 
-            PropertyInjector.Inject(() => _playlistHandler = new PlaylistHandler());
+            _playlistHandler = new PlaylistHandler();
             var playlistData = _playlistHandler.LoadContent(_artists, isRandomPlayMode);
             _playlists = new DistinctAsyncObservableCollection<Playlist>(playlistData.Playlists);
 
@@ -57,11 +57,11 @@ namespace Jukebox
                 //TODO: Load state from previously suspended application
             }
 
-            var mainPageViewModel = PropertyInjector.Inject(() => new MainPageViewModel(_artists, _playlists, playlistData.NowPlayingPlaylist));
-            Window.Current.Content = PropertyInjector.Inject(() => new MainPageView
+            var mainPageViewModel = new MainPageViewModel(_artists, _playlists, playlistData.NowPlayingPlaylist);
+            Window.Current.Content = new MainPageView
         	                             {
                                              DataContext = mainPageViewModel
-        	                             });
+        	                             };
             Window.Current.Activate();
 
             Task.Factory.StartNew(() => DoBackgroundProcessing(musicLibraryHandler));

@@ -8,8 +8,8 @@ namespace Jukebox.Model
     {
         public PlaylistData(bool isRandomPlayMode, IEnumerable<Song> nowPlayingSongs, int? currentTrackIndex)
         {
-            NowPlayingPlaylist = PropertyInjector.Inject(() =>
-                new NowPlayingPlaylist(isRandomPlayMode, nowPlayingSongs, currentTrackIndex));
+            NowPlayingPlaylist =
+                new NowPlayingPlaylist(isRandomPlayMode, nowPlayingSongs, currentTrackIndex);
 
             Playlists = Enumerable.Empty<Playlist>();
         }

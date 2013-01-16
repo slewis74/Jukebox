@@ -116,7 +116,7 @@ namespace Slew.WinRT.Pages.Navigation
                                                   };
 
             // Create a SettingsFlyout the same dimenssions as the Popup.
-            var view = (FrameworkElement)PropertyInjector.Inject(() => Activator.CreateInstance(settingsResult.PageType));
+            var view = (FrameworkElement)Activator.CreateInstance(settingsResult.PageType);
             view.DataContext = settingsResult.Parameter;
 
             view.Width = _settingsWidth;
@@ -125,7 +125,7 @@ namespace Slew.WinRT.Pages.Navigation
             // Place the SettingsFlyout inside our Popup window.
             _settingsPopup.Child = new SettingsPopupView
                                        {
-                                           DataContext = PropertyInjector.Inject(() => new SettingsPopupViewModel()),
+                                           DataContext = new SettingsPopupViewModel(),
                                            HeaderBackground = new SolidColorBrush(Colors.Green),
                                            Background = new SolidColorBrush(Colors.LightGreen),
                                            Content = view

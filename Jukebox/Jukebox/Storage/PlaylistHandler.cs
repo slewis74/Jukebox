@@ -16,6 +16,11 @@ namespace Jukebox.Storage
         IHandlePresentationEvent<NowPlayingContentChangedEvent>,
         IHandlePresentationEvent<NowPlayingCurrentTrackChangedEvent>
     {
+        public PlaylistHandler()
+        {
+            PropertyInjector.Inject(() => this); 
+        }
+
         public PlaylistData LoadContent(IEnumerable<Artist> artists, bool isRandomPlayMode)
         {
             return LoadData(artists.ToDictionary(k => k.Name), isRandomPlayMode);
@@ -33,7 +38,7 @@ namespace Jukebox.Storage
             {
                 playlistContainer = playlistsContainer.Containers[playlistKey];
 
-                var playlist = PropertyInjector.Inject(() => new Playlist((string)playlistContainer.Values["Name"], LoadPlaylist(artists, playlistContainer)));
+                var playlist = new Playlist((string)playlistContainer.Values["Name"], LoadPlaylist(artists, playlistContainer));
 
                 playlists.Add(playlist);
             }

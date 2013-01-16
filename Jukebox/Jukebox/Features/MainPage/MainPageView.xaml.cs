@@ -35,10 +35,9 @@ namespace Jukebox.Features.MainPage
         public MainPageView()
 		{
 			InitializeComponent();
+            PropertyInjector.Inject(() => this); 
 
             SettingsPane.GetForCurrentView().CommandsRequested += MainPageCommandsRequested;
-
-            PropertyInjector.Inject(() => NowPlayingView);
 
 			Loaded += MainPageLoaded;
 			MediaElement.MediaFailed += MediaElement_MediaFailed;
@@ -48,8 +47,6 @@ namespace Jukebox.Features.MainPage
             MediaControl.StopPressed += (sender, o) => DispatchCall(s => DoStopPlaying());
             MediaControl.PreviousTrackPressed += (sender, o) => DispatchCall(s => PresentationBus.Publish(new PreviousTrackRequest()));
             MediaControl.NextTrackPressed += (sender, o) => DispatchCall(s => PresentationBus.Publish(new NextTrackRequest()));
-
-            BrowsingFrame.Navigated += (sender, args) => PropertyInjector.Inject(() => args.Content);
 		}
 
         public IPresentationBus PresentationBus { get; set; }

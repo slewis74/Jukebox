@@ -26,18 +26,18 @@ namespace Jukebox.Features.MainPage
             DistinctAsyncObservableCollection<Artist> artists,
             DistinctAsyncObservableCollection<Playlist> playlists,
             NowPlayingPlaylist currentPlaylist)
-		{
+        {
             NowPlayingPlaylist = currentPlaylist;
             _artists = artists;
             _playlists = playlists;
 
-			DisplayArtists = PropertyInjector.Inject(() => new DisplayArtistsCommand(_artists));
+			DisplayArtists = new DisplayArtistsCommand(_artists);
             
-            PlayCommand = PropertyInjector.Inject(() => new PresentationRequestCommand<PlayRequest>());
-            PauseCommand = PropertyInjector.Inject(() => new PresentationRequestCommand<PauseRequest>());
-            PlaylistsCommand = PropertyInjector.Inject(() => new PlaylistsCommand(_playlists));
-            NextTrackCommand = PropertyInjector.Inject(() => new NextTrackCommand(NowPlayingPlaylist.CanMoveNext));
-            PreviousTrackCommand = PropertyInjector.Inject(() => new PreviousTrackCommand(NowPlayingPlaylist.CanMovePrevious));
+            PlayCommand = new PresentationRequestCommand<PlayRequest>();
+            PauseCommand = new PresentationRequestCommand<PauseRequest>();
+            PlaylistsCommand = new PlaylistsCommand(_playlists);
+            NextTrackCommand = new NextTrackCommand(NowPlayingPlaylist.CanMoveNext);
+            PreviousTrackCommand = new PreviousTrackCommand(NowPlayingPlaylist.CanMovePrevious);
         }
 
         public IPresentationBus PresentationBus { get; set; }
