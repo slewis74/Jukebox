@@ -19,23 +19,6 @@
             Source="{Binding GroupedItems}"
             d:DataContext="{Binding Source={d:DesignInstance Type=designTime:DesignTimeGroupedItems, IsDesignTimeCreatable=True}}"/>
 
-        <Style x:Key="VariableGridViewItemStyle" TargetType="GridViewItem">
-            <Setter Property="Pages:SetterValueBindingHelper.PropertyBinding">
-                <Setter.Value>
-                    <Pages:SetterValueBindingHelper>
-                        <Pages:SetterValueBindingHelper
-                            Type="VariableSizedWrapGrid"
-                            Property="RowSpan"
-                            Binding="{Binding VerticalSize}" />
-                        <Pages:SetterValueBindingHelper
-                            Type="VariableSizedWrapGrid"
-                            Property="ColumnSpan"
-                            Binding="{Binding HorizontalSize}" />
-                    </Pages:SetterValueBindingHelper>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
         <DataTemplate x:Key="ArtistItemTemplate">
 			<Button 
 				Click="MoreClicked"

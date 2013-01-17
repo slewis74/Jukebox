@@ -159,6 +159,15 @@
     <Compile Include="Features\Artists\Snapped\SnappedArtistView.xaml.cs">
       <DependentUpon>SnappedArtistView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Features\HomePage\ArtistsSummary\ArtistsSummaryViewModel.cs" />
+    <Compile Include="Features\HomePage\HomePageView.xaml.cs">
+      <DependentUpon>HomePageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\HomePage\HomePageViewModel.cs" />
+    <Compile Include="Features\HomePage\PlaylistSummary\PlaylistSummaryView.xaml.cs">
+      <DependentUpon>PlaylistSummaryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\HomePage\PlaylistSummary\PlaylistSummaryViewModel.cs" />
     <Compile Include="Features\MainPage\Commands\DisplayArtistsCommand.cs" />
     <Compile Include="Features\MainPage\Events\SongEndedEvent.cs" />
     <Compile Include="Features\MainPage\MainPageView.xaml.cs">
@@ -252,6 +261,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Features\Artists\Snapped\SnappedArtistView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Features\HomePage\HomePageView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Features\HomePage\PlaylistSummary\PlaylistSummaryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
