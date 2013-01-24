@@ -1,12 +1,13 @@
-﻿using Jukebox.Model;
+﻿using System;
+using Slew.WinRT.Pages;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace Jukebox.Features.Artists
 {
-	public sealed partial class ArtistsView
+	public sealed partial class ArtistsLandscapeView : IHaveBottomAppBar
 	{
-		public ArtistsView()
+		public ArtistsLandscapeView()
 		{
 			InitializeComponent();
             Loaded += ArtistsViewLoaded;
@@ -14,9 +15,9 @@ namespace Jukebox.Features.Artists
 
         void ArtistsViewLoaded(object sender, RoutedEventArgs e)
         {
-            var listViewBase = semanticZoom.ZoomedOutView as ListViewBase;
+            var listViewBase = SemanticZoomControl.ZoomedOutView as ListViewBase;
             if (listViewBase != null)
-                listViewBase.ItemsSource = groupedItemsViewSource.View.CollectionGroups;
+                listViewBase.ItemsSource = GroupedItemsViewSource.View.CollectionGroups;
         }
 
 	    private void MoreClicked(object sender, RoutedEventArgs e)
@@ -27,5 +28,7 @@ namespace Jukebox.Features.Artists
 			var viewModel = (ArtistsViewModel)DataContext;
 			viewModel.DisplayArtist.Execute(artist.Artist);
 		}
+
+	    public Type BottomAppBarContentType { get { return typeof (ArtistsBottomAppBarView); } }
 	}
 }

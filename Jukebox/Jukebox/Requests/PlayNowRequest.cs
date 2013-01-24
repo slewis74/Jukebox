@@ -14,4 +14,6 @@ namespace Jukebox.Requests
     {}
     public class PlayArtistNowRequest : PlayNowRequest<Artist>
     {}
+    public class PlayAllNowRequest : PresentationRequest
+    { }
 }

@@ -117,6 +117,10 @@
     <Compile Include="Data\GroupedData.cs" />
     <Compile Include="Data\BindableBase.cs" />
     <Compile Include="Data\AsyncObservableCollection.cs" />
+    <Compile Include="Pages\ContentSwitchingPage.xaml.cs">
+      <DependentUpon>ContentSwitchingPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\NavigationAwarePage.cs" />
     <Compile Include="Pages\Navigation\ActionResult.cs" />
     <Compile Include="Pages\Controller.cs" />
     <Compile Include="Pages\ControllerFactory.cs" />
@@ -130,8 +134,10 @@
     <Compile Include="Pages\LayoutAwarePageWithNavigation.cs" />
     <Compile Include="Pages\Location.cs" />
     <Compile Include="Pages\Navigation\ISettingsPageActionResult.cs" />
+    <Compile Include="Pages\Navigation\IViewModelActionResult.cs" />
     <Compile Include="Pages\Navigation\Navigator.cs" />
     <Compile Include="Pages\Navigation\PageActionResult.cs" />
+    <Compile Include="Pages\Navigation\ViewModelActionResult.cs" />
     <Compile Include="Pages\SetterValueBindingHelper.cs" />
     <Compile Include="Pages\Settings\ISettingsManager.cs" />
     <Compile Include="Pages\Settings\SettingsManager.cs" />
@@ -162,6 +168,7 @@
     <Compile Include="ViewModels\ICanRequestNavigation.cs" />
     <Compile Include="ViewModels\NavigationCommand.cs" />
     <Compile Include="ViewModels\PresentationRequestCommand.cs" />
+    <Compile Include="ViewModels\ViewModelWithOrientation.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="WinRtBehaviors">
@@ -169,6 +176,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Pages\ContentSwitchingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\StandardLayout.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

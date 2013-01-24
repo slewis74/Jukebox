@@ -1,11 +1,11 @@
 ﻿using Jukebox.Model;
 using Windows.UI.Xaml;
 
-namespace Jukebox.Features.Artists.Snapped
+namespace Jukebox.Features.Artists
 {
-    public sealed partial class SnappedArtistsView
+    public sealed partial class ArtistsSnappedView
     {
-        public SnappedArtistsView()
+        public ArtistsSnappedView()
         {
             InitializeComponent();
         }
@@ -15,7 +15,7 @@ namespace Jukebox.Features.Artists.Snapped
             var artist = ((FrameworkElement)sender).DataContext as Artist;
             if (artist == null) return;
 
-            var viewModel = (ArtistsViewModel)DataContext;
+            var viewModel = (ArtistsSnappedViewModel)DataContext;
             viewModel.DisplayArtist.Execute(artist);
         }
     }

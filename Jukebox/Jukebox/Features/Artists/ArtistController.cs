@@ -11,7 +11,7 @@ namespace Jukebox.Features.Artists
     {
         public ActionResult ShowAll(DistinctAsyncObservableCollection<Artist> artists)
         {
-            return new PageActionResult<ArtistsView>(new ArtistsViewModel(artists));
+            return new ViewModelActionResult(() => new ArtistsViewModel(artists));
         }
 
         public ActionResult ShowArtist(Artist artist)

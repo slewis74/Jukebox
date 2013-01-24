@@ -72,6 +72,25 @@ namespace Slew.WinRT.Pages.Navigation
                 }
 
                 _presentationBus.Publish(new NavigationRequest(new NavigationRequestEventArgs(pageResult.PageType, pageResult.Parameter)));
+                return;
+            }
+
+            var viewModelResult = result as IViewModelActionResult;
+            if (viewModelResult != null)
+            {
+                var canRequestNavigation = viewModelResult.ViewModelInstance as ICanRequestNavigation;
+                if (canRequestNavigation != null)
+                {
+                    canRequestNavigation.Navigator = this;
+                }
+
+                var viewModelWithOrientation = viewModelResult.ViewModelInstance as ViewModelWithOrientation;
+                if (viewModelWithOrientation == null)
+                {
+                    throw new InvalidOperationException("When navigating to a view model it must be a ViewModelWithOrientation");
+                }
+
+                _presentationBus.Publish(new NavigationRequest(new NavigationRequestEventArgs(typeof(ContentSwitchingPage), viewModelResult.ViewModelInstance)));
             }
         }
 

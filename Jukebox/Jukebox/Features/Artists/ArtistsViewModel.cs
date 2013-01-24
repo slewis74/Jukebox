@@ -2,13 +2,12 @@
 using System.Linq;
 using Jukebox.Model;
 using Slew.WinRT.Data;
-using Slew.WinRT.Pages;
 using Slew.WinRT.Pages.Navigation;
 using Slew.WinRT.ViewModels;
 
 namespace Jukebox.Features.Artists
 {
-    public class ArtistsViewModel : CanRequestNavigationBase
+    public class ArtistsViewModel : ViewModelWithOrientation
 	{
         private readonly DistinctAsyncObservableCollection<Artist> _artists;
         private AsyncObservableCollection<GroupedData<GroupedArtistViewModel>> _groups;
@@ -19,11 +18,22 @@ namespace Jukebox.Features.Artists
             _artists.CollectionChanged += (sender, args) => NotifyChanged(() => GroupedItems);
 
             DisplayArtist = new DisplayArtistCommand(new Lazy<INavigator>(() => Navigator));
+            PlayAll = new PlayAllCommand();
 		}
 
-		public DisplayArtistCommand DisplayArtist { get; private set; }
+        public override Type FilledViewType
+        {
+            get { return typeof(ArtistsLandscapeView); }
+        }
 
-        public DistinctAsyncObservableCollection<Artist> Items { get { return _artists; } }
+        private ArtistsSnappedViewModel _snappedViewModel;
+        public override object SnappedViewModel
+        {
+            get { return _snappedViewModel ?? (new ArtistsSnappedViewModel(_artists, DisplayArtist, PlayAll)); } 
+        }
+
+		public DisplayArtistCommand DisplayArtist { get; private set; }
+        public PlayAllCommand PlayAll { get; private set; }
 
         public AsyncObservableCollection<GroupedData<GroupedArtistViewModel>> GroupedItems
 		{
@@ -55,17 +65,6 @@ namespace Jukebox.Features.Artists
 
 				return _groups;
 			}
-		}
-	}
-
-    public class DisplayArtistCommand : NavigationCommand<Artist>
-	{
-	    public DisplayArtistCommand(Lazy<INavigator> navigator) : base(navigator)
-        {}
-
-	    public override void Execute(Artist parameter)
-		{
-			Navigator.Value.Navigate<ArtistController>(c => c.ShowArtist(parameter));
 		}
 	}
 }

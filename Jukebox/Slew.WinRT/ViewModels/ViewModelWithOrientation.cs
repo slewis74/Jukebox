@@ -1,0 +1,90 @@
+﻿using System;
+using System.Linq;
+using System.Reflection;
+using Windows.UI.ViewManagement;
+
+namespace Slew.WinRT.ViewModels
+{
+    public class ViewModelWithOrientation : CanRequestNavigationBase
+    {
+        public virtual object LandscapeViewModel
+        {
+            get { return this; }
+        }
+
+        public virtual object SnappedViewModel
+        {
+            get { return this; }
+        }
+
+        public virtual object FilledViewModel
+        {
+            get { return this; }
+        }
+
+        public virtual object PortraitViewModel
+        {
+            get { return this; }
+        }
+
+        public virtual Type LandscapeViewType
+        {
+            get { return DetermineViewType(LandscapeViewModel.GetType(), ApplicationViewState.FullScreenLandscape); }
+        }
+        public virtual Type SnappedViewType
+        {
+            get { return DetermineViewType(SnappedViewModel.GetType(), ApplicationViewState.Snapped); }
+        }
+        public virtual Type FilledViewType
+        {
+            get { return DetermineViewType(FilledViewModel.GetType(), ApplicationViewState.Filled); }
+        }
+        public virtual Type PortraitViewType
+        {
+            get { return DetermineViewType(PortraitViewModel.GetType(), ApplicationViewState.FullScreenPortrait); }
+        }
+
+        private Type DetermineViewType(Type viewModelType, ApplicationViewState applicationViewState)
+        {
+            var vmTypeName = viewModelType.Name;
+            var logicalTypeName = vmTypeName.Substring(0, vmTypeName.IndexOf("ViewModel"));
+            string viewTypeName;
+
+            switch (applicationViewState)
+            {
+                case ApplicationViewState.Filled:
+                    viewTypeName = ConvertLogicalTypeToViewTypeName(logicalTypeName, "Filled");
+                    break;
+                case ApplicationViewState.Snapped:
+                    viewTypeName = ConvertLogicalTypeToViewTypeName(logicalTypeName, "Snapped");
+                    break;
+                case ApplicationViewState.FullScreenPortrait:
+                    viewTypeName = ConvertLogicalTypeToViewTypeName(logicalTypeName, "Portrait");
+                    break;
+                case ApplicationViewState.FullScreenLandscape:
+                default:
+                    viewTypeName = ConvertLogicalTypeToViewTypeName(logicalTypeName, "Landscape");
+                    break;
+            }
+            viewTypeName += "View";
+
+            var viewTypes = viewModelType.GetTypeInfo().Assembly.ExportedTypes.Where(t => t.Name == viewTypeName).ToArray();
+
+            if (viewTypes.Any() == false)
+            {
+                throw new InvalidOperationException(string.Format("Unable to locate view for {0}", vmTypeName));
+            }
+            if (viewTypes.Count() > 1)
+            {
+                throw new InvalidOperationException(string.Format("Ambiguous view list for {0}", vmTypeName));
+            }
+
+            return viewTypes.First();
+        }
+
+        private static string ConvertLogicalTypeToViewTypeName(string logicalTypeName, string suffixToTrim)
+        {
+            return logicalTypeName.EndsWith(suffixToTrim) ? logicalTypeName : logicalTypeName + suffixToTrim;
+        }
+    }
+}
