@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Jukebox.Events;
 using Jukebox.Model;
-using Slew.WinRT.Container;
 using Slew.WinRT.PresentationBus;
 using Windows.Storage;
 
@@ -16,9 +15,11 @@ namespace Jukebox.Storage
         IHandlePresentationEvent<NowPlayingContentChangedEvent>,
         IHandlePresentationEvent<NowPlayingCurrentTrackChangedEvent>
     {
-        public PlaylistHandler()
+        private readonly IPresentationBus _presentationBus;
+
+        public PlaylistHandler(IPresentationBus presentationBus)
         {
-            PropertyInjector.Inject(() => this); 
+            _presentationBus = presentationBus;
         }
 
         public PlaylistData LoadContent(IEnumerable<Artist> artists, bool isRandomPlayMode)
@@ -31,14 +32,14 @@ namespace Jukebox.Storage
             var playlists = new List<Playlist>();
 
             var playlistContainer = ApplicationData.Current.LocalSettings.CreateContainer(NowPlayingPlaylist.NowPlayingName, ApplicationDataCreateDisposition.Always);
-            var playlistData = new PlaylistData(isRandomPlayMode, LoadPlaylist(artists, playlistContainer), (int?)playlistContainer.Values["CurrentTrackIndex"]);
+            var playlistData = new PlaylistData(_presentationBus, isRandomPlayMode, LoadPlaylist(artists, playlistContainer), (int?)playlistContainer.Values["CurrentTrackIndex"]);
 
             var playlistsContainer = ApplicationData.Current.LocalSettings.CreateContainer("Playlists", ApplicationDataCreateDisposition.Always);
             foreach (var playlistKey in playlistsContainer.Containers.Keys)
             {
                 playlistContainer = playlistsContainer.Containers[playlistKey];
 
-                var playlist = new Playlist((string)playlistContainer.Values["Name"], LoadPlaylist(artists, playlistContainer));
+                var playlist = new Playlist(_presentationBus, (string)playlistContainer.Values["Name"], LoadPlaylist(artists, playlistContainer));
 
                 playlists.Add(playlist);
             }
@@ -73,8 +74,8 @@ namespace Jukebox.Storage
                 }
                 else
                 {
-                    Debug.WriteLine(string.Format("Unable to locate playlist track Disc {0}, Track {1} on album {2}", discNumber,
-                                                  trackNumber, albumTitle));
+                    Debug.WriteLine("Unable to locate playlist track Disc {0}, Track {1} on album {2}", discNumber,
+                                    trackNumber, albumTitle);
                 }
             }
             return songs;

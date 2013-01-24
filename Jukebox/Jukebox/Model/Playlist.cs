@@ -1,29 +1,27 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using Jukebox.Events;
-using Slew.WinRT.Container;
 using Slew.WinRT.Data;
 using Slew.WinRT.PresentationBus;
 
 namespace Jukebox.Model
 {
     [DebuggerDisplay("Playlist {Name}")]
-    public class Playlist : DistinctAsyncObservableCollection<Song>, IPublish
+    public class Playlist : DistinctAsyncObservableCollection<Song>
     {
-        public Playlist(string name)
+        public Playlist(IPresentationBus presentationBus, string name)
         {
+            PresentationBus = presentationBus;
             Name = name;
-            PropertyInjector.Inject(() => this); 
         }
 
-        public Playlist(string name, IEnumerable<Song> tracks) : base(tracks)
+        public Playlist(IPresentationBus presentationBus, string name, IEnumerable<Song> tracks) : base(tracks)
         {
+            PresentationBus = presentationBus;
             Name = name;
-            PropertyInjector.Inject(() => this);
         }
 
-        public IPresentationBus PresentationBus { get; set; }
-
+        protected IPresentationBus PresentationBus { get; private set; }
         public string Name { get; set; }
 
         public override void Add(Song item)

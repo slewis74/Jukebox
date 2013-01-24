@@ -1,15 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
-using Slew.WinRT.Container;
+using Slew.WinRT.PresentationBus;
 
 namespace Jukebox.Model
 {
     public class PlaylistData
     {
-        public PlaylistData(bool isRandomPlayMode, IEnumerable<Song> nowPlayingSongs, int? currentTrackIndex)
+        public PlaylistData(IPresentationBus presentationBus, bool isRandomPlayMode, IEnumerable<Song> nowPlayingSongs, int? currentTrackIndex)
         {
             NowPlayingPlaylist =
-                new NowPlayingPlaylist(isRandomPlayMode, nowPlayingSongs, currentTrackIndex);
+                new NowPlayingPlaylist(presentationBus, isRandomPlayMode, nowPlayingSongs, currentTrackIndex);
 
             Playlists = Enumerable.Empty<Playlist>();
         }

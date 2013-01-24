@@ -109,11 +109,6 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Container\CanRequestNavigationInjectorRule.cs" />
-    <Compile Include="Container\IInitializeAfterPropertyInjection.cs" />
-    <Compile Include="Container\IPropertyInjectorRule.cs" />
-    <Compile Include="Container\PublisherInjectorRule.cs" />
-    <Compile Include="Container\SubscriberInjectorRule.cs" />
     <Compile Include="Data\GroupedData.cs" />
     <Compile Include="Data\BindableBase.cs" />
     <Compile Include="Data\AsyncObservableCollection.cs" />
@@ -152,9 +147,7 @@
     <Compile Include="PresentationBus\IPresentationEvent.cs" />
     <Compile Include="PresentationBus\IHandlePresentationEvent.cs" />
     <Compile Include="PresentationBus\IPresentationRequest.cs" />
-    <Compile Include="PresentationBus\IPublish.cs" />
     <Compile Include="PresentationBus\PresentationBus.cs" />
-    <Compile Include="Container\PropertyInjector.cs" />
     <Compile Include="PresentationBus\PresentationEvent.cs" />
     <Compile Include="PresentationBus\PresentationRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -165,7 +158,6 @@
     <Compile Include="ViewModels\CanRequestNavigationBase.cs" />
     <Compile Include="ViewModels\Command.cs" />
     <Compile Include="ViewModels\ICanHandleNavigation.cs" />
-    <Compile Include="ViewModels\ICanRequestNavigation.cs" />
     <Compile Include="ViewModels\NavigationCommand.cs" />
     <Compile Include="ViewModels\PresentationRequestCommand.cs" />
     <Compile Include="ViewModels\ViewModelWithOrientation.cs" />

@@ -1,9 +1,8 @@
 using System;
-using Slew.WinRT.PresentationBus;
 
 namespace Slew.WinRT.ViewModels
 {
-    public interface ICanHandleNavigation : IPublish
+    public interface ICanHandleNavigation
     {
         void Navigate(Type viewType);
         void Navigate(Type viewType, object parameter);

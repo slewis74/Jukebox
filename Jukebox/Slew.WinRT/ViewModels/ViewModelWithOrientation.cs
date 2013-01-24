@@ -1,12 +1,22 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
+using Slew.WinRT.Pages.Navigation;
 using Windows.UI.ViewManagement;
 
 namespace Slew.WinRT.ViewModels
 {
-    public class ViewModelWithOrientation : CanRequestNavigationBase
+    public abstract class ViewModelWithOrientation : CanRequestNavigationBase
     {
+        protected ViewModelWithOrientation(INavigator navigator) : base(navigator)
+        {
+        }
+
+        protected ViewModelWithOrientation(INavigator navigator, SynchronizationContext synchronizationContext) : base(navigator, synchronizationContext)
+        {
+        }
+
         public virtual object LandscapeViewModel
         {
             get { return this; }

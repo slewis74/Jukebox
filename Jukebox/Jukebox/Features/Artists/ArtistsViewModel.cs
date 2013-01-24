@@ -3,22 +3,28 @@ using System.Linq;
 using Jukebox.Model;
 using Slew.WinRT.Data;
 using Slew.WinRT.Pages.Navigation;
+using Slew.WinRT.PresentationBus;
 using Slew.WinRT.ViewModels;
 
 namespace Jukebox.Features.Artists
 {
     public class ArtistsViewModel : ViewModelWithOrientation
 	{
+        private readonly IPresentationBus _presentationBus;
         private readonly DistinctAsyncObservableCollection<Artist> _artists;
         private AsyncObservableCollection<GroupedData<GroupedArtistViewModel>> _groups;
 
-        public ArtistsViewModel(DistinctAsyncObservableCollection<Artist> artists)
+        public ArtistsViewModel(
+            IPresentationBus presentationBus, 
+            INavigator navigator,
+            DistinctAsyncObservableCollection<Artist> artists) : base(navigator)
 		{
-			_artists = artists;
+            _presentationBus = presentationBus;
+            _artists = artists;
             _artists.CollectionChanged += (sender, args) => NotifyChanged(() => GroupedItems);
 
-            DisplayArtist = new DisplayArtistCommand(new Lazy<INavigator>(() => Navigator));
-            PlayAll = new PlayAllCommand();
+            DisplayArtist = new DisplayArtistCommand(Navigator);
+            PlayAll = new PlayAllCommand(_presentationBus);
 		}
 
         public override Type FilledViewType
@@ -29,7 +35,7 @@ namespace Jukebox.Features.Artists
         private ArtistsSnappedViewModel _snappedViewModel;
         public override object SnappedViewModel
         {
-            get { return _snappedViewModel ?? (new ArtistsSnappedViewModel(_artists, DisplayArtist, PlayAll)); } 
+            get { return _snappedViewModel ?? (_snappedViewModel = new ArtistsSnappedViewModel(_artists, DisplayArtist, PlayAll)); } 
         }
 
 		public DisplayArtistCommand DisplayArtist { get; private set; }

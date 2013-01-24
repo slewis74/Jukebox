@@ -314,8 +314,13 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
+    <Folder Include="Modules\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Autofac">
+      <HintPath>..\Packages\Autofac\Autofac.dll</HintPath>
+    </Reference>
     <Reference Include="WinRtBehaviors">
       <HintPath>..\Packages\WinRtBehaviours\WinRtBehaviors.dll</HintPath>
     </Reference>

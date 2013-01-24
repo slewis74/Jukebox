@@ -6,14 +6,12 @@ using Slew.WinRT.Data;
 using Slew.WinRT.Pages.Navigation;
 using Slew.WinRT.PresentationBus;
 using Slew.WinRT.Requests;
-using Slew.WinRT.ViewModels;
 using Windows.UI.ApplicationSettings;
 
 namespace Slew.WinRT.Pages.Settings
 {
     public class SettingsManager : 
-        BindableBase,
-        ICanRequestNavigation, 
+        BindableBase, 
         ISettingsManager,
         IHandlePresentationRequest<DisplaySettingsRequest>
     {

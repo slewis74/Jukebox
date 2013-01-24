@@ -3,6 +3,7 @@ using Jukebox.Model;
 using Jukebox.Requests;
 using Slew.WinRT.Data;
 using Slew.WinRT.Pages;
+using Slew.WinRT.Pages.Navigation;
 using Slew.WinRT.PresentationBus;
 using Slew.WinRT.ViewModels;
 using Windows.UI.Xaml.Media.Imaging;
@@ -13,17 +14,21 @@ namespace Jukebox.Features.Albums
 	{
         private readonly Album _album;
         
-        public AlbumViewModel(Album album)
+        public AlbumViewModel(
+            IPresentationBus presentationBus, 
+            INavigator navigator,
+            Album album)
+            : base(navigator)
 		{
 			_album = album;
 
             AlbumLocationCommandMappings = new AsyncObservableCollection<LocationCommandMapping>();
             TrackLocationCommandMappings = new AsyncObservableCollection<LocationCommandMapping>();
 
-			PlaySong = new PlaySongCommand();
-			PlayAlbum = new PlayAlbumCommand();
-            AddSong = new AddSongCommand();
-            AddAlbum = new AddAlbumCommand();
+			PlaySong = new PlaySongCommand(presentationBus);
+			PlayAlbum = new PlayAlbumCommand(presentationBus);
+            AddSong = new AddSongCommand(presentationBus);
+            AddAlbum = new AddAlbumCommand(presentationBus);
 
             Tracks = new AsyncObservableCollection<TrackViewModel>(
                 album.Songs
@@ -79,44 +84,64 @@ namespace Jukebox.Features.Albums
 	    }
 	}
 
-    public class PlaySongCommand : Command<TrackViewModel>, IPublish
+    public class PlaySongCommand : Command<TrackViewModel>
 	{
-        public IPresentationBus PresentationBus { get; set; }
+        private readonly IPresentationBus _presentationBus;
+
+        public PlaySongCommand(IPresentationBus presentationBus)
+        {
+            _presentationBus = presentationBus;
+        }
 
         public override void Execute(TrackViewModel parameter)
 		{
-            PresentationBus.Publish(new PlaySongNowRequest { Scope = parameter.GetSong() });
+            _presentationBus.Publish(new PlaySongNowRequest { Scope = parameter.GetSong() });
 		}
 	}
 
-    public class PlayAlbumCommand : Command<AlbumViewModel>, IPublish
+    public class PlayAlbumCommand : Command<AlbumViewModel>
 	{
-        public IPresentationBus PresentationBus { get; set; }
+        private readonly IPresentationBus _presentationBus;
+
+        public PlayAlbumCommand(IPresentationBus presentationBus)
+        {
+            _presentationBus = presentationBus;
+        }
 
         public override void Execute(AlbumViewModel parameter)
 		{
-            PresentationBus.Publish(new PlayAlbumNowRequest { Scope = parameter.GetAlbum() });
+            _presentationBus.Publish(new PlayAlbumNowRequest { Scope = parameter.GetAlbum() });
 		}
 
 	}
 
-    public class AddSongCommand : Command<TrackViewModel>, IPublish
+    public class AddSongCommand : Command<TrackViewModel>
     {
-        public IPresentationBus PresentationBus { get; set; }
+        private readonly IPresentationBus _presentationBus;
+
+        public AddSongCommand(IPresentationBus presentationBus)
+        {
+            _presentationBus = presentationBus;
+        }
 
         public override void Execute(TrackViewModel parameter)
         {
-            PresentationBus.Publish(new AddSongToCurrentPlaylistRequest { Song = parameter.GetSong() });
+            _presentationBus.Publish(new AddSongToCurrentPlaylistRequest { Song = parameter.GetSong() });
         }
     }
 
-    public class AddAlbumCommand : Command<AlbumViewModel>, IPublish
+    public class AddAlbumCommand : Command<AlbumViewModel>
     {
-        public IPresentationBus PresentationBus { get; set; }
+        private readonly IPresentationBus _presentationBus;
+
+        public AddAlbumCommand(IPresentationBus presentationBus)
+        {
+            _presentationBus = presentationBus;
+        }
 
         public override void Execute(AlbumViewModel parameter)
         {
-            PresentationBus.Publish(new AddAlbumToCurrentPlaylistRequest { Album = parameter.GetAlbum() });
+            _presentationBus.Publish(new AddAlbumToCurrentPlaylistRequest { Album = parameter.GetAlbum() });
         }
     }
 }

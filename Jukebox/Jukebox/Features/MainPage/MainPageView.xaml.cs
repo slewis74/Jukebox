@@ -4,12 +4,10 @@ using System.Threading;
 using Jukebox.Features.MainPage.Events;
 using Jukebox.Features.MainPage.Requests;
 using Jukebox.Requests;
-using Slew.WinRT.Container;
 using Slew.WinRT.Pages;
 using Slew.WinRT.Pages.Navigation;
 using Slew.WinRT.PresentationBus;
 using Slew.WinRT.Requests;
-using Slew.WinRT.ViewModels;
 using Windows.Foundation;
 using Windows.Media;
 using Windows.Storage;
@@ -20,10 +18,7 @@ using Windows.UI.Xaml.Media;
 
 namespace Jukebox.Features.MainPage
 {
-    public sealed partial class MainPageView : 
-        IPublish,
-        ICanRequestNavigation,
-        IHandlePresentationRequest<NavigationRequest>,
+    public sealed partial class MainPageView : IHandlePresentationRequest<NavigationRequest>,
         IHandlePresentationRequest<PositionTransformRequest>,
         IHandlePresentationRequest<PlayFileRequest>,
         IHandlePresentationRequest<StopPlayingRequest>,
@@ -35,8 +30,7 @@ namespace Jukebox.Features.MainPage
         public MainPageView()
 		{
 			InitializeComponent();
-            PropertyInjector.Inject(() => this); 
-
+            
             SettingsPane.GetForCurrentView().CommandsRequested += MainPageCommandsRequested;
 
 			Loaded += MainPageLoaded;

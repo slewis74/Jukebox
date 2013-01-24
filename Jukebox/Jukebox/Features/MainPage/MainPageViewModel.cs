@@ -5,8 +5,8 @@ using Jukebox.Features.MainPage.Commands;
 using Jukebox.Features.MainPage.Requests;
 using Jukebox.Model;
 using Jukebox.Requests;
-using Slew.WinRT.Container;
 using Slew.WinRT.Data;
+using Slew.WinRT.Pages.Navigation;
 using Slew.WinRT.PresentationBus;
 using Slew.WinRT.ViewModels;
 
@@ -14,33 +14,34 @@ namespace Jukebox.Features.MainPage
 {
 	public class MainPageViewModel :
         CanRequestNavigationBase,
-        IPublish,
         IHandlePresentationRequest<PlayRequest>,
         IHandlePresentationRequest<PauseRequest>,
         IHandlePresentationRequest<StopRequest>,
         IHandlePresentationEvent<NowPlayingCurrentTrackChangedEvent>
 	{
         private readonly DistinctAsyncObservableCollection<Playlist> _playlists;
+        private readonly IPresentationBus _presentationBus;
 
         public MainPageViewModel(
+            IPresentationBus presentationBus,
+            INavigator navigator,
             DistinctAsyncObservableCollection<Artist> artists,
             DistinctAsyncObservableCollection<Playlist> playlists,
-            NowPlayingPlaylist currentPlaylist)
+            NowPlayingPlaylist currentPlaylist) : base(navigator)
         {
+            _presentationBus = presentationBus;
             NowPlayingPlaylist = currentPlaylist;
             _artists = artists;
             _playlists = playlists;
 
-			DisplayArtists = new DisplayArtistsCommand(_artists);
+			DisplayArtists = new DisplayArtistsCommand(navigator, _artists);
             
-            PlayCommand = new PresentationRequestCommand<PlayRequest>();
-            PauseCommand = new PresentationRequestCommand<PauseRequest>();
+            PlayCommand = new PresentationRequestCommand<PlayRequest>(presentationBus);
+            PauseCommand = new PresentationRequestCommand<PauseRequest>(presentationBus);
             PlaylistsCommand = new PlaylistsCommand(_playlists);
-            NextTrackCommand = new NextTrackCommand(NowPlayingPlaylist.CanMoveNext);
-            PreviousTrackCommand = new PreviousTrackCommand(NowPlayingPlaylist.CanMovePrevious);
+            NextTrackCommand = new NextTrackCommand(presentationBus, NowPlayingPlaylist.CanMoveNext);
+            PreviousTrackCommand = new PreviousTrackCommand(presentationBus, NowPlayingPlaylist.CanMovePrevious);
         }
-
-        public IPresentationBus PresentationBus { get; set; }
 
 		public DisplayArtistsCommand DisplayArtists { get; private set; }
 
@@ -95,7 +96,7 @@ namespace Jukebox.Features.MainPage
 	    }
 
         private string _currentTrackDescription;
-        public string CurrentTrackDescription
+	    public string CurrentTrackDescription
         {
             get { return _currentTrackDescription; }
             set
@@ -162,28 +163,28 @@ namespace Jukebox.Features.MainPage
 		{
             IsPaused = false;
             IsPlaying = true;
-		    PresentationBus.Publish(new PlayFileRequest(await song.GetStorageFileAsync()));
+            _presentationBus.Publish(new PlayFileRequest(await song.GetStorageFileAsync()));
 		}
 
 	    private void RestartPlaying()
         {
             IsPlaying = true;
             IsPaused = false;
-            PresentationBus.Publish(new RestartPlayingRequest());
+            _presentationBus.Publish(new RestartPlayingRequest());
         }
 
         private void PausePlaying()
         {
             IsPlaying = false;
             IsPaused = true;
-            PresentationBus.Publish(new PausePlayingRequest());
+            _presentationBus.Publish(new PausePlayingRequest());
         }
 
 		private void StopPlaying()
 		{
 		    IsPlaying = false;
 		    IsPaused = false;
-            PresentationBus.Publish(new StopPlayingRequest());
+            _presentationBus.Publish(new StopPlayingRequest());
 		}
 	}
 }

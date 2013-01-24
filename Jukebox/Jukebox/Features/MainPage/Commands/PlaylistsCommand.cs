@@ -6,7 +6,7 @@ using Slew.WinRT.ViewModels;
 
 namespace Jukebox.Features.MainPage.Commands
 {
-    public class PlaylistsCommand : Command, ICanRequestNavigation
+    public class PlaylistsCommand : Command
     {
         private readonly DistinctAsyncObservableCollection<Playlist> _playlists;
 

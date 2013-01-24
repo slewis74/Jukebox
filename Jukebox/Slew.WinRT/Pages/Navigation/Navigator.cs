@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Slew.WinRT.Container;
 using Slew.WinRT.Pages.Settings;
 using Slew.WinRT.PresentationBus;
 using Slew.WinRT.Requests;
@@ -39,6 +38,9 @@ namespace Slew.WinRT.Pages.Navigation
         {
             var instance = _controllerFactory.Create<TController>();
 
+            instance.PresentationBus = _presentationBus;
+            instance.Navigator = this;
+
             var body = (MethodCallExpression)action.Body;
             var parameterValues = new List<object>();
             var parameters = body.Method.GetParameters();
@@ -65,12 +67,6 @@ namespace Slew.WinRT.Pages.Navigation
             var pageResult = result as IPageActionResult;
             if (pageResult != null)
             {
-                var canRequestNavigation = pageResult.Parameter as ICanRequestNavigation;
-                if (canRequestNavigation != null)
-                {
-                    canRequestNavigation.Navigator = this;
-                }
-
                 _presentationBus.Publish(new NavigationRequest(new NavigationRequestEventArgs(pageResult.PageType, pageResult.Parameter)));
                 return;
             }
@@ -78,12 +74,6 @@ namespace Slew.WinRT.Pages.Navigation
             var viewModelResult = result as IViewModelActionResult;
             if (viewModelResult != null)
             {
-                var canRequestNavigation = viewModelResult.ViewModelInstance as ICanRequestNavigation;
-                if (canRequestNavigation != null)
-                {
-                    canRequestNavigation.Navigator = this;
-                }
-
                 var viewModelWithOrientation = viewModelResult.ViewModelInstance as ViewModelWithOrientation;
                 if (viewModelWithOrientation == null)
                 {

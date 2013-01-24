@@ -1,22 +1,21 @@
 ﻿using Jukebox.Requests;
-using Slew.WinRT.Container;
 using Slew.WinRT.PresentationBus;
 using Slew.WinRT.ViewModels;
 
 namespace Jukebox.Features.Artists
 {
-    public class PlayAllCommand : Command, IPublish
+    public class PlayAllCommand : Command
     {
-        public PlayAllCommand()
-        {
-            PropertyInjector.Inject(() => this);
-        }
+        private readonly IPresentationBus _presentationBus;
 
-        public IPresentationBus PresentationBus { get; set; }
+        public PlayAllCommand(IPresentationBus presentationBus)
+        {
+            _presentationBus = presentationBus;
+        }
 
         public override void Execute(object parameter)
         {
-            PresentationBus.Publish(new PlayAllNowRequest());
+            _presentationBus.Publish(new PlayAllNowRequest());
         }
     }
 }

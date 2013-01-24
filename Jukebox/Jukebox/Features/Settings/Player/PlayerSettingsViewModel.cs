@@ -1,16 +1,18 @@
 ﻿using Jukebox.Events;
 using Jukebox.Requests;
-using Slew.WinRT.Container;
 using Slew.WinRT.Data;
 using Slew.WinRT.PresentationBus;
 
 namespace Jukebox.Features.Settings.Player
 {
-    public class PlayerSettingsViewModel : BindableBase,
-        IInitializeAfterPropertyInjection,
-        IPublish
+    public class PlayerSettingsViewModel : BindableBase
     {
-        public IPresentationBus PresentationBus { get; set; }
+        private readonly IPresentationBus _presentationBus;
+
+        public PlayerSettingsViewModel(IPresentationBus presentationBus)
+        {
+            _presentationBus = presentationBus;
+        }
 
         private bool _isRandomPlayMode;
         public bool IsRandomPlayMode
@@ -20,7 +22,7 @@ namespace Jukebox.Features.Settings.Player
             {
                 if (SetProperty(ref _isRandomPlayMode, value))
                 {
-                    PresentationBus.Publish(new RandomPlayModeChangedEvent(_isRandomPlayMode));
+                    _presentationBus.Publish(new RandomPlayModeChangedEvent(_isRandomPlayMode));
                 }
             }
         }
@@ -28,7 +30,7 @@ namespace Jukebox.Features.Settings.Player
         public void Initialize()
         {
             var request = new IsRandomPlayModeRequest();
-            PresentationBus.Publish(request);
+            _presentationBus.Publish(request);
             _isRandomPlayMode = request.IsRandomPlayMode;
         }
     }

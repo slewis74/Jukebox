@@ -15,8 +15,7 @@ namespace Slew.WinRT.Pages.Settings
     }
 
     public class SettingsBackCommand : 
-        Command, 
-        ICanRequestNavigation
+        Command
     {
         public INavigator Navigator { get; set; }
 

@@ -8,7 +8,7 @@ namespace Jukebox.Features.Settings
     {
          public ActionResult PlayerSettings()
          {
-             return new SettingsPageActionResult<PlayerSettingsView, PlayerSettingsViewModel>();
+             return new SettingsPageActionResult<PlayerSettingsView, PlayerSettingsViewModel>(new PlayerSettingsViewModel(null));
          }
     }
 }

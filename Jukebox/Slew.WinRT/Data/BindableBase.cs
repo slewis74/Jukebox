@@ -5,7 +5,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using Slew.WinRT.Container;
 
 namespace Slew.WinRT.Data
 {
@@ -18,13 +17,11 @@ namespace Slew.WinRT.Data
 
         protected BindableBase()
         {
-            PropertyInjector.Inject(() => this); 
         }
 
         protected BindableBase(SynchronizationContext synchronizationContext)
         {
             SynchronizationContext = synchronizationContext;
-            PropertyInjector.Inject(() => this);
         }
 
         protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] String propertyName = null)

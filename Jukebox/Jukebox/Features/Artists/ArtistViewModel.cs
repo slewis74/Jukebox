@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using Jukebox.Features.Albums;
 using Jukebox.Model;
 using Jukebox.Requests;
@@ -14,12 +13,15 @@ namespace Jukebox.Features.Artists
 	{
 		private readonly Artist _artist;
 
-		public ArtistViewModel(Artist artist)
+		public ArtistViewModel(
+            IPresentationBus presentationBus, 
+            INavigator navigator, 
+            Artist artist) : base(navigator)
 		{
 			_artist = artist;
-			DisplayAlbum = new DisplayAlbumCommand(new Lazy<INavigator>(() => Navigator));
+			DisplayAlbum = new DisplayAlbumCommand(Navigator);
 
-            PlayArtist = new PlayArtistCommand();
+            PlayArtist = new PlayArtistCommand(presentationBus);
 		}
 
 		public DisplayAlbumCommand DisplayAlbum { get; private set; }
@@ -41,22 +43,27 @@ namespace Jukebox.Features.Artists
 
     public class DisplayAlbumCommand : NavigationCommand<Album>
 	{
-        public DisplayAlbumCommand(Lazy<INavigator> navigator) : base(navigator)
+        public DisplayAlbumCommand(INavigator navigator) : base(navigator)
 		{}
 
 	    public override void Execute(Album album)
 		{
-			Navigator.Value.Navigate<AlbumController>(c => c.ShowAlbum(album));
+			Navigator.Navigate<AlbumController>(c => c.ShowAlbum(album));
 		}
 	}
 
-    public class PlayArtistCommand : Command<ArtistViewModel>, IPublish
+    public class PlayArtistCommand : Command<ArtistViewModel>
     {
-        public IPresentationBus PresentationBus { get; set; }
+        private readonly IPresentationBus _presentationBus;
+
+        public PlayArtistCommand(IPresentationBus presentationBus)
+        {
+            _presentationBus = presentationBus;
+        }
 
         public override void Execute(ArtistViewModel parameter)
 		{
-            PresentationBus.Publish(new PlayArtistNowRequest { Scope = parameter.GetArtist() });
+            _presentationBus.Publish(new PlayArtistNowRequest { Scope = parameter.GetArtist() });
 		}
     }
 }

@@ -2,14 +2,19 @@
 
 namespace Slew.WinRT.ViewModels
 {
-    public class PresentationRequestCommand<T> : Command, IPublish
+    public class PresentationRequestCommand<T> : Command
         where T : IPresentationRequest, new()
     {
-        public IPresentationBus PresentationBus { get; set; }
+        private readonly IPresentationBus _presentationBus;
+
+        public PresentationRequestCommand(IPresentationBus presentationBus)
+        {
+            _presentationBus = presentationBus;
+        }
 
         public override void Execute(object parameter)
         {
-            PresentationBus.Publish(new T());
+            _presentationBus.Publish(new T());
         }
     }
 }

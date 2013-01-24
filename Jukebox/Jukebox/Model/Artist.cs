@@ -10,10 +10,13 @@ using Windows.UI.Xaml.Media.Imaging;
 namespace Jukebox.Model
 {
     [DebuggerDisplay("Artist - {Name}")]
-	public class Artist : BindableBase, IPublish
+	public class Artist : BindableBase
     {
-        public Artist(SynchronizationContext synchronizationContext) : base(synchronizationContext)
+        private readonly IPresentationBus _presentationBus;
+
+        public Artist(IPresentationBus presentationBus, SynchronizationContext synchronizationContext) : base(synchronizationContext)
         {
+            _presentationBus = presentationBus;
             Albums = new ObservableCollection<Album>();
         }
 
@@ -28,7 +31,7 @@ namespace Jukebox.Model
 			if (Albums.Contains(album))
 				return;
 			Albums.Add(album);
-            PresentationBus.Publish(new AlbumAddedEvent(this, album));
+            _presentationBus.Publish(new AlbumAddedEvent(this, album));
 		}
 
         public BitmapImage SmallBitmap
@@ -40,6 +43,5 @@ namespace Jukebox.Model
         {
             get { return Albums.First().LargeBitmap; }
         }
-
 	}
 }

@@ -1,6 +1,5 @@
 ﻿using Jukebox.Events;
 using Jukebox.Requests;
-using Slew.WinRT.Container;
 using Slew.WinRT.PresentationBus;
 using Windows.Storage;
 
@@ -12,11 +11,6 @@ namespace Jukebox.Storage
     {
         const string Settings = "Settings";
         const string RandomPlayMode = "IsRandomPlayMode";
-
-        public SettingsHandler()
-        {
-            PropertyInjector.Inject(() => this);
-        }
 
         public bool IsGetRandomPlayMode()
         {

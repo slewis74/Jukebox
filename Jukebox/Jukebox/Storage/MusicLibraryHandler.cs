@@ -5,8 +5,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Jukebox.Model;
-using Slew.WinRT.Container;
 using Slew.WinRT.Data;
+using Slew.WinRT.PresentationBus;
 using Windows.Storage;
 using Windows.Storage.Search;
 
@@ -14,9 +14,12 @@ namespace Jukebox.Storage
 {
     public class MusicLibraryHandler
     {
+        private readonly IPresentationBus _presentationBus;
         private readonly SynchronizationContext _uicontext;
-        public MusicLibraryHandler()
+
+        public MusicLibraryHandler(IPresentationBus presentationBus)
         {
+            _presentationBus = presentationBus;
             _uicontext = SynchronizationContext.Current;
         }
 
@@ -40,7 +43,7 @@ namespace Jukebox.Storage
             foreach (var artistKey in artistsContainer.Containers.Keys.OrderBy(x => x))
             {
                 var artistContainer = artistsContainer.Containers[artistKey];
-                var artist = new Artist(_uicontext)
+                var artist = new Artist(_presentationBus, _uicontext)
                                  {
                                      Name = (string) artistContainer.Values["Name"]
                                  };
@@ -108,7 +111,7 @@ namespace Jukebox.Storage
                             artist = newArtists.FirstOrDefault(x => string.Compare(x.Name, fileProps.Artist, StringComparison.CurrentCultureIgnoreCase) == 0);
                             if (artist == null)
                             {
-                                artist = new Artist(_uicontext)
+                                artist = new Artist(_presentationBus, _uicontext)
                                              {
                                                  Name = fileProps.Artist
                                              };

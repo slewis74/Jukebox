@@ -11,7 +11,7 @@ namespace Jukebox.Features.MainPage.Commands
     {
         private bool _canMoveNext;
 
-        public NextTrackCommand(bool canMoveNext)
+        public NextTrackCommand(IPresentationBus presentationBus, bool canMoveNext) : base(presentationBus)
         {
             _canMoveNext = canMoveNext;
         }

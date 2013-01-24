@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Slew.WinRT.ViewModels;
+﻿using System.Collections.Generic;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -73,54 +71,4 @@ namespace Slew.WinRT.Pages
             }
         }
     }
-
-    //[Windows.Foundation.Metadata.WebHostHidden]
-    //public class ContentSwitchingPage : NavigationAwarePage
-    //{
-    //    public ContentSwitchingPage()
-    //    {
-    //        if (Windows.ApplicationModel.DesignMode.DesignModeEnabled) return;
-
-    //        Loaded += StartLayoutUpdates;
-
-    //        Unloaded += StopLayoutUpdates;
-    //    }
-
-    //    private void StartLayoutUpdates(object sender, RoutedEventArgs e)
-    //    {
-    //        Window.Current.SizeChanged += WindowSizeChanged;
-    //    }
-
-    //    private void StopLayoutUpdates(object sender, RoutedEventArgs e)
-    //    {
-    //        Window.Current.SizeChanged -= WindowSizeChanged;
-    //    }
-
-    //    private void WindowSizeChanged(object sender, WindowSizeChangedEventArgs e)
-    //    {
-    //        var viewModel = DataContext as ViewModelWithOrientation;
-
-    //        if (viewModel == null) return;
-            
-    //        FrameworkElement view;
-    //        switch (ApplicationView.Value)
-    //        {
-    //            case ApplicationViewState.Snapped:
-    //                view = (FrameworkElement)Activator.CreateInstance(viewModel.SnappedViewType);
-    //                break;
-    //            case ApplicationViewState.Filled:
-    //                view = (FrameworkElement)Activator.CreateInstance(viewModel.FilledViewType);
-    //                break;
-    //            case ApplicationViewState.FullScreenPortrait:
-    //                view = (FrameworkElement)Activator.CreateInstance(viewModel.PortraitViewType);
-    //                break;
-    //            //case ApplicationViewState.FullScreenLandscape:
-    //            default:
-    //                view = (FrameworkElement)Activator.CreateInstance(viewModel.LandscapeViewType);
-    //                break;
-    //        }
-    //        view.DataContext = viewModel;
-    //        Content = view;
-    //    }
-    //}
 }

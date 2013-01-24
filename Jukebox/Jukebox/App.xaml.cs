@@ -1,11 +1,13 @@
 ﻿using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using Autofac;
+using Autofac.Core;
 using Jukebox.Common;
 using Jukebox.Features.MainPage;
 using Jukebox.Features.Settings;
 using Jukebox.Model;
 using Jukebox.Storage;
-using Slew.WinRT.Container;
 using Slew.WinRT.Data;
 using Slew.WinRT.Pages.Navigation;
 using Slew.WinRT.Pages.Settings;
@@ -24,6 +26,8 @@ namespace Jukebox
         private PlaylistHandler _playlistHandler;
         private SettingsHandler _settingsHandler;
 
+        private IContainer _container;
+
         public App()
         {
             InitializeComponent();
@@ -35,33 +39,48 @@ namespace Jukebox
             var bus = new PresentationBus();
             var navigator = new Navigator(bus, new JukeboxControllerFactory());
 
-            PropertyInjector.AddRule(new PublisherInjectorRule(bus));
-            PropertyInjector.AddRule(new SubscriberInjectorRule(bus));
-            PropertyInjector.AddRule(new CanRequestNavigationInjectorRule(navigator));
+            var builder = new ContainerBuilder();
+            builder.RegisterInstance(bus);
+            builder.RegisterInstance(navigator);
+            builder.RegisterAssemblyModules(typeof(App).GetTypeInfo().Assembly);
+
+            _container = builder.Build();
+            
+            //PropertyInjector.AddRule(new PublisherInjectorRule(bus));
+            //PropertyInjector.AddRule(new SubscriberInjectorRule(bus));
+            //PropertyInjector.AddRule(new CanRequestNavigationInjectorRule(navigator));
 
             _settingsManager = new SettingsManager();
             _settingsManager.Add<SettingsController>("PlayerSettings", "Player Settings", c => c.PlayerSettings());
+            bus.Subscribe(_settingsManager);
 
             _settingsHandler = new SettingsHandler();
             bool isRandomPlayMode = _settingsHandler.IsGetRandomPlayMode();
+            bus.Subscribe(_settingsHandler);
 
-            var musicLibraryHandler = new MusicLibraryHandler();
+            var musicLibraryHandler = new MusicLibraryHandler(bus);
             _artists = new DistinctAsyncObservableCollection<Artist>(musicLibraryHandler.LoadContent());
 
-            _playlistHandler = new PlaylistHandler();
+            _playlistHandler = new PlaylistHandler(bus);
             var playlistData = _playlistHandler.LoadContent(_artists, isRandomPlayMode);
             _playlists = new DistinctAsyncObservableCollection<Playlist>(playlistData.Playlists);
+            bus.Subscribe(_playlistHandler);
 
             if (args.PreviousExecutionState == ApplicationExecutionState.Terminated)
             {
                 //TODO: Load state from previously suspended application
             }
 
-            var mainPageViewModel = new MainPageViewModel(_artists, _playlists, playlistData.NowPlayingPlaylist);
-            Window.Current.Content = new MainPageView
-        	                             {
-                                             DataContext = mainPageViewModel
-        	                             };
+            var mainPageViewModel = new MainPageViewModel(bus, navigator, _artists, _playlists, playlistData.NowPlayingPlaylist);
+            var mainPageView = new MainPageView
+                                   {
+                                       DataContext = mainPageViewModel, PresentationBus = bus, Navigator = navigator
+                                   };
+            
+            bus.Subscribe(mainPageViewModel);
+            bus.Subscribe(mainPageView);
+            
+            Window.Current.Content = mainPageView;
             Window.Current.Activate();
 
             Task.Factory.StartNew(() => DoBackgroundProcessing(musicLibraryHandler));

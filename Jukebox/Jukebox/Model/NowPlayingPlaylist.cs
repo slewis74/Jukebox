@@ -21,16 +21,20 @@ namespace Jukebox.Model
 
         private bool _isRandomPlayMode;
 
-        public NowPlayingPlaylist(bool isRandomPlayMode)
-            : base(NowPlayingName)
+        public NowPlayingPlaylist(IPresentationBus presentationBus, bool isRandomPlayMode)
+            : base(presentationBus, NowPlayingName)
         {
             _isRandomPlayMode = isRandomPlayMode;
+
+            presentationBus.Subscribe(this);
         }
-        public NowPlayingPlaylist(bool isRandomPlayMode, IEnumerable<Song> tracks, int? currentTrackIndex)
-            : base(NowPlayingName, tracks)
+        public NowPlayingPlaylist(IPresentationBus presentationBus, bool isRandomPlayMode, IEnumerable<Song> tracks, int? currentTrackIndex)
+            : base(presentationBus, NowPlayingName, tracks)
         {
             _isRandomPlayMode = isRandomPlayMode;
             _currentTrack = currentTrackIndex == null || currentTrackIndex >= Count ? null : this[currentTrackIndex.Value];
+
+            presentationBus.Subscribe(this);
         }
 
         private Song _currentTrack;

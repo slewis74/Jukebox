@@ -1,10 +1,21 @@
-﻿using Slew.WinRT.Data;
+﻿using System.Threading;
+using Slew.WinRT.Data;
 using Slew.WinRT.Pages.Navigation;
 
 namespace Slew.WinRT.ViewModels
 {
-    public abstract class CanRequestNavigationBase : BindableBase, ICanRequestNavigation
+    public abstract class CanRequestNavigationBase : BindableBase
     {
+        protected CanRequestNavigationBase(INavigator navigator)
+        {
+            Navigator = navigator;
+        }
+
+        protected CanRequestNavigationBase(INavigator navigator, SynchronizationContext synchronizationContext) : base(synchronizationContext)
+        {
+            Navigator = navigator;
+        }
+
         public INavigator Navigator { get; set; }
     }
 }
