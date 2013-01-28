@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Slew.WinRT.ViewModels;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
@@ -8,11 +9,15 @@ namespace Slew.WinRT.Pages
 {
     public sealed partial class ContentSwitchingPage
     {
+        private readonly Dictionary<ApplicationViewState, FrameworkElement> _viewCache;
+
         public ContentSwitchingPage()
         {
             InitializeComponent();
 
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled) return;
+
+            _viewCache = new Dictionary<ApplicationViewState, FrameworkElement>();
 
             Loaded += StartLayoutUpdates;
 
@@ -37,7 +42,17 @@ namespace Slew.WinRT.Pages
             var pageViewModel = DataContext as ViewModelWithOrientation;
             if (pageViewModel == null) return;
 
-            SwitchedContent.Content = ViewResolver.Resolver(pageViewModel, ApplicationView.Value);
+            FrameworkElement frameworkElement;
+            if (_viewCache.ContainsKey(ApplicationView.Value))
+                frameworkElement = _viewCache[ApplicationView.Value];
+            else
+            {
+                frameworkElement = ViewResolver.Resolver(pageViewModel, ApplicationView.Value);
+                _viewCache.Add(ApplicationView.Value, frameworkElement);
+            }
+
+
+            SwitchedContent.Content = frameworkElement;
         }
     }
 }
