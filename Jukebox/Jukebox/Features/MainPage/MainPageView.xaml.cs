@@ -15,6 +15,7 @@ using Windows.UI.ApplicationSettings;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Navigation;
 
 namespace Jukebox.Features.MainPage
 {
@@ -33,6 +34,8 @@ namespace Jukebox.Features.MainPage
             
             SettingsPane.GetForCurrentView().CommandsRequested += MainPageCommandsRequested;
 
+            BrowsingFrame.Navigated += BrowsingFrameOnNavigated;
+
 			Loaded += MainPageLoaded;
 			MediaElement.MediaFailed += MediaElement_MediaFailed;
             MediaControl.PlayPressed += (sender, o) => DispatchCall(s => DoPlay());
@@ -46,6 +49,7 @@ namespace Jukebox.Features.MainPage
         public IPresentationBus PresentationBus { get; set; }
         public INavigator Navigator { get; set; }
         private MainPageViewModel ViewModel { get { return (MainPageViewModel)DataContext; } }
+        public IViewResolver ViewResolver { get; set; }
 
         private void DispatchCall(SendOrPostCallback call)
         {
@@ -82,7 +86,7 @@ namespace Jukebox.Features.MainPage
 
 		void MediaElement_MediaFailed(object sender, ExceptionRoutedEventArgs e)
 		{
-			Debug.WriteLine(string.Format("MediaFailed: {0}", e.ErrorMessage));
+			Debug.WriteLine("MediaFailed: {0}", e.ErrorMessage);
 		}
 
 		void MainPageLoaded(object sender, RoutedEventArgs e)
@@ -93,6 +97,15 @@ namespace Jukebox.Features.MainPage
         public void Handle(NavigationRequest request)
         {
             BrowsingFrame.Navigate(request.Args.ViewType, request.Args.Parameter);
+        }
+
+        private void BrowsingFrameOnNavigated(object sender, NavigationEventArgs navigationEventArgs)
+        {
+            var page = navigationEventArgs.Content as ContentSwitchingPage;
+            if (page != null)
+            {
+                page.ViewResolver = ViewResolver;
+            }
         }
 
         public void Handle(PlayFileRequest request)
@@ -146,7 +159,7 @@ namespace Jukebox.Features.MainPage
             PresentationBus.Publish(new SongEndedEvent());
 		}
 
-		private void BrowsingFrameNavigated1(object sender, Windows.UI.Xaml.Navigation.NavigationEventArgs e)
+		private void BrowsingFrameNavigated1(object sender, NavigationEventArgs e)
 		{
 			var view = e.Content as LayoutAwarePageWithNavigation;
 			if (view != null)
@@ -155,7 +168,7 @@ namespace Jukebox.Features.MainPage
 			}
 		}
 
-		private void BrowsingFrameNavigating1(object sender, Windows.UI.Xaml.Navigation.NavigatingCancelEventArgs e)
+		private void BrowsingFrameNavigating1(object sender, NavigatingCancelEventArgs e)
 		{
 			var currentView = ((Frame)sender).Content as LayoutAwarePageWithNavigation;
 			if (currentView != null)

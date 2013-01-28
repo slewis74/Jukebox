@@ -19,6 +19,8 @@ namespace Slew.WinRT.Pages
             Unloaded += StopLayoutUpdates;
         }
 
+        public IViewResolver ViewResolver { get; set; }
+        
         private void StartLayoutUpdates(object sender, RoutedEventArgs e)
         {
             Window.Current.SizeChanged += WindowSizeChanged;
@@ -33,34 +35,9 @@ namespace Slew.WinRT.Pages
         private void WindowSizeChanged(object sender, WindowSizeChangedEventArgs e)
         {
             var pageViewModel = DataContext as ViewModelWithOrientation;
-
             if (pageViewModel == null) return;
 
-            FrameworkElement view;
-            object childViewModel;
-            switch (ApplicationView.Value)
-            {
-                case ApplicationViewState.Snapped:
-                    view = (FrameworkElement)Activator.CreateInstance(pageViewModel.SnappedViewType);
-                    childViewModel = pageViewModel.SnappedViewModel;
-                    break;
-                case ApplicationViewState.Filled:
-                    view = (FrameworkElement)Activator.CreateInstance(pageViewModel.FilledViewType);
-                    childViewModel = pageViewModel.FilledViewModel;
-                    break;
-                case ApplicationViewState.FullScreenPortrait:
-                    view = (FrameworkElement)Activator.CreateInstance(pageViewModel.PortraitViewType);
-                    childViewModel = pageViewModel.PortraitViewModel;
-                    break;
-                //case ApplicationViewState.FullScreenLandscape:
-                default:
-                    view = (FrameworkElement)Activator.CreateInstance(pageViewModel.LandscapeViewType);
-                    childViewModel = pageViewModel.LandscapeViewModel;
-                    break;
-            }
-
-            view.DataContext = childViewModel;
-            SwitchedContent.Content = view;
+            SwitchedContent.Content = ViewResolver.Resolver(pageViewModel, ApplicationView.Value);
         }
     }
 }

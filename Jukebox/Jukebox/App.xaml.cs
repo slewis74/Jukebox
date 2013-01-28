@@ -7,6 +7,7 @@ using Jukebox.Features.Settings;
 using Jukebox.Model;
 using Jukebox.Storage;
 using Slew.WinRT.Data;
+using Slew.WinRT.Pages;
 using Slew.WinRT.Pages.Navigation;
 using Slew.WinRT.Pages.Settings;
 using Slew.WinRT.PresentationBus;
@@ -72,7 +73,10 @@ namespace Jukebox
             var mainPageViewModel = new MainPageViewModel(bus, navigator, _artists, _playlists, playlistData.NowPlayingPlaylist);
             var mainPageView = new MainPageView
                                    {
-                                       DataContext = mainPageViewModel, PresentationBus = bus, Navigator = navigator
+                                       PresentationBus = bus, 
+                                       Navigator = navigator,
+                                       ViewResolver = new ViewResolver(),
+                                       DataContext = mainPageViewModel,
                                    };
             
             bus.Subscribe(mainPageViewModel);
