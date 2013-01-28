@@ -132,9 +132,11 @@ namespace Slew.WinRT.Pages.Navigation
             view.Height = windowBounds.Height;
 
             // Place the SettingsFlyout inside our Popup window.
+            var settingsPopupViewModel = new SettingsPopupViewModel(new SettingsBackCommand(this));
+
             _settingsPopup.Child = new SettingsPopupView
                                        {
-                                           DataContext = new SettingsPopupViewModel(),
+                                           DataContext = settingsPopupViewModel,
                                            HeaderBackground = new SolidColorBrush(Colors.Green),
                                            Background = new SolidColorBrush(Colors.LightGreen),
                                            Content = view

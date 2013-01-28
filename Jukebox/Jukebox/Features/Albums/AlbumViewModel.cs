@@ -10,7 +10,7 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace Jukebox.Features.Albums
 {
-    public class AlbumViewModel : CanRequestNavigationBase
+    public class AlbumViewModel : ViewModelWithOrientation
 	{
         private readonly Album _album;
         

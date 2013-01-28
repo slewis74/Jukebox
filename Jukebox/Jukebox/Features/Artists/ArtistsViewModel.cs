@@ -27,11 +27,6 @@ namespace Jukebox.Features.Artists
             PlayAll = new PlayAllCommand(_presentationBus);
 		}
 
-        public override Type FilledViewType
-        {
-            get { return typeof(ArtistsLandscapeView); }
-        }
-
         private ArtistsSnappedViewModel _snappedViewModel;
         public override object SnappedViewModel
         {

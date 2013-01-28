@@ -135,6 +135,7 @@
     <Compile Include="Pages\Navigation\ViewModelActionResult.cs" />
     <Compile Include="Pages\SetterValueBindingHelper.cs" />
     <Compile Include="Pages\Settings\ISettingsManager.cs" />
+    <Compile Include="Pages\Settings\SettingsBackCommand.cs" />
     <Compile Include="Pages\Settings\SettingsManager.cs" />
     <Compile Include="Pages\Navigation\SettingsPageActionResult.cs" />
     <Compile Include="Pages\Settings\SettingsPopupView.cs" />

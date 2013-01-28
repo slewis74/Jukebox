@@ -15,14 +15,14 @@ namespace Slew.WinRT.Pages.Settings
         ISettingsManager,
         IHandlePresentationRequest<DisplaySettingsRequest>
     {
+        private readonly INavigator _navigator;
         private readonly Dictionary<Type, Dictionary<object, SettingsViewConfig>> _settings;
 
-        public SettingsManager()
+        public SettingsManager(INavigator navigator)
         {
+            _navigator = navigator;
             _settings = new Dictionary<Type, Dictionary<object, SettingsViewConfig>>();
         }
-
-        public INavigator Navigator { get; set; }
 
         public void Add<TController>(object id, string label, Expression<Func<TController, ActionResult>> action)
             where TController : IController, new()
@@ -48,7 +48,7 @@ namespace Slew.WinRT.Pages.Settings
                 .GetSettingsForId(id);
 
             setting.Label = label;
-            setting.Action = () => Navigator.Navigate(action);
+            setting.Action = () => _navigator.Navigate(action);
         }
 
         public IEnumerable<SettingsViewConfig> GetGlobalSettings()

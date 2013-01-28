@@ -1,8 +1,6 @@
-﻿using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
-using Autofac.Core;
 using Jukebox.Common;
 using Jukebox.Features.MainPage;
 using Jukebox.Features.Settings;
@@ -50,7 +48,7 @@ namespace Jukebox
             //PropertyInjector.AddRule(new SubscriberInjectorRule(bus));
             //PropertyInjector.AddRule(new CanRequestNavigationInjectorRule(navigator));
 
-            _settingsManager = new SettingsManager();
+            _settingsManager = new SettingsManager(navigator);
             _settingsManager.Add<SettingsController>("PlayerSettings", "Player Settings", c => c.PlayerSettings());
             bus.Subscribe(_settingsManager);
 

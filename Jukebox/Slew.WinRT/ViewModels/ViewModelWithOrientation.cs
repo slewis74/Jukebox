@@ -60,6 +60,8 @@ namespace Slew.WinRT.ViewModels
             var logicalTypeName = vmTypeName.Substring(0, vmTypeName.IndexOf("ViewModel"));
             string viewTypeName;
 
+            var exportedTypes = viewModelType.GetTypeInfo().Assembly.ExportedTypes.ToArray();
+
             switch (applicationViewState)
             {
                 case ApplicationViewState.Filled:
@@ -78,11 +80,25 @@ namespace Slew.WinRT.ViewModels
             }
             viewTypeName += "View";
 
-            var viewTypes = viewModelType.GetTypeInfo().Assembly.ExportedTypes.Where(t => t.Name == viewTypeName).ToArray();
+            var viewTypes = exportedTypes.Where(t => t.Name == viewTypeName).ToArray();
 
             if (viewTypes.Any() == false)
             {
-                throw new InvalidOperationException(string.Format("Unable to locate view for {0}", vmTypeName));
+                if (applicationViewState == ApplicationViewState.Filled)
+                {
+                    // Can't find a Filled View, so try to fall back to the Lanscape view
+                    return DetermineViewType(viewModelType, ApplicationViewState.FullScreenLandscape);
+                }
+                if (applicationViewState == ApplicationViewState.FullScreenLandscape)
+                {
+                    // Can't find a Landscape View, so try to fall back to the view without any orientation specifier
+                    viewTypes = exportedTypes.Where(t => t.Name == logicalTypeName + "View").ToArray();
+                }
+
+                if (viewTypes.Any() == false)
+                {
+                    throw new InvalidOperationException(string.Format("Unable to locate view for {0}", vmTypeName));
+                }
             }
             if (viewTypes.Count() > 1)
             {

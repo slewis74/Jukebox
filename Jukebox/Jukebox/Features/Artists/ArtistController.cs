@@ -17,8 +17,8 @@ namespace Jukebox.Features.Artists
         public ActionResult ShowArtist(Artist artist)
         {
             if (artist.Albums.Count == 1)
-                return new PageActionResult<AlbumView>(new AlbumViewModel(PresentationBus, Navigator, artist.Albums.Single()));
-            return new PageActionResult<ArtistView>(new ArtistViewModel(PresentationBus, Navigator, artist));
+                return new ViewModelActionResult(() => new AlbumViewModel(PresentationBus, Navigator, artist.Albums.Single()));
+            return new ViewModelActionResult(() => new ArtistViewModel(PresentationBus, Navigator, artist));
         }
     }
 }
