@@ -5,9 +5,9 @@ using Windows.UI.Xaml.Controls;
 
 namespace Jukebox.Features.Artists
 {
-	public sealed partial class ArtistsLandscapeView : IHaveBottomAppBar
+	public sealed partial class ArtistsView : IHaveBottomAppBar
 	{
-		public ArtistsLandscapeView()
+		public ArtistsView()
 		{
 			InitializeComponent();
             Loaded += ArtistsViewLoaded;

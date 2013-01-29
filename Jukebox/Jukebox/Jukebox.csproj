@@ -138,8 +138,8 @@
       <DependentUpon>ArtistsBottomAppBarView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\Artists\ArtistsSnappedViewModel.cs" />
-    <Compile Include="Features\Artists\ArtistsLandscapeView.xaml.cs">
-      <DependentUpon>ArtistsLandscapeView.xaml</DependentUpon>
+    <Compile Include="Features\Artists\ArtistsView.xaml.cs">
+      <DependentUpon>ArtistsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\Artists\ArtistsViewModel.cs" />
     <Compile Include="Features\Artists\ArtistView.xaml.cs">
@@ -257,7 +257,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Features\Artists\ArtistsLandscapeView.xaml">
+    <Page Include="Features\Artists\ArtistsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
