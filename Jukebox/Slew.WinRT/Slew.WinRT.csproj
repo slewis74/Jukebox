@@ -106,10 +106,10 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Folder Include="Commands\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\NavigateBackCommand.cs" />
     <Compile Include="Controls\NavigationFrame.cs" />
     <Compile Include="Data\GroupedData.cs" />
     <Compile Include="Data\BindableBase.cs" />
@@ -155,10 +155,11 @@
     <Compile Include="PresentationBus\PresentationEvent.cs" />
     <Compile Include="PresentationBus\PresentationRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Requests\Page.cs" />
+    <Compile Include="Requests\PageNavigationRequest.cs" />
     <Compile Include="Requests\PageNavigationRequestEventArgs.cs" />
     <Compile Include="Requests\DisplaySettingsRequest.cs" />
     <Compile Include="Pages\Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Requests\ViewModelNavigationRequest.cs" />
     <Compile Include="Requests\ViewModelNavigationRequestEventArgs.cs" />
     <Compile Include="ViewModels\CanRequestNavigationBase.cs" />
     <Compile Include="ViewModels\Command.cs" />

@@ -1,5 +1,4 @@
 ﻿using System.Threading;
-using System.Windows.Input;
 using Slew.WinRT.Data;
 using Slew.WinRT.Pages.Navigation;
 
@@ -18,6 +17,5 @@ namespace Slew.WinRT.ViewModels
         }
 
         public INavigator Navigator { get; private set; }
-        public ICommand NavigateBackCommand { get; private set; }
     }
 }
