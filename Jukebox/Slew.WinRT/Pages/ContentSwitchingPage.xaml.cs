@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Slew.WinRT.ViewModels;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
@@ -25,7 +24,7 @@ namespace Slew.WinRT.Pages
         }
 
         public IViewResolver ViewResolver { get; set; }
-        
+
         private void StartLayoutUpdates(object sender, RoutedEventArgs e)
         {
             Window.Current.SizeChanged += WindowSizeChanged;
@@ -47,10 +46,9 @@ namespace Slew.WinRT.Pages
                 frameworkElement = _viewCache[ApplicationView.Value];
             else
             {
-                frameworkElement = ViewResolver.Resolver(pageViewModel, ApplicationView.Value);
+                frameworkElement = ViewResolver.Resolve(pageViewModel, ApplicationView.Value);
                 _viewCache.Add(ApplicationView.Value, frameworkElement);
             }
-
 
             SwitchedContent.Content = frameworkElement;
         }

@@ -209,7 +209,6 @@
     <Compile Include="Requests\IsRandomPlayModeRequest.cs" />
     <Compile Include="Requests\PlayNowRequest.cs" />
     <Compile Include="Requests\PlayRequest.cs" />
-    <Compile Include="Requests\PositionTransformRequest.cs" />
     <Compile Include="Storage\MusicLibraryHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Storage\PlaylistHandler.cs" />

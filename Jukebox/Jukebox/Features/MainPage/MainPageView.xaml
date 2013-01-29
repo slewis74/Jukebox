@@ -6,7 +6,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:Pages="using:Slew.WinRT.Pages"
-    xmlns:MainPage="using:Jukebox.Features.MainPage" xmlns:Settings="using:Slew.WinRT.Pages.Settings" mc:Ignorable="d">
+    xmlns:MainPage="using:Jukebox.Features.MainPage" 
+    xmlns:Settings="using:Slew.WinRT.Pages.Settings"
+    xmlns:c="using:Slew.WinRT.Controls" 
+    mc:Ignorable="d">
 
     <Page.TopAppBar>
         <AppBar x:Name="GlobalTopAppBar">
@@ -78,11 +81,10 @@
 				MediaEnded="MediaElementMediaEnded1"/>
 		</Grid>
 
-		<Frame
-			x:Name="BrowsingFrame"
+        <c:NavigationFrame
+            x:Name="NavFrame"
 			Grid.Row="1" Grid.Column="0"
-			Navigated="BrowsingFrameNavigated1" 
-			Navigating="BrowsingFrameNavigating1" />
+            PageCommandsPanel="{Binding ElementName=PageCommands}"/>
     </Grid>
 
 	<VisualStateManager.VisualStateGroups>

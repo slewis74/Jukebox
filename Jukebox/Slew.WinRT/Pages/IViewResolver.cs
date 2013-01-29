@@ -6,6 +6,6 @@ namespace Slew.WinRT.Pages
 {
     public interface IViewResolver
     {
-        FrameworkElement Resolver(ViewModelWithOrientation viewModel, ApplicationViewState applicationViewState);
+        FrameworkElement Resolve(ViewModelWithOrientation viewModel, ApplicationViewState applicationViewState);
     }
 }

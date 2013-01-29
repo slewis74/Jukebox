@@ -9,7 +9,7 @@ namespace Jukebox.Features.Playlists
     {
          public ActionResult ShowAll(DistinctAsyncObservableCollection<Playlist> playlists)
          {
-             return new PageActionResult<PlaylistsView>(new PlaylistsViewModel(playlists));
+             return new ViewModelActionResult(() => new PlaylistsViewModel(playlists));
          }
     }
 }

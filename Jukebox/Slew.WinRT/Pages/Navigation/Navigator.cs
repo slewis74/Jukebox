@@ -67,7 +67,7 @@ namespace Slew.WinRT.Pages.Navigation
             var pageResult = result as IPageActionResult;
             if (pageResult != null)
             {
-                _presentationBus.Publish(new NavigationRequest(new NavigationRequestEventArgs(pageResult.PageType, pageResult.Parameter)));
+                _presentationBus.Publish(new PageNavigationRequest(new PageNavigationRequestEventArgs(pageResult.PageType, pageResult.Parameter)));
                 return;
             }
 
@@ -80,7 +80,7 @@ namespace Slew.WinRT.Pages.Navigation
                     throw new InvalidOperationException("When navigating to a view model it must be a ViewModelWithOrientation");
                 }
 
-                _presentationBus.Publish(new NavigationRequest(new NavigationRequestEventArgs(typeof(ContentSwitchingPage), viewModelResult.ViewModelInstance)));
+                _presentationBus.Publish(new ViewModelNavigationRequest(new ViewModelNavigationRequestEventArgs(viewModelWithOrientation)));
             }
         }
 

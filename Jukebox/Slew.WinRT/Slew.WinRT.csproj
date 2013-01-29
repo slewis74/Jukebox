@@ -109,6 +109,8 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\NavigateBackCommand.cs" />
+    <Compile Include="Controls\NavigationFrame.cs" />
     <Compile Include="Data\GroupedData.cs" />
     <Compile Include="Data\BindableBase.cs" />
     <Compile Include="Data\AsyncObservableCollection.cs" />
@@ -154,10 +156,11 @@
     <Compile Include="PresentationBus\PresentationEvent.cs" />
     <Compile Include="PresentationBus\PresentationRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Requests\NavigationRequest.cs" />
-    <Compile Include="Requests\NavigationRequestEventArgs.cs" />
+    <Compile Include="Requests\Page.cs" />
+    <Compile Include="Requests\PageNavigationRequestEventArgs.cs" />
     <Compile Include="Requests\DisplaySettingsRequest.cs" />
     <Compile Include="Pages\Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Requests\ViewModelNavigationRequestEventArgs.cs" />
     <Compile Include="ViewModels\CanRequestNavigationBase.cs" />
     <Compile Include="ViewModels\Command.cs" />
     <Compile Include="ViewModels\ICanHandleNavigation.cs" />

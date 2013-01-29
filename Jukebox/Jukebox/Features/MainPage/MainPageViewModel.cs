@@ -42,8 +42,8 @@ namespace Jukebox.Features.MainPage
             NextTrackCommand = new NextTrackCommand(presentationBus, NowPlayingPlaylist.CanMoveNext);
             PreviousTrackCommand = new PreviousTrackCommand(presentationBus, NowPlayingPlaylist.CanMovePrevious);
         }
-
-		public DisplayArtistsCommand DisplayArtists { get; private set; }
+       
+        public DisplayArtistsCommand DisplayArtists { get; private set; }
 
         public ICommand PlayCommand { get; private set; }
         public ICommand PauseCommand { get; private set; }
@@ -54,7 +54,7 @@ namespace Jukebox.Features.MainPage
         public DistinctAsyncObservableCollection<Playlist> Playlists { get { return _playlists; }}
 
         private NowPlayingPlaylist _nowPlayingPlaylist;
-        public NowPlayingPlaylist NowPlayingPlaylist
+	    public NowPlayingPlaylist NowPlayingPlaylist
 	    {
 	        get { return _nowPlayingPlaylist; }
 	        set

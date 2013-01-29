@@ -7,20 +7,15 @@ using Jukebox.Requests;
 using Slew.WinRT.Pages;
 using Slew.WinRT.Pages.Navigation;
 using Slew.WinRT.PresentationBus;
-using Slew.WinRT.Requests;
-using Windows.Foundation;
 using Windows.Media;
 using Windows.Storage;
 using Windows.UI.ApplicationSettings;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 namespace Jukebox.Features.MainPage
 {
-    public sealed partial class MainPageView : IHandlePresentationRequest<NavigationRequest>,
-        IHandlePresentationRequest<PositionTransformRequest>,
+    public sealed partial class MainPageView : 
         IHandlePresentationRequest<PlayFileRequest>,
         IHandlePresentationRequest<StopPlayingRequest>,
         IHandlePresentationRequest<PausePlayingRequest>,
@@ -34,10 +29,11 @@ namespace Jukebox.Features.MainPage
             
             SettingsPane.GetForCurrentView().CommandsRequested += MainPageCommandsRequested;
 
-            BrowsingFrame.Navigated += BrowsingFrameOnNavigated;
-
 			Loaded += MainPageLoaded;
+            Unloaded += OnUnloaded;
+
 			MediaElement.MediaFailed += MediaElement_MediaFailed;
+
             MediaControl.PlayPressed += (sender, o) => DispatchCall(s => DoPlay());
 		    MediaControl.PausePressed += (sender, o) => DispatchCall(s => DoPausePlaying());
 		    MediaControl.PlayPauseTogglePressed += (sender, o) => DispatchCall(TogglePlayPause);
@@ -63,11 +59,23 @@ namespace Jukebox.Features.MainPage
             }
         }
 
+        void MainPageLoaded(object sender, RoutedEventArgs e)
+        {
+            NavFrame.ViewResolver = ViewResolver;
+            PresentationBus.Subscribe(NavFrame);
+            ViewModel.DisplayArtists.Execute(null);
+        }
+
+        private void OnUnloaded(object sender, RoutedEventArgs routedEventArgs)
+        {
+            PresentationBus.UnSubscribe(NavFrame);
+        }
+
         void MainPageCommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
         {
-            var viewType = BrowsingFrame.Content.GetType();
-            var request = new DisplaySettingsRequest(viewType, args.Request);
-            PresentationBus.Publish(request);
+            //var viewType = BrowsingFrame.Content.GetType();
+            //var request = new DisplaySettingsRequest(viewType, args.Request);
+            //PresentationBus.Publish(request);
         }
 
         private void TogglePlayPause(object state)
@@ -89,25 +97,6 @@ namespace Jukebox.Features.MainPage
 			Debug.WriteLine("MediaFailed: {0}", e.ErrorMessage);
 		}
 
-		void MainPageLoaded(object sender, RoutedEventArgs e)
-		{
-		    ViewModel.DisplayArtists.Execute(null);
-		}
-
-        public void Handle(NavigationRequest request)
-        {
-            BrowsingFrame.Navigate(request.Args.ViewType, request.Args.Parameter);
-        }
-
-        private void BrowsingFrameOnNavigated(object sender, NavigationEventArgs navigationEventArgs)
-        {
-            var page = navigationEventArgs.Content as ContentSwitchingPage;
-            if (page != null)
-            {
-                page.ViewResolver = ViewResolver;
-            }
-        }
-
         public void Handle(PlayFileRequest request)
         {
             DoPlay(request.StorageFile);
@@ -125,12 +114,6 @@ namespace Jukebox.Features.MainPage
         {
             DoPlay();
         }
-
-		protected override void GoBack(object sender, RoutedEventArgs e)
-		{
-			// Use the navigation frame to return to the previous page
-			if (BrowsingFrame != null && BrowsingFrame.CanGoBack) BrowsingFrame.GoBack();
-		}
 
 		private async void DoPlay(StorageFile storageFile)
 		{
@@ -158,47 +141,5 @@ namespace Jukebox.Features.MainPage
 		{
             PresentationBus.Publish(new SongEndedEvent());
 		}
-
-		private void BrowsingFrameNavigated1(object sender, NavigationEventArgs e)
-		{
-			var view = e.Content as LayoutAwarePageWithNavigation;
-			if (view != null)
-			{
-				view.ProvideAppBarContent += ViewOnProvideAppBarContent;
-			}
-		}
-
-		private void BrowsingFrameNavigating1(object sender, NavigatingCancelEventArgs e)
-		{
-			var currentView = ((Frame)sender).Content as LayoutAwarePageWithNavigation;
-			if (currentView != null)
-			{
-				currentView.ProvideAppBarContent -= ViewOnProvideAppBarContent;
-			}
-		}
-
-		private void ViewOnProvideAppBarContent(object sender, FrameworkElement frameworkElement)
-		{
-			PageCommands.Children.Clear();
-            
-            if (frameworkElement == null) return;
-			PageCommands.Children.Add(frameworkElement);
-		}
-
-        public void Handle(PositionTransformRequest request)
-        {
-            var element = request.Args;
-
-            var position = element.TransformToVisual(this).TransformPoint(new Point(0, 0));
-
-            var location = new Location
-            {
-                Position = position,
-                Size = new Size(element.ActualWidth, element.ActualHeight)
-            };
-
-            request.Location = location;
-            request.IsHandled = true;
-        }
 	}
 }

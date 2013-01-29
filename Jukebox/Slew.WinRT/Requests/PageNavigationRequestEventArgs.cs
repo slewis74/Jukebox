@@ -2,20 +2,22 @@ using System;
 
 namespace Slew.WinRT.Requests
 {
-    public class NavigationRequestEventArgs : EventArgs
+    public class PageNavigationRequestEventArgs : EventArgs
     {
-        public NavigationRequestEventArgs(Type viewType)
+        public PageNavigationRequestEventArgs(Type viewType)
         {
             ViewType = viewType;
         }
 
-        public NavigationRequestEventArgs(Type viewType, object parameter)
+        public PageNavigationRequestEventArgs(Type viewType, object parameter, string target = null)
         {
             ViewType = viewType;
             Parameter = parameter;
+            Target = target;
         }
 
         public Type ViewType { get; private set; }
         public object Parameter { get; private set; }
+        public string Target { get; set; }
     }
 }
