@@ -61,6 +61,8 @@ namespace Jukebox.Features.MainPage
 
         void MainPageLoaded(object sender, RoutedEventArgs e)
         {
+            if (PresentationBus == null) return;
+
             NavFrame.ViewResolver = ViewResolver;
             PresentationBus.Subscribe(NavFrame);
             ViewModel.DisplayArtists.Execute(null);
@@ -68,7 +70,13 @@ namespace Jukebox.Features.MainPage
 
         private void OnUnloaded(object sender, RoutedEventArgs routedEventArgs)
         {
+            if (PresentationBus == null) return;
             PresentationBus.UnSubscribe(NavFrame);
+        }
+
+        protected override void GoBack(object sender, RoutedEventArgs routedEventArgs)
+        {
+            NavFrame.GoBack();
         }
 
         void MainPageCommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)

@@ -1,13 +1,11 @@
 ﻿<Pages:LayoutAwarePage
     x:Class="Jukebox.Features.MainPage.MainPageView"
-	x:Name="pageRoot"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:Pages="using:Slew.WinRT.Pages"
     xmlns:MainPage="using:Jukebox.Features.MainPage" 
-    xmlns:Settings="using:Slew.WinRT.Pages.Settings"
     xmlns:c="using:Slew.WinRT.Controls" 
     mc:Ignorable="d">
 
@@ -65,11 +63,10 @@
 				<ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-			<Button x:Name="backButton" Click="GoBack" IsEnabled="{Binding CanGoBack, ElementName=BrowsingFrame}" Style="{StaticResource BackButtonStyle}"/>
+            <Button x:Name="backButton" Click="GoBack" IsEnabled="{Binding CanGoBack, ElementName=NavFrame}" Style="{StaticResource BackButtonStyle}"/>
 			<TextBlock x:Name="pageTitle" Grid.Column="1" Text="{StaticResource AppName}" Style="{StaticResource PageHeaderTextStyle}"/>
 
             <MainPage:NowPlayingView
-                x:Name="NowPlayingView"
                 Grid.Column="2"
                 HorizontalAlignment="Center"
                 Margin="0 10 0 10"/>

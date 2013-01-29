@@ -49,6 +49,15 @@ namespace Slew.WinRT.Controls
             set { SetValue(PageCommandsPanelProperty, value); }
         }
 
+        public static readonly DependencyProperty CanGoBackProperty =
+            DependencyProperty.Register("CanGoBack", typeof (bool), typeof (NavigationFrame), new PropertyMetadata(default(bool)));
+
+        public bool CanGoBack
+        {
+            get { return (bool) GetValue(CanGoBackProperty); }
+            set { SetValue(CanGoBackProperty, value); }
+        }
+
         public void Handle(PageNavigationRequest request)
         {
             if (request.Args.Target != TargetName)
@@ -58,9 +67,13 @@ namespace Slew.WinRT.Controls
             var view = (FrameworkElement)Activator.CreateInstance(request.Args.ViewType);
             view.DataContext = request.Args.Parameter;
 
-            _backStack.Push((FrameworkElement)Content);
+            if (Content != null)
+            {
+                _backStack.Push((FrameworkElement)Content);
+            }
 
             Content = view;
+            SetCanGoBack();
         }
 
         public void Handle(ViewModelNavigationRequest request)
@@ -87,10 +100,19 @@ namespace Slew.WinRT.Controls
                 PageCommandsPanel.Children.Add(frameworkElement);
             }
 
+            if (Content != null)
+            {
+                _backStack.Push((FrameworkElement)Content);
+            }
+
             Content = contentSwitchingPage;
+            SetCanGoBack();
         }
 
-        public bool CanGoBack { get { return _backStack.Any(); } }
+        private void SetCanGoBack()
+        {
+            CanGoBack = _backStack.Any();
+        }
 
         public void GoBack()
         {
@@ -99,6 +121,7 @@ namespace Slew.WinRT.Controls
 
             var view = _backStack.Pop();
             Content = view;
+            SetCanGoBack();
         }
     }
 }

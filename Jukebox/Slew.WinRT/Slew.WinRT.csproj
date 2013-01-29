@@ -129,7 +129,6 @@
     <Compile Include="Pages\Navigation\INavigator.cs" />
     <Compile Include="Pages\Navigation\IPageActionResult.cs" />
     <Compile Include="Pages\LayoutAwarePage.cs" />
-    <Compile Include="Pages\LayoutAwarePageWithNavigation.cs" />
     <Compile Include="Pages\Location.cs" />
     <Compile Include="Pages\Navigation\ISettingsPageActionResult.cs" />
     <Compile Include="Pages\Navigation\IViewModelActionResult.cs" />
