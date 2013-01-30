@@ -16,15 +16,19 @@ namespace Jukebox.Storage
         IHandlePresentationEvent<NowPlayingCurrentTrackChangedEvent>
     {
         private readonly IPresentationBus _presentationBus;
+        private readonly ISettingsHandler _settingsHandler;
 
-        public PlaylistHandler(IPresentationBus presentationBus)
+        public PlaylistHandler(
+            IPresentationBus presentationBus,
+            ISettingsHandler settingsHandler)
         {
             _presentationBus = presentationBus;
+            _settingsHandler = settingsHandler;
         }
 
-        public PlaylistData LoadContent(IEnumerable<Artist> artists, bool isRandomPlayMode)
+        public PlaylistData LoadContent(IEnumerable<Artist> artists)
         {
-            return LoadData(artists.ToDictionary(k => k.Name), isRandomPlayMode);
+            return LoadData(artists.ToDictionary(k => k.Name), _settingsHandler.IsGetRandomPlayMode());
         }
 
         private PlaylistData LoadData(IDictionary<string, Artist> artists, bool isRandomPlayMode)

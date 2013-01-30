@@ -41,21 +41,15 @@ namespace Jukebox
 
             var bus = _container.Resolve<IPresentationBus>();
 
-            _settingsManager = _container.Resolve<ISettingsManager>();
-            _settingsManager.Add<SettingsController>("PlayerSettings", "Player Settings", c => c.PlayerSettings());
-            bus.Subscribe(_settingsManager);
-
-            _settingsHandler = _container.Resolve<SettingsHandler>();
-            bool isRandomPlayMode = _settingsHandler.IsGetRandomPlayMode();
-            bus.Subscribe(_settingsHandler);
+            // Resolve the SettingsManager, to wire up the settings handlers.
+            _container.Resolve<ISettingsManager>();
 
             var musicLibraryHandler = _container.Resolve<MusicLibraryHandler>();
             _artists = new DistinctAsyncObservableCollection<Artist>(musicLibraryHandler.LoadContent());
 
             _playlistHandler = _container.Resolve<PlaylistHandler>();
-            var playlistData = _playlistHandler.LoadContent(_artists, isRandomPlayMode);
+            var playlistData = _playlistHandler.LoadContent(_artists);
             _playlists = new DistinctAsyncObservableCollection<Playlist>(playlistData.Playlists);
-            bus.Subscribe(_playlistHandler);
 
             if (args.PreviousExecutionState == ApplicationExecutionState.Terminated)
             {

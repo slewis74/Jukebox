@@ -6,6 +6,7 @@ using Windows.Storage;
 namespace Jukebox.Storage
 {
     public class SettingsHandler :
+        ISettingsHandler,
         IHandlePresentationRequest<IsRandomPlayModeRequest>,
         IHandlePresentationEvent<RandomPlayModeChangedEvent>
     {
