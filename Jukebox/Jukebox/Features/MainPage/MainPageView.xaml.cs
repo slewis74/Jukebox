@@ -7,6 +7,7 @@ using Jukebox.Requests;
 using Slew.WinRT.Pages;
 using Slew.WinRT.Pages.Navigation;
 using Slew.WinRT.PresentationBus;
+using Slew.WinRT.Requests;
 using Windows.Media;
 using Windows.Storage;
 using Windows.UI.ApplicationSettings;
@@ -81,9 +82,9 @@ namespace Jukebox.Features.MainPage
 
         void MainPageCommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
         {
-            //var viewType = BrowsingFrame.Content.GetType();
-            //var request = new DisplaySettingsRequest(viewType, args.Request);
-            //PresentationBus.Publish(request);
+            var viewType = NavFrame.Content.GetType();
+            var request = new DisplaySettingsRequest(viewType, args.Request);
+            PresentationBus.Publish(request);
         }
 
         private void TogglePlayPause(object state)
