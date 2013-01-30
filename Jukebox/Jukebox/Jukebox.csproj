@@ -205,6 +205,11 @@
     </Compile>
     <Compile Include="Features\Playlists\PlaylistsViewModel.cs" />
     <Compile Include="Features\Playlists\PlaylistViewModel.cs" />
+    <Compile Include="Modules\LibraryModule.cs" />
+    <Compile Include="Modules\NavigationModule.cs" />
+    <Compile Include="Modules\PlaylistModule.cs" />
+    <Compile Include="Modules\PresentationBusModule.cs" />
+    <Compile Include="Modules\SettingsModule.cs" />
     <Compile Include="Requests\AddToCurrentPlaylistRequest.cs" />
     <Compile Include="Requests\IsRandomPlayModeRequest.cs" />
     <Compile Include="Requests\PlayNowRequest.cs" />
@@ -313,9 +318,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Modules\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Reference Include="Autofac">
       <HintPath>..\Packages\Autofac\Autofac.dll</HintPath>

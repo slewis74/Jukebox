@@ -21,7 +21,7 @@ namespace Jukebox
     {
         private DistinctAsyncObservableCollection<Artist> _artists;
         private DistinctAsyncObservableCollection<Playlist> _playlists;
-        private SettingsManager _settingsManager;
+        private ISettingsManager _settingsManager;
         private PlaylistHandler _playlistHandler;
         private SettingsHandler _settingsHandler;
 
@@ -35,32 +35,24 @@ namespace Jukebox
 
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
-            var bus = new PresentationBus();
-            var navigator = new Navigator(bus, new JukeboxControllerFactory());
-
             var builder = new ContainerBuilder();
-            builder.RegisterInstance(bus);
-            builder.RegisterInstance(navigator);
             builder.RegisterAssemblyModules(typeof(App).GetTypeInfo().Assembly);
-
             _container = builder.Build();
-            
-            //PropertyInjector.AddRule(new PublisherInjectorRule(bus));
-            //PropertyInjector.AddRule(new SubscriberInjectorRule(bus));
-            //PropertyInjector.AddRule(new CanRequestNavigationInjectorRule(navigator));
 
-            _settingsManager = new SettingsManager(navigator);
+            var bus = _container.Resolve<IPresentationBus>();
+
+            _settingsManager = _container.Resolve<ISettingsManager>();
             _settingsManager.Add<SettingsController>("PlayerSettings", "Player Settings", c => c.PlayerSettings());
             bus.Subscribe(_settingsManager);
 
-            _settingsHandler = new SettingsHandler();
+            _settingsHandler = _container.Resolve<SettingsHandler>();
             bool isRandomPlayMode = _settingsHandler.IsGetRandomPlayMode();
             bus.Subscribe(_settingsHandler);
 
-            var musicLibraryHandler = new MusicLibraryHandler(bus);
+            var musicLibraryHandler = _container.Resolve<MusicLibraryHandler>();
             _artists = new DistinctAsyncObservableCollection<Artist>(musicLibraryHandler.LoadContent());
 
-            _playlistHandler = new PlaylistHandler(bus);
+            _playlistHandler = _container.Resolve<PlaylistHandler>();
             var playlistData = _playlistHandler.LoadContent(_artists, isRandomPlayMode);
             _playlists = new DistinctAsyncObservableCollection<Playlist>(playlistData.Playlists);
             bus.Subscribe(_playlistHandler);
@@ -70,12 +62,13 @@ namespace Jukebox
                 //TODO: Load state from previously suspended application
             }
 
+            var navigator = _container.Resolve<INavigator>();
             var mainPageViewModel = new MainPageViewModel(bus, navigator, _artists, _playlists, playlistData.NowPlayingPlaylist);
             var mainPageView = new MainPageView
                                    {
                                        PresentationBus = bus, 
                                        Navigator = navigator,
-                                       ViewResolver = new ViewResolver(),
+                                       ViewResolver = _container.Resolve<ViewResolver>(),
                                        DataContext = mainPageViewModel,
                                    };
             

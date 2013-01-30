@@ -79,7 +79,7 @@ namespace Slew.WinRT.PresentationBus
             var type = instance.GetType();
 
             var interfaceTypes = type.GetTypeInfo().ImplementedInterfaces;
-            foreach (var interfaceType in interfaceTypes.Where(x => x != handlesEventsType && handlesEventsType.GetTypeInfo().IsAssignableFrom(x.GetTypeInfo())))
+            foreach (var interfaceType in interfaceTypes.Where(x => x.IsConstructedGenericType && handlesEventsType.GetTypeInfo().IsAssignableFrom(x.GetTypeInfo())))
             {
                 var eventType = interfaceType.GenericTypeArguments.First();
                 callback(eventType);
