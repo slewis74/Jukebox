@@ -7,8 +7,7 @@ namespace Jukebox.Modules
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<MusicLibraryHandler>().AsSelf().SingleInstance();
-
+            builder.RegisterType<MusicProvider>().As<IMusicProvider>().SingleInstance();
         }
     }
 }

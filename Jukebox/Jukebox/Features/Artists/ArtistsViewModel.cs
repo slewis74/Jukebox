@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using Autofac;
 using Jukebox.Model;
+using Jukebox.Storage;
 using Slew.WinRT.Data;
 using Slew.WinRT.Pages.Navigation;
 using Slew.WinRT.PresentationBus;
@@ -17,10 +19,10 @@ namespace Jukebox.Features.Artists
         public ArtistsViewModel(
             IPresentationBus presentationBus, 
             INavigator navigator,
-            DistinctAsyncObservableCollection<Artist> artists) : base(navigator)
+            IMusicProvider musicProvider) : base(navigator)
 		{
             _presentationBus = presentationBus;
-            _artists = artists;
+            _artists = musicProvider.Artists;
             _artists.CollectionChanged += (sender, args) => NotifyChanged(() => GroupedItems);
 
             DisplayArtist = new DisplayArtistCommand(Navigator);
@@ -68,4 +70,19 @@ namespace Jukebox.Features.Artists
 			}
 		}
 	}
+
+    public class ArtistsViewModelFactory
+    {
+        private readonly IComponentContext _componentContext;
+
+        public ArtistsViewModelFactory(IComponentContext componentContext)
+        {
+            _componentContext = componentContext;
+        }
+
+        public ArtistsViewModel Create()
+        {
+            return _componentContext.Resolve<ArtistsViewModel>();
+        }
+    }
 }

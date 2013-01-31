@@ -25,16 +25,14 @@ namespace Jukebox.Features.MainPage
         public MainPageViewModel(
             IPresentationBus presentationBus,
             INavigator navigator,
-            DistinctAsyncObservableCollection<Artist> artists,
             DistinctAsyncObservableCollection<Playlist> playlists,
             NowPlayingPlaylist currentPlaylist) : base(navigator)
         {
             _presentationBus = presentationBus;
             NowPlayingPlaylist = currentPlaylist;
-            _artists = artists;
             _playlists = playlists;
 
-			DisplayArtists = new DisplayArtistsCommand(navigator, _artists);
+			DisplayArtists = new DisplayArtistsCommand(navigator);
             
             PlayCommand = new PresentationRequestCommand<PlayRequest>(presentationBus);
             PauseCommand = new PresentationRequestCommand<PauseRequest>(presentationBus);
@@ -62,9 +60,6 @@ namespace Jukebox.Features.MainPage
 	            SetProperty(ref _nowPlayingPlaylist, value);
 	        }
 	    }
-
-	    private readonly DistinctAsyncObservableCollection<Artist> _artists;
-        public DistinctAsyncObservableCollection<Artist> Artists { get { return _artists; } }
 
 	    private bool _isPaused;
 	    public bool IsPaused

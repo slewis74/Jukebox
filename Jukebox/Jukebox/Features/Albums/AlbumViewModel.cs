@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using Autofac;
+using Autofac.Core;
 using Jukebox.Model;
 using Jukebox.Requests;
 using Slew.WinRT.Data;

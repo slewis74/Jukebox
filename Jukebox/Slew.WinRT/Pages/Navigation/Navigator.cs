@@ -34,7 +34,7 @@ namespace Slew.WinRT.Pages.Navigation
         }
 
         public void Navigate<TController>(Expression<Func<TController, ActionResult>> action)
-            where TController : IController, new()
+            where TController : IController
         {
             var instance = _controllerFactory.Create<TController>();
 

@@ -19,11 +19,8 @@ namespace Jukebox
 {
     sealed partial class App
     {
-        private DistinctAsyncObservableCollection<Artist> _artists;
         private DistinctAsyncObservableCollection<Playlist> _playlists;
-        private ISettingsManager _settingsManager;
         private PlaylistHandler _playlistHandler;
-        private SettingsHandler _settingsHandler;
 
         private IContainer _container;
 
@@ -44,11 +41,11 @@ namespace Jukebox
             // Resolve the SettingsManager, to wire up the settings handlers.
             _container.Resolve<ISettingsManager>();
 
-            var musicLibraryHandler = _container.Resolve<MusicLibraryHandler>();
-            _artists = new DistinctAsyncObservableCollection<Artist>(musicLibraryHandler.LoadContent());
+            var musicProvider = _container.Resolve<IMusicProvider>();
+            musicProvider.LoadContent();
 
             _playlistHandler = _container.Resolve<PlaylistHandler>();
-            var playlistData = _playlistHandler.LoadContent(_artists);
+            var playlistData = _playlistHandler.LoadContent();
             _playlists = new DistinctAsyncObservableCollection<Playlist>(playlistData.Playlists);
 
             if (args.PreviousExecutionState == ApplicationExecutionState.Terminated)
@@ -57,7 +54,7 @@ namespace Jukebox
             }
 
             var navigator = _container.Resolve<INavigator>();
-            var mainPageViewModel = new MainPageViewModel(bus, navigator, _artists, _playlists, playlistData.NowPlayingPlaylist);
+            var mainPageViewModel = new MainPageViewModel(bus, navigator, _playlists, playlistData.NowPlayingPlaylist);
             var mainPageView = new MainPageView
                                    {
                                        PresentationBus = bus, 
@@ -72,12 +69,12 @@ namespace Jukebox
             Window.Current.Content = mainPageView;
             Window.Current.Activate();
 
-            Task.Factory.StartNew(() => DoBackgroundProcessing(musicLibraryHandler));
+            Task.Factory.StartNew(() => DoBackgroundProcessing(musicProvider));
         }
 
-        private async void DoBackgroundProcessing(MusicLibraryHandler musicLibraryHandler)
+        private async void DoBackgroundProcessing(IMusicProvider musicProvider)
         {
-            await musicLibraryHandler.ReScanMusicLibrary(_artists);
+            await musicProvider.ReScanMusicLibrary();
         }
 
         void OnSuspending(object sender, SuspendingEventArgs e)

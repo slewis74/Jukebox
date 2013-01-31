@@ -12,22 +12,25 @@ using Windows.Storage.Search;
 
 namespace Jukebox.Storage
 {
-    public class MusicLibraryHandler
+    public class MusicProvider : IMusicProvider
     {
         private readonly IPresentationBus _presentationBus;
         private readonly SynchronizationContext _uicontext;
 
-        public MusicLibraryHandler(IPresentationBus presentationBus)
+        public MusicProvider(IPresentationBus presentationBus)
         {
             _presentationBus = presentationBus;
             _uicontext = SynchronizationContext.Current;
         }
 
-        public IEnumerable<Artist> LoadContent()
+        public DistinctAsyncObservableCollection<Artist> Artists { get; private set; }
+
+        public void LoadContent()
         {
             var artists = new List<Artist>();
             LoadDataAsync(artists);
-            return artists;
+            
+            Artists = new DistinctAsyncObservableCollection<Artist>(artists);
         }
 
         /// <summary>
@@ -79,16 +82,16 @@ namespace Jukebox.Storage
             return true;
         }
 
-        public async Task<bool> ReScanMusicLibrary(AsyncObservableCollection<Artist> artists)
+        public async Task<bool> ReScanMusicLibrary()
         {
-            var newArtists = await ScanMusicLibraryFolder(KnownFolders.MusicLibrary, artists.ToList());
+            var newArtists = await ScanMusicLibraryFolder(KnownFolders.MusicLibrary, Artists.ToList());
             Debug.WriteLine("Finished scanning music folder");
 
             if (newArtists.Any())
             {
-                artists.AddRange(newArtists);
+                Artists.AddRange(newArtists);
                 
-                Task.Factory.StartNew(() => SaveData(artists));
+                Task.Factory.StartNew(() => SaveData(Artists));
             }
 
             return true;

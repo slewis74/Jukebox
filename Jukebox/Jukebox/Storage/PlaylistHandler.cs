@@ -17,18 +17,21 @@ namespace Jukebox.Storage
     {
         private readonly IPresentationBus _presentationBus;
         private readonly ISettingsHandler _settingsHandler;
+        private readonly IMusicProvider _musicProvider;
 
         public PlaylistHandler(
             IPresentationBus presentationBus,
-            ISettingsHandler settingsHandler)
+            ISettingsHandler settingsHandler,
+            IMusicProvider musicProvider)
         {
             _presentationBus = presentationBus;
             _settingsHandler = settingsHandler;
+            _musicProvider = musicProvider;
         }
 
-        public PlaylistData LoadContent(IEnumerable<Artist> artists)
+        public PlaylistData LoadContent()
         {
-            return LoadData(artists.ToDictionary(k => k.Name), _settingsHandler.IsGetRandomPlayMode());
+            return LoadData(_musicProvider.Artists.ToDictionary(k => k.Name), _settingsHandler.IsGetRandomPlayMode());
         }
 
         private PlaylistData LoadData(IDictionary<string, Artist> artists, bool isRandomPlayMode)
