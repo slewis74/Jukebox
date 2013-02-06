@@ -134,18 +134,18 @@
     </Compile>
     <Compile Include="Features\Albums\TrackViewModel.cs" />
     <Compile Include="Features\Artists\ArtistController.cs" />
-    <Compile Include="Features\Artists\ArtistsBottomAppBarView.xaml.cs">
+    <Compile Include="Features\Artists\All\ArtistsBottomAppBarView.xaml.cs">
       <DependentUpon>ArtistsBottomAppBarView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Features\Artists\ArtistsSnappedViewModel.cs" />
-    <Compile Include="Features\Artists\ArtistsView.xaml.cs">
+    <Compile Include="Features\Artists\All\ArtistsSnappedViewModel.cs" />
+    <Compile Include="Features\Artists\All\ArtistsView.xaml.cs">
       <DependentUpon>ArtistsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Features\Artists\ArtistsViewModel.cs" />
-    <Compile Include="Features\Artists\ArtistView.xaml.cs">
+    <Compile Include="Features\Artists\All\ArtistsViewModel.cs" />
+    <Compile Include="Features\Artists\Single\ArtistView.xaml.cs">
       <DependentUpon>ArtistView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Features\Artists\ArtistViewModel.cs" />
+    <Compile Include="Features\Artists\Single\ArtistViewModel.cs" />
     <Compile Include="Features\Artists\DesignTime\DesignArtistsViewModel.cs" />
     <Compile Include="Common\BooleanNegationConverter.cs" />
     <Compile Include="Common\JukeboxController.cs" />
@@ -156,13 +156,13 @@
     </Compile>
     <Compile Include="DataPersistence\SongPersister.cs" />
     <Compile Include="Features\Artists\DesignTime\DesignTimeArtistViewModel.cs" />
-    <Compile Include="Features\Artists\DisplayArtistCommand.cs" />
-    <Compile Include="Features\Artists\GroupedArtistViewModel.cs" />
-    <Compile Include="Features\Artists\ArtistsSnappedView.xaml.cs">
+    <Compile Include="Features\Artists\All\DisplayArtistCommand.cs" />
+    <Compile Include="Features\Artists\All\GroupedArtistViewModel.cs" />
+    <Compile Include="Features\Artists\All\ArtistsSnappedView.xaml.cs">
       <DependentUpon>ArtistsSnappedView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Features\Artists\PlayAllCommand.cs" />
-    <Compile Include="Features\Artists\SnappedArtistView.xaml.cs">
+    <Compile Include="Features\Artists\All\PlayAllCommand.cs" />
+    <Compile Include="Features\Artists\Single\SnappedArtistView.xaml.cs">
       <DependentUpon>SnappedArtistView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\HomePage\ArtistsSummary\ArtistsSummaryViewModel.cs" />
@@ -262,23 +262,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Features\Artists\ArtistsBottomAppBarView.xaml">
+    <Page Include="Features\Artists\All\ArtistsBottomAppBarView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Features\Artists\ArtistsView.xaml">
+    <Page Include="Features\Artists\All\ArtistsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Features\Artists\ArtistView.xaml">
+    <Page Include="Features\Artists\Single\ArtistView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Features\Artists\ArtistsSnappedView.xaml">
+    <Page Include="Features\Artists\All\ArtistsSnappedView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Features\Artists\SnappedArtistView.xaml">
+    <Page Include="Features\Artists\Single\SnappedArtistView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
