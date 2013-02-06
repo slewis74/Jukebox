@@ -2,7 +2,7 @@
 using Slew.WinRT.PresentationBus;
 using Slew.WinRT.ViewModels;
 
-namespace Jukebox.Features.Artists
+namespace Jukebox.Features.Artists.All
 {
     public class PlayAllCommand : Command
     {

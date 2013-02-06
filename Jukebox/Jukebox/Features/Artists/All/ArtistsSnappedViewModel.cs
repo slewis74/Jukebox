@@ -1,7 +1,7 @@
 ﻿using Jukebox.Model;
 using Slew.WinRT.Data;
 
-namespace Jukebox.Features.Artists
+namespace Jukebox.Features.Artists.All
 {
     public class ArtistsSnappedViewModel : BindableBase
     {

@@ -3,7 +3,7 @@ using Slew.WinRT.Pages;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace Jukebox.Features.Artists
+namespace Jukebox.Features.Artists.All
 {
 	public sealed partial class ArtistsView : IHaveBottomAppBar
 	{

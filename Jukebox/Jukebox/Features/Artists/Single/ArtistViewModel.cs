@@ -7,7 +7,7 @@ using Slew.WinRT.PresentationBus;
 using Slew.WinRT.ViewModels;
 using Windows.UI.Xaml.Media.Imaging;
 
-namespace Jukebox.Features.Artists
+namespace Jukebox.Features.Artists.Single
 {
     public class ArtistViewModel : ViewModelWithOrientation
 	{

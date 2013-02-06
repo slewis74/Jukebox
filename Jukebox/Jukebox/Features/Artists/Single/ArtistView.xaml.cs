@@ -1,7 +1,7 @@
 ﻿using Jukebox.Model;
 using Windows.UI.Xaml.Controls;
 
-namespace Jukebox.Features.Artists
+namespace Jukebox.Features.Artists.Single
 {
 	public sealed partial class ArtistView
 	{

@@ -2,7 +2,7 @@
 using Slew.WinRT.Pages.Navigation;
 using Slew.WinRT.ViewModels;
 
-namespace Jukebox.Features.Artists
+namespace Jukebox.Features.Artists.All
 {
     public class DisplayArtistCommand : NavigationCommand<Artist>
     {

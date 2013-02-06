@@ -1,9 +1,7 @@
-﻿using Jukebox.Events;
-using Jukebox.Model;
+﻿using Jukebox.Model;
 using Slew.WinRT.Data;
-using Slew.WinRT.PresentationBus;
 
-namespace Jukebox.Features.Artists
+namespace Jukebox.Features.Artists.All
 {
     public class GroupedArtistViewModel : BindableBase
     {

@@ -2,6 +2,8 @@
 using System.Linq;
 using Jukebox.Common;
 using Jukebox.Features.Albums;
+using Jukebox.Features.Artists.All;
+using Jukebox.Features.Artists.Single;
 using Jukebox.Model;
 using Jukebox.Storage;
 using Slew.WinRT.Data;
