@@ -48,7 +48,7 @@ namespace Jukebox.Features.Artists.Single
 
 	    public override void Execute(Album album)
 		{
-			Navigator.Navigate<AlbumController>(c => c.ShowAlbum(album));
+			Navigator.Navigate<AlbumController>(c => c.ShowAlbum(album.Artist.Name, album.Title));
 		}
 	}
 
