@@ -17,7 +17,8 @@ namespace Jukebox.Modules
             builder
                 .RegisterAssemblyTypes(typeof(ControllerModule).GetTypeInfo().Assembly)
                 .Where(t => t.IsAssignableTo<IController>())
-                .AsSelf();
+                .AsSelf()
+                .InstancePerDependency();
         }
     }
 }
