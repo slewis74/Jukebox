@@ -89,11 +89,10 @@ namespace Slew.WinRT.Controls
                                                ViewResolver = ViewResolver
                                            };
 
+            PageCommandsPanel.Children.Clear();
             var hasAppBarContent = view as IHaveBottomAppBar;
             if (hasAppBarContent != null)
             {
-                PageCommandsPanel.Children.Clear();
-
                 var frameworkElement = (FrameworkElement)Activator.CreateInstance(hasAppBarContent.BottomAppBarContentType);
                 frameworkElement.DataContext = request.Args.ViewModel;
 
