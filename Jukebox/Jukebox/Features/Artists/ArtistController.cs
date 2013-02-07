@@ -6,7 +6,6 @@ using Jukebox.Features.Artists.All;
 using Jukebox.Features.Artists.Single;
 using Jukebox.Model;
 using Jukebox.Storage;
-using Slew.WinRT.Data;
 using Slew.WinRT.Pages.Navigation;
 
 namespace Jukebox.Features.Artists

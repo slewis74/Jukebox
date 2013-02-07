@@ -11,7 +11,7 @@ namespace Jukebox.Modules
                 .RegisterAssemblyTypes(typeof (ViewModelModule).GetTypeInfo().Assembly)
                 .Where(t => t.Name.EndsWith("ViewModel"))
                 .AsSelf()
-                .InstancePerLifetimeScope();
+                .InstancePerDependency();
         }
     }
 }

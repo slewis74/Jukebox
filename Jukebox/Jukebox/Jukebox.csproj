@@ -129,15 +129,14 @@
     </Compile>
     <Compile Include="Features\Albums\AlbumViewModel.cs" />
     <Compile Include="Features\Albums\DesignTime\DesignTimeAlbumViewModel.cs" />
-    <Compile Include="Features\Albums\Snapped\SnappedAlbumView.xaml.cs">
-      <DependentUpon>SnappedAlbumView.xaml</DependentUpon>
+    <Compile Include="Features\Albums\AlbumSnappedView.xaml.cs">
+      <DependentUpon>AlbumSnappedView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\Albums\TrackViewModel.cs" />
     <Compile Include="Features\Artists\ArtistController.cs" />
     <Compile Include="Features\Artists\All\ArtistsBottomAppBarView.xaml.cs">
       <DependentUpon>ArtistsBottomAppBarView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Features\Artists\All\ArtistsSnappedViewModel.cs" />
     <Compile Include="Features\Artists\All\ArtistsView.xaml.cs">
       <DependentUpon>ArtistsView.xaml</DependentUpon>
     </Compile>
@@ -162,8 +161,8 @@
       <DependentUpon>ArtistsSnappedView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\Artists\All\PlayAllCommand.cs" />
-    <Compile Include="Features\Artists\Single\SnappedArtistView.xaml.cs">
-      <DependentUpon>SnappedArtistView.xaml</DependentUpon>
+    <Compile Include="Features\Artists\Single\ArtistSnappedView.xaml.cs">
+      <DependentUpon>ArtistSnappedView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\HomePage\ArtistsSummary\ArtistsSummaryViewModel.cs" />
     <Compile Include="Features\HomePage\HomePageView.xaml.cs">
@@ -258,7 +257,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Features\Albums\Snapped\SnappedAlbumView.xaml">
+    <Page Include="Features\Albums\AlbumSnappedView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -278,7 +277,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Features\Artists\Single\SnappedArtistView.xaml">
+    <Page Include="Features\Artists\Single\ArtistSnappedView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -59,7 +59,7 @@ namespace Jukebox
                                    {
                                        PresentationBus = bus, 
                                        Navigator = navigator,
-                                       ViewResolver = _container.Resolve<ViewResolver>(),
+                                       ViewResolver = _container.Resolve<IViewResolver>(),
                                        DataContext = mainPageViewModel,
                                    };
             

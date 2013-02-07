@@ -4,8 +4,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:snapped="using:Jukebox.Features.Albums.Snapped" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:designTime="using:Jukebox.Features.Albums.DesignTime"
     mc:Ignorable="d"
     d:DataContext="{Binding Source={d:DesignInstance Type=designTime:DesignTimeAlbumViewModel, IsDesignTimeCreatable=True}}">
@@ -128,12 +127,5 @@
                 </ListView.ItemContainerStyle>
             </ListView>
         </Grid>
-
-        <!-- Vertical scrolling list only used when snapped -->
-        <snapped:SnappedAlbumView
-            x:Name="snappedView"
-            AutomationProperties.AutomationId="SnappedView"
-            Visibility="Collapsed"/>
-
     </Grid>
 </UserControl>

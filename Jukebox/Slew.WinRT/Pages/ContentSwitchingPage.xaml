@@ -7,9 +7,5 @@
     mc:Ignorable="d">
 
     <Grid>
-
-        <ContentPresenter
-            x:Name="SwitchedContent"/>
-        
     </Grid>
 </UserControl>

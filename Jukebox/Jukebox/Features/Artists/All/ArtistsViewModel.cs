@@ -9,7 +9,7 @@ using Slew.WinRT.ViewModels;
 
 namespace Jukebox.Features.Artists.All
 {
-    public class ArtistsViewModel : ViewModelWithOrientation
+    public class ArtistsViewModel : CanRequestNavigationBase
 	{
         private readonly IPresentationBus _presentationBus;
         private readonly DistinctAsyncObservableCollection<Artist> _artists;
@@ -28,14 +28,10 @@ namespace Jukebox.Features.Artists.All
             PlayAll = new PlayAllCommand(_presentationBus);
 		}
 
-        private ArtistsSnappedViewModel _snappedViewModel;
-        public override object SnappedViewModel
-        {
-            get { return _snappedViewModel ?? (_snappedViewModel = new ArtistsSnappedViewModel(_artists, DisplayArtist, PlayAll)); } 
-        }
-
 		public DisplayArtistCommand DisplayArtist { get; private set; }
         public PlayAllCommand PlayAll { get; private set; }
+
+        public DistinctAsyncObservableCollection<Artist> Items { get { return _artists; } }
 
         public AsyncObservableCollection<GroupedData<GroupedArtistViewModel>> GroupedItems
 		{

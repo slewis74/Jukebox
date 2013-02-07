@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Slew.WinRT.ViewModels;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -38,7 +37,7 @@ namespace Slew.WinRT.Pages
 
         private void WindowSizeChanged(object sender, WindowSizeChangedEventArgs e)
         {
-            var pageViewModel = DataContext as ViewModelWithOrientation;
+            var pageViewModel = DataContext;
             if (pageViewModel == null) return;
 
             FrameworkElement frameworkElement;
@@ -50,7 +49,7 @@ namespace Slew.WinRT.Pages
                 _viewCache.Add(ApplicationView.Value, frameworkElement);
             }
 
-            SwitchedContent.Content = frameworkElement;
+            Content = frameworkElement;
         }
     }
 }

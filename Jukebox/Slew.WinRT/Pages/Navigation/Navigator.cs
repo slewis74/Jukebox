@@ -5,7 +5,6 @@ using System.Linq.Expressions;
 using Slew.WinRT.Pages.Settings;
 using Slew.WinRT.PresentationBus;
 using Slew.WinRT.Requests;
-using Slew.WinRT.ViewModels;
 using Windows.UI;
 using Windows.UI.ApplicationSettings;
 using Windows.UI.Xaml;
@@ -74,13 +73,7 @@ namespace Slew.WinRT.Pages.Navigation
             var viewModelResult = result as IViewModelActionResult;
             if (viewModelResult != null)
             {
-                var viewModelWithOrientation = viewModelResult.ViewModelInstance as ViewModelWithOrientation;
-                if (viewModelWithOrientation == null)
-                {
-                    throw new InvalidOperationException("When navigating to a view model it must be a ViewModelWithOrientation");
-                }
-
-                _presentationBus.Publish(new ViewModelNavigationRequest(new ViewModelNavigationRequestEventArgs(viewModelWithOrientation)));
+                _presentationBus.Publish(new ViewModelNavigationRequest(new ViewModelNavigationRequestEventArgs(viewModelResult.ViewModelInstance)));
             }
         }
 

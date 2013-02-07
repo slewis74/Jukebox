@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace Jukebox.Features.Artists.Single
 {
-    public class ArtistViewModel : ViewModelWithOrientation
+    public class ArtistViewModel : CanRequestNavigationBase
 	{
 		private readonly Artist _artist;
 

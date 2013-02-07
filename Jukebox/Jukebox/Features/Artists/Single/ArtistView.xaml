@@ -136,7 +136,7 @@
         </Grid>
 
         <!-- Vertical scrolling list only used when snapped -->
-        <snapped:SnappedArtistView
+        <snapped:ArtistSnappedView
                 x:Name="snappedView"
                 AutomationProperties.AutomationId="SnappedDetailsScrollViewer"
                 Grid.Row="1"

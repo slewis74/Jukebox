@@ -3,9 +3,9 @@ using Windows.UI.Xaml.Controls;
 
 namespace Jukebox.Features.Artists.Single
 {
-    public sealed partial class SnappedArtistView
+    public sealed partial class ArtistSnappedView
     {
-        public SnappedArtistView()
+        public ArtistSnappedView()
         {
             InitializeComponent();
         }

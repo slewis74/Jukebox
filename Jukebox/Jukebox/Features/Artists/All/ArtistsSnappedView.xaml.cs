@@ -15,7 +15,7 @@ namespace Jukebox.Features.Artists.All
             var artist = ((FrameworkElement)sender).DataContext as Artist;
             if (artist == null) return;
 
-            var viewModel = (ArtistsSnappedViewModel)DataContext;
+            var viewModel = (ArtistsViewModel)DataContext;
             viewModel.DisplayArtist.Execute(artist);
         }
     }

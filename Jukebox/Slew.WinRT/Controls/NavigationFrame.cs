@@ -82,19 +82,19 @@ namespace Slew.WinRT.Controls
                 return;
 
             var view = ViewResolver.Resolve(request.Args.ViewModel, ApplicationView.Value);
-            view.DataContext = request.Args.ViewModel;
 
             var contentSwitchingPage = new ContentSwitchingPage
                                            {
-                                               Content = view, ViewResolver = ViewResolver
+                                               DataContext = request.Args.ViewModel,
+                                               ViewResolver = ViewResolver
                                            };
 
             var hasAppBarContent = view as IHaveBottomAppBar;
             if (hasAppBarContent != null)
             {
                 PageCommandsPanel.Children.Clear();
-                
-                var frameworkElement = (FrameworkElement) Activator.CreateInstance(hasAppBarContent.BottomAppBarContentType);
+
+                var frameworkElement = (FrameworkElement)Activator.CreateInstance(hasAppBarContent.BottomAppBarContentType);
                 frameworkElement.DataContext = request.Args.ViewModel;
 
                 PageCommandsPanel.Children.Add(frameworkElement);
