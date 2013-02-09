@@ -46,7 +46,7 @@ namespace Jukebox.Features.MainPage
         public IPresentationBus PresentationBus { get; set; }
         public INavigator Navigator { get; set; }
         private MainPageViewModel ViewModel { get { return (MainPageViewModel)DataContext; } }
-        public IViewResolver ViewResolver { get; set; }
+        public IViewLocator ViewLocator { get; set; }
 
         private void DispatchCall(SendOrPostCallback call)
         {
@@ -64,7 +64,7 @@ namespace Jukebox.Features.MainPage
         {
             if (PresentationBus == null) return;
 
-            NavFrame.ViewResolver = ViewResolver;
+            NavFrame.ViewLocator = ViewLocator;
             PresentationBus.Subscribe(NavFrame);
             ViewModel.DisplayArtists.Execute(null);
         }

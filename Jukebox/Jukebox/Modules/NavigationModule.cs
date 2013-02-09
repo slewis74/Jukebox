@@ -12,7 +12,7 @@ namespace Jukebox.Modules
             builder.RegisterType<JukeboxControllerFactory>().As<IControllerFactory>().InstancePerLifetimeScope();
             builder.RegisterType<Navigator>().As<INavigator>().SingleInstance();
             
-            builder.RegisterType<ViewResolver>().As<IViewResolver>().SingleInstance();
+            builder.RegisterType<ViewLocator>().As<IViewLocator>().SingleInstance();
         }
     }
 }

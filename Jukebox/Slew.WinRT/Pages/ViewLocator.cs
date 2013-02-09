@@ -7,11 +7,11 @@ using Windows.UI.Xaml;
 
 namespace Slew.WinRT.Pages
 {
-    public class ViewResolver : IViewResolver
+    public class ViewLocator : IViewLocator
     {
         private Dictionary<ViewModelTypeOrientationKey, Type> _cache;
 
-        public ViewResolver()
+        public ViewLocator()
         {
             _cache = new Dictionary<ViewModelTypeOrientationKey, Type>();
         }

@@ -3,7 +3,7 @@ using Windows.UI.Xaml;
 
 namespace Slew.WinRT.Pages
 {
-    public interface IViewResolver
+    public interface IViewLocator
     {
         FrameworkElement Resolve(object viewModel, ApplicationViewState applicationViewState);
     }

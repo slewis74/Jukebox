@@ -31,13 +31,13 @@ namespace Slew.WinRT.Controls
             set { SetValue(TargetNameProperty, value); }
         }
 
-        public static readonly DependencyProperty ViewResolverProperty =
-            DependencyProperty.Register("ViewResolver", typeof (IViewResolver), typeof (NavigationFrame), new PropertyMetadata(default(IViewResolver)));
+        public static readonly DependencyProperty ViewLocatorProperty =
+            DependencyProperty.Register("ViewLocator", typeof (IViewLocator), typeof (NavigationFrame), new PropertyMetadata(default(IViewLocator)));
 
-        public IViewResolver ViewResolver
+        public IViewLocator ViewLocator
         {
-            get { return (IViewResolver) GetValue(ViewResolverProperty); }
-            set { SetValue(ViewResolverProperty, value); }
+            get { return (IViewLocator)GetValue(ViewLocatorProperty); }
+            set { SetValue(ViewLocatorProperty, value); }
         }
 
         public static readonly DependencyProperty PageCommandsPanelProperty =
@@ -81,12 +81,12 @@ namespace Slew.WinRT.Controls
             if (request.Args.Target != TargetName)
                 return;
 
-            var view = ViewResolver.Resolve(request.Args.ViewModel, ApplicationView.Value);
+            var view = ViewLocator.Resolve(request.Args.ViewModel, ApplicationView.Value);
 
             var contentSwitchingPage = new ContentSwitchingPage
                                            {
                                                DataContext = request.Args.ViewModel,
-                                               ViewResolver = ViewResolver
+                                               ViewLocator = ViewLocator
                                            };
 
             PageCommandsPanel.Children.Clear();

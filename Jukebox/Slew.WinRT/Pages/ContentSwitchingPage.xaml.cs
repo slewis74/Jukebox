@@ -22,7 +22,7 @@ namespace Slew.WinRT.Pages
             Unloaded += StopLayoutUpdates;
         }
 
-        public IViewResolver ViewResolver { get; set; }
+        public IViewLocator ViewLocator { get; set; }
 
         private void StartLayoutUpdates(object sender, RoutedEventArgs e)
         {
@@ -45,7 +45,7 @@ namespace Slew.WinRT.Pages
                 frameworkElement = _viewCache[ApplicationView.Value];
             else
             {
-                frameworkElement = ViewResolver.Resolve(pageViewModel, ApplicationView.Value);
+                frameworkElement = ViewLocator.Resolve(pageViewModel, ApplicationView.Value);
                 _viewCache.Add(ApplicationView.Value, frameworkElement);
             }
 
