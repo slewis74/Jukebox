@@ -15,11 +15,33 @@ namespace Slew.WinRT.Controls
         IHandlePresentationEvent<PageNavigationRequest>,
         IHandlePresentationEvent<ViewModelNavigationRequest>
     {
-        private readonly Stack<FrameworkElement> _backStack;
+        private class NavigationFrameStackItem
+        {
+            public NavigationFrameStackItem(string uri, FrameworkElement content)
+            {
+                Uri = uri;
+                Content = content;
+            }
+
+            public string Uri { get; private set; }
+            public FrameworkElement Content { get; private set; }
+
+            public override bool Equals(object obj)
+            {
+                return obj is NavigationFrameStackItem && ((NavigationFrameStackItem) obj).Uri == Uri;
+            }
+            public override int GetHashCode()
+            {
+                return Uri.GetHashCode();
+            }
+        }
+
+        private readonly Stack<NavigationFrameStackItem> _navigationStack;
 
         public NavigationFrame()
         {
-            _backStack = new Stack<FrameworkElement>();
+            // Note: the top of the navigation stack is always the currently displayed page
+            _navigationStack = new Stack<NavigationFrameStackItem>();
         }
 
         public static readonly DependencyProperty TargetNameProperty =
@@ -67,13 +89,7 @@ namespace Slew.WinRT.Controls
             var view = (FrameworkElement)Activator.CreateInstance(request.Args.ViewType);
             view.DataContext = request.Args.Parameter;
 
-            if (Content != null)
-            {
-                _backStack.Push((FrameworkElement)Content);
-            }
-
-            Content = view;
-            SetCanGoBack();
+            GoForward(request.Uri, view);
         }
 
         public void Handle(ViewModelNavigationRequest request)
@@ -99,27 +115,32 @@ namespace Slew.WinRT.Controls
                 PageCommandsPanel.Children.Add(frameworkElement);
             }
 
-            if (Content != null)
-            {
-                _backStack.Push((FrameworkElement)Content);
-            }
+            GoForward(request.Uri, contentSwitchingPage);
+        }
 
-            Content = contentSwitchingPage;
+        private void GoForward(string uri, FrameworkElement newContent)
+        {
+            _navigationStack.Push(new NavigationFrameStackItem(uri, newContent));
+            Content = newContent;
             SetCanGoBack();
         }
 
         private void SetCanGoBack()
         {
-            CanGoBack = _backStack.Any();
+            CanGoBack = _navigationStack.Count() > 1;
         }
 
         public void GoBack()
         {
             if (CanGoBack == false)
                 return;
+            
+            // pop the current page off the stack
+            _navigationStack.Pop();
 
-            var view = _backStack.Pop();
-            Content = view;
+
+            var item = _navigationStack.Peek();
+            Content = item.Content;
             SetCanGoBack();
         }
     }

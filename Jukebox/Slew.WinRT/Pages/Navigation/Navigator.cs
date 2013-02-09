@@ -37,9 +37,6 @@ namespace Slew.WinRT.Pages.Navigation
         {
             var instance = _controllerFactory.Create<TController>();
 
-            instance.PresentationBus = _presentationBus;
-            instance.Navigator = this;
-
             var body = (MethodCallExpression)action.Body;
             var parameterValues = new List<object>();
             var parameters = body.Method.GetParameters();
@@ -54,6 +51,21 @@ namespace Slew.WinRT.Pages.Navigation
                 parameterValues.Add(value);
             }
 
+            var uri = typeof(TController).Name.Replace("Controller", string.Empty) + "/" +
+                body.Method.Name;
+            if (parameterValues.Any())
+            {
+                uri += "?";
+                for (var paramIndex = 0; paramIndex < parameters.Length; paramIndex++)
+                {
+                    if (paramIndex > 0)
+                    {
+                        uri += ";";
+                    }
+                    uri += parameters[paramIndex].Name + "=" + parameterValues[paramIndex];
+                }
+            }
+
             var result = (ActionResult)body.Method.Invoke(instance, parameterValues.ToArray());
 
             var settingsResult = result as ISettingsPageActionResult;
@@ -66,15 +78,20 @@ namespace Slew.WinRT.Pages.Navigation
             var pageResult = result as IPageActionResult;
             if (pageResult != null)
             {
-                _presentationBus.Publish(new PageNavigationRequest(new PageNavigationRequestEventArgs(pageResult.PageType, pageResult.Parameter)));
+                _presentationBus.Publish(new PageNavigationRequest(uri, new PageNavigationRequestEventArgs(pageResult.PageType, pageResult.Parameter)));
                 return;
             }
 
             var viewModelResult = result as IViewModelActionResult;
             if (viewModelResult != null)
             {
-                _presentationBus.Publish(new ViewModelNavigationRequest(new ViewModelNavigationRequestEventArgs(viewModelResult.ViewModelInstance)));
+                _presentationBus.Publish(new ViewModelNavigationRequest(uri, new ViewModelNavigationRequestEventArgs(viewModelResult.ViewModelInstance)));
             }
+        }
+
+        public void Navigate(string uri)
+        {
+            
         }
 
         public void SettingsNavigateBack()

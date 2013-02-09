@@ -4,11 +4,6 @@ namespace Slew.WinRT.Requests
 {
     public class PageNavigationRequestEventArgs : EventArgs
     {
-        public PageNavigationRequestEventArgs(Type viewType)
-        {
-            ViewType = viewType;
-        }
-
         public PageNavigationRequestEventArgs(Type viewType, object parameter, string target = null)
         {
             ViewType = viewType;
