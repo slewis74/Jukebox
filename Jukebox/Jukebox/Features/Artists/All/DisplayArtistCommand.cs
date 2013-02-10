@@ -11,7 +11,7 @@ namespace Jukebox.Features.Artists.All
 
         public override void Execute(Artist parameter)
         {
-            Navigator.Navigate<ArtistController>(c => c.ShowArtist(parameter.Name));
+            Navigator.Navigate<ArtistsController>(c => c.ShowArtist(parameter.Name));
         }
     }
 }

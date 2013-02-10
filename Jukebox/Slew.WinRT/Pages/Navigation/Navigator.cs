@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using Slew.WinRT.Pages.Settings;
 using Slew.WinRT.PresentationBus;
@@ -18,16 +16,16 @@ namespace Slew.WinRT.Pages.Navigation
     public class Navigator : INavigator
     {
         private readonly IPresentationBus _presentationBus;
-        private readonly IControllerFactory _controllerFactory;
+        private readonly IControllerInvoker _controllerInvoker;
+        private readonly int _settingsWidth;
         private Popup _settingsPopup;
-        private int _settingsWidth;
 
         public Navigator(
             IPresentationBus presentationBus, 
-            IControllerFactory controllerFactory)
+            IControllerInvoker controllerInvoker)
         {
             _presentationBus = presentationBus;
-            _controllerFactory = controllerFactory;
+            _controllerInvoker = controllerInvoker;
 
             _settingsWidth = 346;
         }
@@ -35,38 +33,10 @@ namespace Slew.WinRT.Pages.Navigation
         public void Navigate<TController>(Expression<Func<TController, ActionResult>> action)
             where TController : IController
         {
-            var instance = _controllerFactory.Create<TController>();
+            var controllerResult = _controllerInvoker.Call(action);
 
-            var body = (MethodCallExpression)action.Body;
-            var parameterValues = new List<object>();
-            var parameters = body.Method.GetParameters();
-            var arguments = body.Arguments;
-            for (var i = 0; i < parameters.Length && i < arguments.Count; i++)
-            {
-                var argument = arguments[i];
-                var lambda = Expression.Lambda<Func<TController, object>>(Expression.Convert(argument, typeof(object)), action.Parameters.ToList());
-                var compiled = lambda.Compile();
-                var value = compiled(default(TController));
-                
-                parameterValues.Add(value);
-            }
-
-            var uri = typeof(TController).Name.Replace("Controller", string.Empty) + "/" +
-                body.Method.Name;
-            if (parameterValues.Any())
-            {
-                uri += "?";
-                for (var paramIndex = 0; paramIndex < parameters.Length; paramIndex++)
-                {
-                    if (paramIndex > 0)
-                    {
-                        uri += ";";
-                    }
-                    uri += parameters[paramIndex].Name + "=" + parameterValues[paramIndex];
-                }
-            }
-
-            var result = (ActionResult)body.Method.Invoke(instance, parameterValues.ToArray());
+            var uri = controllerResult.Uri;
+            var result = controllerResult.Result;
 
             var settingsResult = result as ISettingsPageActionResult;
             if (settingsResult != null)
@@ -87,11 +57,6 @@ namespace Slew.WinRT.Pages.Navigation
             {
                 _presentationBus.Publish(new ViewModelNavigationRequest(uri, new ViewModelNavigationRequestEventArgs(viewModelResult.ViewModelInstance)));
             }
-        }
-
-        public void Navigate(string uri)
-        {
-            
         }
 
         public void SettingsNavigateBack()

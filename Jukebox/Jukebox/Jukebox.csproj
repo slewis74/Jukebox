@@ -133,7 +133,7 @@
       <DependentUpon>AlbumSnappedView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\Albums\TrackViewModel.cs" />
-    <Compile Include="Features\Artists\ArtistController.cs" />
+    <Compile Include="Features\Artists\ArtistsController.cs" />
     <Compile Include="Features\Artists\All\ArtistsBottomAppBarView.xaml.cs">
       <DependentUpon>ArtistsBottomAppBarView.xaml</DependentUpon>
     </Compile>
@@ -173,7 +173,6 @@
       <DependentUpon>PlaylistSummaryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\HomePage\PlaylistSummary\PlaylistSummaryViewModel.cs" />
-    <Compile Include="Features\MainPage\Commands\DisplayArtistsCommand.cs" />
     <Compile Include="Features\MainPage\Events\SongEndedEvent.cs" />
     <Compile Include="Features\MainPage\MainPageView.xaml.cs">
       <DependentUpon>MainPageView.xaml</DependentUpon>

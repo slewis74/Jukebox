@@ -7,6 +7,7 @@ using Jukebox.Features.Settings;
 using Jukebox.Model;
 using Jukebox.Storage;
 using Slew.WinRT.Data;
+using Slew.WinRT.Data.Navigation;
 using Slew.WinRT.Pages;
 using Slew.WinRT.Pages.Navigation;
 using Slew.WinRT.Pages.Settings;
@@ -60,6 +61,8 @@ namespace Jukebox
                                        PresentationBus = bus, 
                                        Navigator = navigator,
                                        ViewLocator = _container.Resolve<IViewLocator>(),
+                                       NavigationStackStorage = _container.Resolve<INavigationStackStorage>(),
+                                       ControllerInvoker = _container.Resolve<IControllerInvoker>(),
                                        DataContext = mainPageViewModel,
                                    };
             

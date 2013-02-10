@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Slew.WinRT.Data.Navigation;
 using Slew.WinRT.Pages;
+using Slew.WinRT.Pages.Navigation;
 using Slew.WinRT.PresentationBus;
 using Slew.WinRT.Requests;
 using Windows.UI.ViewManagement;
@@ -24,7 +26,7 @@ namespace Slew.WinRT.Controls
             }
 
             public string Uri { get; private set; }
-            public FrameworkElement Content { get; private set; }
+            public FrameworkElement Content { get; set; }
 
             public override bool Equals(object obj)
             {
@@ -80,16 +82,76 @@ namespace Slew.WinRT.Controls
             set { SetValue(CanGoBackProperty, value); }
         }
 
+        public static readonly DependencyProperty NavigationStackStorageProperty =
+            DependencyProperty.Register("NavigationStackStorage", typeof(INavigationStackStorage), typeof(NavigationFrame), new PropertyMetadata(default(INavigationStackStorage)));
+
+        public INavigationStackStorage NavigationStackStorage
+        {
+            get { return (INavigationStackStorage)GetValue(NavigationStackStorageProperty); }
+            set { SetValue(NavigationStackStorageProperty, value); }
+        }
+
+        public static readonly DependencyProperty DefaultUriProperty =
+            DependencyProperty.Register("DefaultUri", typeof (string), typeof (NavigationFrame), new PropertyMetadata(default(string)));
+
+        public string DefaultUri
+        {
+            get { return (string) GetValue(DefaultUriProperty); }
+            set { SetValue(DefaultUriProperty, value); }
+        }
+
+        public static readonly DependencyProperty ControllerInvokerProperty =
+            DependencyProperty.Register("ControllerInvoker", typeof(IControllerInvoker), typeof(NavigationFrame), new PropertyMetadata(default(IControllerInvoker)));
+
+        public IControllerInvoker ControllerInvoker
+        {
+            get { return (IControllerInvoker)GetValue(ControllerInvokerProperty); }
+            set { SetValue(ControllerInvokerProperty, value); }
+        }
+
+        public void RestoreNavigationStack()
+        {
+            if (NavigationStackStorage == null)
+                return;
+
+            var uris = NavigationStackStorage.RetrieveUris();
+
+            NavigationFrameStackItem navigationFrameStackItem;
+            if (uris == null || uris.Any() == false)
+            {
+                navigationFrameStackItem = new NavigationFrameStackItem(DefaultUri, null);
+                _navigationStack.Push(navigationFrameStackItem);
+            }
+            else
+            {
+                foreach (var uri in uris)
+                {
+                    _navigationStack.Push(new NavigationFrameStackItem(uri, null));
+                }
+                navigationFrameStackItem = _navigationStack.Peek();
+            }
+
+            CheckItemContent(navigationFrameStackItem);
+            Content = navigationFrameStackItem.Content;
+
+            SetCanGoBack();
+        }
+
         public void Handle(PageNavigationRequest request)
         {
             if (request.Args.Target != TargetName)
                 return;
 
-            // create the view instance.
-            var view = (FrameworkElement)Activator.CreateInstance(request.Args.ViewType);
-            view.DataContext = request.Args.Parameter;
+            NavigateToPage(request.Uri, request.Args.ViewType, request.Args.Parameter);
+        }
 
-            GoForward(request.Uri, view);
+        private void NavigateToPage(string uri, Type viewType, object parameter)
+        {
+            // create the view instance.
+            var view = (FrameworkElement)Activator.CreateInstance(viewType);
+            view.DataContext = parameter;
+
+            GoForward(uri, view);
         }
 
         public void Handle(ViewModelNavigationRequest request)
@@ -97,11 +159,23 @@ namespace Slew.WinRT.Controls
             if (request.Args.Target != TargetName)
                 return;
 
-            var view = ViewLocator.Resolve(request.Args.ViewModel, ApplicationView.Value);
+            NavigateToViewModelAndAddToStack(request.Uri, request.Args.ViewModel);
+        }
+
+        private void NavigateToViewModelAndAddToStack(string uri, object viewModel)
+        {
+            var contentSwitchingPage = NavigateToViewModel(viewModel);
+
+            GoForward(uri, contentSwitchingPage);
+        }
+
+        private FrameworkElement NavigateToViewModel(object viewModel)
+        {
+            var view = ViewLocator.Resolve(viewModel, ApplicationView.Value);
 
             var contentSwitchingPage = new ContentSwitchingPage
                                            {
-                                               DataContext = request.Args.ViewModel,
+                                               DataContext = viewModel,
                                                ViewLocator = ViewLocator
                                            };
 
@@ -109,13 +183,12 @@ namespace Slew.WinRT.Controls
             var hasAppBarContent = view as IHaveBottomAppBar;
             if (hasAppBarContent != null)
             {
-                var frameworkElement = (FrameworkElement)Activator.CreateInstance(hasAppBarContent.BottomAppBarContentType);
-                frameworkElement.DataContext = request.Args.ViewModel;
+                var frameworkElement = (FrameworkElement) Activator.CreateInstance(hasAppBarContent.BottomAppBarContentType);
+                frameworkElement.DataContext = viewModel;
 
                 PageCommandsPanel.Children.Add(frameworkElement);
             }
-
-            GoForward(request.Uri, contentSwitchingPage);
+            return contentSwitchingPage;
         }
 
         private void GoForward(string uri, FrameworkElement newContent)
@@ -123,6 +196,11 @@ namespace Slew.WinRT.Controls
             _navigationStack.Push(new NavigationFrameStackItem(uri, newContent));
             Content = newContent;
             SetCanGoBack();
+
+            if (NavigationStackStorage != null)
+            {
+                NavigationStackStorage.StoreUris(_navigationStack.Select(i => i.Uri).ToArray());
+            }
         }
 
         private void SetCanGoBack()
@@ -137,11 +215,28 @@ namespace Slew.WinRT.Controls
             
             // pop the current page off the stack
             _navigationStack.Pop();
-
-
+            
             var item = _navigationStack.Peek();
+            CheckItemContent(item);
             Content = item.Content;
             SetCanGoBack();
+        }
+
+        private void CheckItemContent(NavigationFrameStackItem item)
+        {
+            if (item.Content != null)
+                return;
+
+            var controllerResult = ControllerInvoker.Call(item.Uri);
+            if (controllerResult is IPageActionResult)
+            {
+                //NavigateToPage();
+            }
+            else if (controllerResult is ViewModelActionResult)
+            {
+                var view = NavigateToViewModel(((ViewModelActionResult)controllerResult).ViewModelInstance);
+                item.Content = view;
+            }
         }
     }
 }

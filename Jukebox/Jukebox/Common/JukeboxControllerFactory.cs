@@ -13,10 +13,9 @@ namespace Jukebox.Common
             _componentContext = componentContext;
         }
 
-        public override TController Create<TController>()
+        public override object Create(Type controllerType)
         {
-            var controller = (TController)_componentContext.Resolve(typeof(TController));
-            return controller;
+            return _componentContext.Resolve(controllerType);
         }
     }
 }

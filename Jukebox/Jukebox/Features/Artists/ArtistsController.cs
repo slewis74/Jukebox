@@ -10,14 +10,14 @@ using Slew.WinRT.Pages.Navigation;
 
 namespace Jukebox.Features.Artists
 {
-    public class ArtistController : JukeboxController
+    public class ArtistsController : JukeboxController
     {
         private readonly IMusicProvider _musicProvider;
         private readonly Func<ArtistsViewModel> _artistsViewModelFactory;
         private readonly Func<Album, AlbumViewModel> _albumViewModelFactory;
         private readonly Func<Artist, ArtistViewModel> _artistViewModelFactory;
 
-        public ArtistController(
+        public ArtistsController(
             IMusicProvider musicProvider,
             Func<ArtistsViewModel> artistsViewModelFactory,
             Func<Album, AlbumViewModel> albumViewModelFactory,

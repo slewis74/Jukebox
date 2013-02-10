@@ -4,6 +4,7 @@ using System.Threading;
 using Jukebox.Features.MainPage.Events;
 using Jukebox.Features.MainPage.Requests;
 using Jukebox.Requests;
+using Slew.WinRT.Data.Navigation;
 using Slew.WinRT.Pages;
 using Slew.WinRT.Pages.Navigation;
 using Slew.WinRT.PresentationBus;
@@ -47,6 +48,8 @@ namespace Jukebox.Features.MainPage
         public INavigator Navigator { get; set; }
         private MainPageViewModel ViewModel { get { return (MainPageViewModel)DataContext; } }
         public IViewLocator ViewLocator { get; set; }
+        public INavigationStackStorage NavigationStackStorage { get; set; }
+        public IControllerInvoker ControllerInvoker { get; set; }
 
         private void DispatchCall(SendOrPostCallback call)
         {
@@ -65,8 +68,13 @@ namespace Jukebox.Features.MainPage
             if (PresentationBus == null) return;
 
             NavFrame.ViewLocator = ViewLocator;
+            NavFrame.NavigationStackStorage = NavigationStackStorage;
+            NavFrame.ControllerInvoker = ControllerInvoker;
+            NavFrame.DefaultUri = "Artists/ShowAll";
+            
+            NavFrame.RestoreNavigationStack();
+
             PresentationBus.Subscribe(NavFrame);
-            ViewModel.DisplayArtists.Execute(null);
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs routedEventArgs)
