@@ -25,13 +25,13 @@ namespace Slew.WinRT.Pages.Settings
         }
 
         public void Add<TController>(object id, string label, Expression<Func<TController, ActionResult>> action)
-            where TController : IController, new()
+            where TController : IController
         {
             AddSetting(typeof(GlobalSettings), id, label, action);
         }
 
         public void Add<TView, TController>(object id, string label, Expression<Func<TController, ActionResult>> action)
-            where TController : IController, new()
+            where TController : IController
         {
             AddSetting(typeof(TView), id, label, action);
         }
@@ -41,7 +41,7 @@ namespace Slew.WinRT.Pages.Settings
             object id, 
             string label, 
             Expression<Func<TController, ActionResult>> action) 
-            where TController : IController, new()
+            where TController : IController
         {
             var setting = _settings
                 .GetSettingsForScope(scope)

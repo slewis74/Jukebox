@@ -9,10 +9,10 @@ namespace Slew.WinRT.Pages.Settings
     public interface ISettingsManager : IHandlePresentationEvents
     {
         void Add<TController>(object id, string label, Expression<Func<TController, ActionResult>> action)
-            where TController : IController, new();
+            where TController : IController;
 
         void Add<TView, TController>(object id, string label, Expression<Func<TController, ActionResult>> action)
-            where TController : IController, new();
+            where TController : IController;
 
         IEnumerable<SettingsViewConfig> GetGlobalSettings();
         IEnumerable<SettingsViewConfig> GetViewSettings<TView>();

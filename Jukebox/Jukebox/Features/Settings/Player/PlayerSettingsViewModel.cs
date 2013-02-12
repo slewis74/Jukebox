@@ -1,5 +1,4 @@
 ﻿using Jukebox.Events;
-using Jukebox.Requests;
 using Slew.WinRT.Data;
 using Slew.WinRT.PresentationBus;
 
@@ -9,9 +8,10 @@ namespace Jukebox.Features.Settings.Player
     {
         private readonly IPresentationBus _presentationBus;
 
-        public PlayerSettingsViewModel(IPresentationBus presentationBus)
+        public PlayerSettingsViewModel(IPresentationBus presentationBus, bool isRandomPlayMode)
         {
             _presentationBus = presentationBus;
+            _isRandomPlayMode = isRandomPlayMode;
         }
 
         private bool _isRandomPlayMode;
@@ -25,13 +25,6 @@ namespace Jukebox.Features.Settings.Player
                     _presentationBus.Publish(new RandomPlayModeChangedEvent(_isRandomPlayMode));
                 }
             }
-        }
-
-        public void Initialize()
-        {
-            var request = new IsRandomPlayModeRequest();
-            _presentationBus.Publish(request);
-            _isRandomPlayMode = request.IsRandomPlayMode;
         }
     }
 }
