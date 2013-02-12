@@ -84,22 +84,20 @@ namespace Jukebox.Storage
 
         public async Task<bool> ReScanMusicLibrary()
         {
-            var newArtists = await ScanMusicLibraryFolder(KnownFolders.MusicLibrary, Artists.ToList());
+            var newTracks = await ScanMusicLibraryFolder(KnownFolders.MusicLibrary, Artists.ToList());
             Debug.WriteLine("Finished scanning music folder");
 
-            if (newArtists.Any())
+            if (newTracks)
             {
-                Artists.AddRange(newArtists);
-                
                 Task.Factory.StartNew(() => SaveData(Artists));
             }
 
             return true;
         }
 
-        private async Task<List<Artist>> ScanMusicLibraryFolder(StorageFolder parentFolder, IList<Artist> artists)
+        private async Task<bool> ScanMusicLibraryFolder(StorageFolder parentFolder, IList<Artist> artists)
         {
-            var newArtists = new List<Artist>();
+            var newData = false;
             foreach (var folder in await parentFolder.GetFoldersAsync())
             {
                 foreach (var f in await folder.GetFilesAsync(CommonFileQuery.OrderByMusicProperties))
@@ -111,23 +109,24 @@ namespace Jukebox.Storage
                         var artist = artists.FirstOrDefault(x => string.Compare(x.Name, fileProps.Artist, StringComparison.CurrentCultureIgnoreCase) == 0);
                         if (artist == null)
                         {
-                            artist = newArtists.FirstOrDefault(x => string.Compare(x.Name, fileProps.Artist, StringComparison.CurrentCultureIgnoreCase) == 0);
-                            if (artist == null)
-                            {
-                                artist = new Artist(_presentationBus, _uicontext)
-                                             {
-                                                 Name = fileProps.Artist
-                                             };
-                                newArtists.Add(artist);
-                                artists.Add(artist);
-                            }
+                            artist = new Artist(_presentationBus, _uicontext)
+                                            {
+                                                Name = fileProps.Artist
+                                            };
+                            newData = true;
+                            artists.Add(artist);
                         }
-                        var album = artist.Albums.FirstOrDefault(x => string.Compare(x.Title, fileProps.Album, StringComparison.CurrentCultureIgnoreCase) == 0 && x.Artist == artist) ??
-                                    new Album(_uicontext)
-                                    {
-                                        Title = fileProps.Album,
-                                        Artist = artist
-                                    };
+                        var album = artist.Albums.FirstOrDefault(x =>
+                                string.Compare(x.Title, fileProps.Album, StringComparison.CurrentCultureIgnoreCase) == 0 && x.Artist == artist);
+                        if (album == null)
+                        {
+                            album = new Album(_uicontext)
+                                {
+                                    Title = fileProps.Album,
+                                    Artist = artist
+                                };
+                            newData = true;
+                        }
 
                         uint discNumber = 1;
                         if (f.Name[1] == '-')
@@ -147,14 +146,15 @@ namespace Jukebox.Storage
                                            Album = album,
                                            Duration = fileProps.Duration
                                        };
+                            newData = true;
                             // save new entry to app storage
                         }
                         song.SetStorageFile(f);
                     }
                 }
-                newArtists.AddRange(await ScanMusicLibraryFolder(folder, artists));
+                newData |= await ScanMusicLibraryFolder(folder, artists);
             }
-            return newArtists;
+            return newData;
         }
         
         private void SaveData(IEnumerable<Artist> artists)

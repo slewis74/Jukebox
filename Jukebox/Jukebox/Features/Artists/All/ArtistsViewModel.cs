@@ -25,7 +25,7 @@ namespace Jukebox.Features.Artists.All
             _artists.CollectionChanged += (sender, args) => NotifyChanged(() => GroupedItems);
 
             DisplayArtist = new DisplayArtistCommand(Navigator);
-            PlayAll = new PlayAllCommand(_presentationBus);
+            PlayAll = new PlayAllCommand(_presentationBus, _artists);
 		}
 
 		public DisplayArtistCommand DisplayArtist { get; private set; }
