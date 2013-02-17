@@ -17,11 +17,15 @@ namespace Jukebox.Features.MainPage.Requests
 
     public class PlayFileRequest : PresentationRequest
     {
-        public PlayFileRequest(StorageFile storageFile)
+        public PlayFileRequest(string artistName, string trackTitle, StorageFile storageFile)
         {
+            ArtistName = artistName;
+            TrackTitle = trackTitle;
             StorageFile = storageFile;
         }
 
+        public string ArtistName { get; set; }
+        public string TrackTitle { get; set; }
         public StorageFile StorageFile { get; set; }
     }
 }

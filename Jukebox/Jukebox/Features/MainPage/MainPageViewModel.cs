@@ -154,7 +154,11 @@ namespace Jukebox.Features.MainPage
 		{
             IsPaused = false;
             IsPlaying = true;
-            _presentationBus.Publish(new PlayFileRequest(await song.GetStorageFileAsync()));
+            _presentationBus.Publish(
+                new PlayFileRequest(
+                    song.Album.Artist.Name, 
+                    song.Title, 
+                    await song.GetStorageFileAsync()));
 		}
 
 	    private void RestartPlaying()

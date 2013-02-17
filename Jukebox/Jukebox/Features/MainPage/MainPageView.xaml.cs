@@ -116,7 +116,7 @@ namespace Jukebox.Features.MainPage
 
         public void Handle(PlayFileRequest request)
         {
-            DoPlay(request.StorageFile);
+            DoPlay(request.ArtistName, request.TrackTitle, request.StorageFile);
         }
 
         public void Handle(StopPlayingRequest request)
@@ -132,12 +132,14 @@ namespace Jukebox.Features.MainPage
             DoPlay();
         }
 
-		private async void DoPlay(StorageFile storageFile)
+        private async void DoPlay(string artistName, string trackTitle, StorageFile storageFile)
 		{
 			//var stream = await storageFile.OpenReadAsync();
 			var stream = await storageFile.OpenAsync(FileAccessMode.Read);
 
-			MediaElement.SetSource(stream, storageFile.FileType);
+            MediaControl.ArtistName = artistName;
+            MediaControl.TrackName = trackTitle;
+            MediaElement.SetSource(stream, storageFile.FileType);
 		    DoPlay();
 		}
         private void DoPlay()
