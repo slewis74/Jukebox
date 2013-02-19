@@ -220,6 +220,11 @@ namespace Slew.WinRT.Controls
             CheckItemContent(item);
             Content = item.Content;
             SetCanGoBack();
+
+            if (NavigationStackStorage != null)
+            {
+                NavigationStackStorage.StoreUris(_navigationStack.Select(i => i.Uri).ToArray());
+            }
         }
 
         private void CheckItemContent(NavigationFrameStackItem item)
