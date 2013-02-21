@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Autofac;
 using Jukebox.Common;
 using Jukebox.Features.MainPage;
+using Jukebox.Features.Search;
 using Jukebox.Features.Settings;
 using Jukebox.Model;
 using Jukebox.Storage;
@@ -83,6 +84,15 @@ namespace Jukebox
         void OnSuspending(object sender, SuspendingEventArgs e)
         {
             //TODO: Save application state and stop any background activity
+        }
+
+        protected override void OnSearchActivated(SearchActivatedEventArgs args)
+        {
+            var navigator = _container.Resolve<INavigator>();
+
+            navigator.Navigate<SearchController>(c => c.DoSearch(args.QueryText));
+            
+            base.OnSearchActivated(args);
         }
     }
 }

@@ -28,6 +28,7 @@
             <Task Type="audio" />
           </BackgroundTasks>
         </Extension>
+        <Extension Category="windows.search" />
       </Extensions>
     </Application>
   </Applications>

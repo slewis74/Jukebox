@@ -185,6 +185,11 @@
     <Compile Include="Features\MainPage\Commands\PlaylistsCommand.cs" />
     <Compile Include="Features\MainPage\Commands\PreviousTrackCommand.cs" />
     <Compile Include="Features\MainPage\Requests\StopPlayingRequest.cs" />
+    <Compile Include="Features\Search\SearchController.cs" />
+    <Compile Include="Features\Search\SearchResultsView.xaml.cs">
+      <DependentUpon>SearchResultsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Search\SearchResultsViewModel.cs" />
     <Compile Include="Features\Settings\Player\PlayerSettingsView.xaml.cs">
       <DependentUpon>PlayerSettingsView.xaml</DependentUpon>
     </Compile>
@@ -196,6 +201,7 @@
     <Compile Include="Model\NowPlayingPlaylist.cs" />
     <Compile Include="Model\Playlist.cs" />
     <Compile Include="Model\PlaylistData.cs" />
+    <Compile Include="Model\SearchResult.cs" />
     <Compile Include="Model\Song.cs" />
     <Compile Include="Features\Playlists\PlaylistController.cs" />
     <Compile Include="Features\Playlists\PlaylistsView.xaml.cs">
@@ -302,6 +308,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="Features\Playlists\PlaylistsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Features\Search\SearchResultsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
