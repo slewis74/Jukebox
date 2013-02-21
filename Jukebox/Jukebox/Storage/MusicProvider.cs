@@ -84,11 +84,14 @@ namespace Jukebox.Storage
 
         public async Task<bool> ReScanMusicLibrary()
         {
-            var newTracks = await ScanMusicLibraryFolder(KnownFolders.MusicLibrary, Artists.ToList());
+            // copy to a separate list while loaded, to stop the UI flickering when reading lots of new data
+            var artists = Artists.ToList();
+            var newTracks = await ScanMusicLibraryFolder(KnownFolders.MusicLibrary, artists);
             Debug.WriteLine("Finished scanning music folder");
 
             if (newTracks)
             {
+                Artists.Replace(artists);
                 Task.Factory.StartNew(() => SaveData(Artists));
             }
 
