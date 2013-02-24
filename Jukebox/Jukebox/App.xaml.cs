@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
 using Jukebox.Common;
@@ -15,6 +17,7 @@ using Slew.WinRT.Pages.Settings;
 using Slew.WinRT.PresentationBus;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Search;
 using Windows.UI.Xaml;
 
 namespace Jukebox
@@ -74,6 +77,22 @@ namespace Jukebox
             Window.Current.Activate();
 
             Task.Factory.StartNew(() => DoBackgroundProcessing(musicProvider));
+
+            var searchPane = SearchPane.GetForCurrentView();
+            searchPane.SuggestionsRequested += SearchPaneOnSuggestionsRequested;
+        }
+
+        private void SearchPaneOnSuggestionsRequested(SearchPane sender, SearchPaneSuggestionsRequestedEventArgs args)
+        {
+            var navigator = _container.Resolve<INavigator>();
+
+            var result = navigator.NavigateForData<SearchController, SearchResult[]>(c => c.SearchForSuggestions(args.QueryText));
+
+            args.Request.SearchSuggestionCollection.AppendQuerySuggestions(
+                result.Data
+                .OrderBy(r => r.Description)
+                .Select(r => r.Description)
+                .Distinct());
         }
 
         private async void DoBackgroundProcessing(IMusicProvider musicProvider)

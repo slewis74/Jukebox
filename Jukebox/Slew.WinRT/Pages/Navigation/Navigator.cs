@@ -59,6 +59,20 @@ namespace Slew.WinRT.Pages.Navigation
             }
         }
 
+        public DataActionResult<TData> NavigateForData<TController, TData>(
+            Expression<Func<TController, ActionResult>> action)
+            where TController : IController
+        {
+            var controllerResult = _controllerInvoker.Call(action);
+            var result = controllerResult.Result;
+
+            if ((result is DataActionResult<TData>) == false)
+            {
+                throw new InvalidOperationException("Controller action must return a DataActionResult when using NavigateForData");
+            }
+            return (DataActionResult<TData>)result;
+        }
+
         public void SettingsNavigateBack()
         {
             if (_settingsPopup != null)

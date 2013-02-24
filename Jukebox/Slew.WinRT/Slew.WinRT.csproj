@@ -133,6 +133,7 @@
     <Compile Include="Pages\IController.cs" />
     <Compile Include="Pages\IControllerFactory.cs" />
     <Compile Include="Pages\IHaveBottomAppBar.cs" />
+    <Compile Include="Pages\Navigation\DataActionResult.cs" />
     <Compile Include="Pages\Navigation\INavigator.cs" />
     <Compile Include="Pages\Navigation\IPageActionResult.cs" />
     <Compile Include="Pages\LayoutAwarePage.cs" />
