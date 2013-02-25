@@ -330,7 +330,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Features\Search\Commands\" />
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="Autofac">
       <HintPath>..\Packages\Autofac\Autofac.dll</HintPath>

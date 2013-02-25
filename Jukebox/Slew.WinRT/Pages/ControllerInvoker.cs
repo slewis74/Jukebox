@@ -63,7 +63,7 @@ namespace Slew.WinRT.Pages
                        };
         }
 
-        public ActionResult Call(string uri)
+        public ControllerInvokerResult Call(string uri)
         {
             var controllerUri = ParseUri(uri);
 
@@ -94,7 +94,11 @@ namespace Slew.WinRT.Pages
 
             var result = methodInfo.Invoke(controller, parameters.ToArray());
             
-            return (ActionResult)result;
+            return new ControllerInvokerResult
+            {
+                Uri = uri,
+                Result = (ActionResult)result
+            };
         }
 
         private ControllerUri ParseUri(string uri)

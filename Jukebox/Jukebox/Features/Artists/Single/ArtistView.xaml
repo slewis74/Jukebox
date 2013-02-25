@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:designTime="using:Jukebox.Features.Artists.DesignTime" xmlns:snapped="using:Jukebox.Features.Artists.Single"
+    xmlns:designTime="using:Jukebox.Features.Artists.DesignTime"
     mc:Ignorable="d"
     d:DataContext="{Binding Source={d:DesignInstance Type=designTime:DesignTimeArtistViewModel, IsDesignTimeCreatable=True}}">
 
@@ -68,9 +68,7 @@
 
     <Grid Background="{StaticResource ThemeBackground}">
 		
-		<!-- Horizontal scrolling grid used in most view states -->
         <Grid
-            x:Name="itemsView"
             Margin="{StaticResource MainPageMargin}">
 
             <Grid.ColumnDefinitions>
@@ -134,13 +132,5 @@
                 </ListView.ItemContainerStyle>
             </ListView>
         </Grid>
-
-        <!-- Vertical scrolling list only used when snapped -->
-        <snapped:ArtistSnappedView
-                x:Name="snappedView"
-                AutomationProperties.AutomationId="SnappedDetailsScrollViewer"
-                Grid.Row="1"
-                Visibility="Collapsed"/>
-
     </Grid>
 </UserControl>

@@ -10,6 +10,8 @@ namespace Slew.WinRT.Pages.Navigation
         DataActionResult<TData> NavigateForData<TController, TData>(Expression<Func<TController, ActionResult>> action) 
             where TController : IController;
 
+        void Navigate(string uri);
+
         void SettingsNavigateBack();
     }
 }

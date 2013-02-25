@@ -79,6 +79,8 @@
                     ItemsSource="{Binding Source={StaticResource GroupedItemsViewSource}}"
 				    ItemTemplate="{StaticResource ResultTemplate}"
                     ItemContainerStyle="{StaticResource VariableGridViewItemStyle}"
+                    IsItemClickEnabled="True"
+                    ItemClick="ListViewBase_OnItemClick"
 				    SelectionMode="None"
                     IsSwipeEnabled="True" ScrollViewer.IsHorizontalScrollChainingEnabled="False"
 				    >

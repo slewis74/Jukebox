@@ -1,26 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
+﻿using Jukebox.Model;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-
-// The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace Jukebox.Features.Search
 {
-    public sealed partial class SearchResultsView : UserControl
+    public sealed partial class SearchResultsView
     {
         public SearchResultsView()
         {
-            this.InitializeComponent();
+            InitializeComponent();
+        }
+
+        private void ListViewBase_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            var result = e.ClickedItem as SearchResult;
+            if (result == null) return;
+
+            var viewModel = (SearchResultsViewModel)DataContext;
+
+            viewModel.Navigator.Navigate(result.NavigationUri);
         }
     }
 }

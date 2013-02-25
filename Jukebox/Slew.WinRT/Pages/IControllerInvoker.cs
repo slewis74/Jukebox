@@ -9,7 +9,7 @@ namespace Slew.WinRT.Pages
         ControllerInvokerResult Call<TController>(Expression<Func<TController, ActionResult>> action)
             where TController : IController;
 
-        ActionResult Call(string uri);
+        ControllerInvokerResult Call(string uri);
     }
 
     public class ControllerInvokerResult

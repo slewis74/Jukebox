@@ -160,7 +160,7 @@ namespace Slew.WinRT.Controls
 
         private FrameworkElement NavigateToViewModel(object viewModel)
         {
-            var view = ViewLocator.Resolve(viewModel, ApplicationView.Value);
+            ViewLocator.Resolve(viewModel, ApplicationView.Value);
 
             var contentSwitchingPage = new ContentSwitchingPage
                                            {
@@ -238,13 +238,13 @@ namespace Slew.WinRT.Controls
                 return;
 
             var controllerResult = ControllerInvoker.Call(item.Uri);
-            if (controllerResult is IPageActionResult)
+            if (controllerResult.Result is IPageActionResult)
             {
                 //NavigateToPage();
             }
-            else if (controllerResult is ViewModelActionResult)
+            else if (controllerResult.Result is ViewModelActionResult)
             {
-                var view = NavigateToViewModel(((ViewModelActionResult) controllerResult).ViewModelInstance);
+                var view = NavigateToViewModel(((ViewModelActionResult)controllerResult.Result).ViewModelInstance);
                 item.Content = view;
             }
         }
