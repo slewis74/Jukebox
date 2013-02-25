@@ -23,7 +23,7 @@ namespace Jukebox.Features.Search
         {
             var results = GetSearchResults(searchText);
 
-            return new ViewModelActionResult(() => _searchViewModelFactory(results));
+            return new ViewModelActionResult(() => _searchViewModelFactory(searchText, results));
         }
 
         public ActionResult SearchForSuggestions(string searchText)

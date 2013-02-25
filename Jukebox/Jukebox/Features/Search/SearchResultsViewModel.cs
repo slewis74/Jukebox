@@ -8,11 +8,14 @@ namespace Jukebox.Features.Search
 {
     public class SearchResultsViewModel : SearchViewModelBase<SearchResult>
     {
-        public delegate SearchResultsViewModel Factory(SearchResult[] searchResults);
+        public delegate SearchResultsViewModel Factory(string queryText, SearchResult[] searchResults);
 
         private AsyncObservableCollection<GroupedData<SearchResult>> _groups;
 
-        public SearchResultsViewModel(INavigator navigator, SearchResult[] searchResults) : base(navigator, searchResults)
+        public SearchResultsViewModel(
+            INavigator navigator, 
+            string queryText,
+            SearchResult[] searchResults) : base(navigator, queryText, searchResults)
         {
         }
 

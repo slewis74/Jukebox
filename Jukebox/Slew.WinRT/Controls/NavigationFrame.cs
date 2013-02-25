@@ -174,7 +174,18 @@ namespace Slew.WinRT.Controls
 
         private void GoForward(string uri, FrameworkElement newContent)
         {
+            // We only want 1 SearchViewModel on the top of the stack, so if the top item and the new content
+            // are both SearchViewModels, we pop the top one off and discard it.
+            var topItem = _navigationStack.Peek();
+            if (topItem != null &&
+                topItem.Content.DataContext is ISearchViewModelBase &&
+                newContent.DataContext is ISearchViewModelBase)
+            {
+                _navigationStack.Pop();
+            }
+
             _navigationStack.Push(new NavigationFrameStackItem(uri, newContent));
+
             Content = newContent;
             SetCanGoBack();
 
