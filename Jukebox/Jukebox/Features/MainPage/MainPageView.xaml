@@ -64,7 +64,7 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <Button x:Name="backButton" Click="GoBack" IsEnabled="{Binding CanGoBack, ElementName=NavFrame}" Style="{StaticResource BackButtonStyle}"/>
-			<TextBlock x:Name="pageTitle" Grid.Column="1" Text="{StaticResource AppName}" Style="{StaticResource PageHeaderTextStyle}"/>
+			<TextBlock x:Name="pageTitle" Grid.Column="1" Text="{Binding CurrentPageTitle, ElementName=NavFrame}" Style="{StaticResource PageHeaderTextStyle}"/>
 
             <MainPage:NowPlayingView
                 Grid.Column="2"

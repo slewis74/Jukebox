@@ -24,6 +24,11 @@ namespace Jukebox.Features.Artists.Single
             PlayArtist = new PlayArtistCommand(presentationBus);
 		}
 
+        public override string PageTitle
+        {
+            get { return "Artist"; }
+        }
+
 		public DisplayAlbumCommand DisplayAlbum { get; private set; }
 
 		public string Name { get { return _artist.Name; } }

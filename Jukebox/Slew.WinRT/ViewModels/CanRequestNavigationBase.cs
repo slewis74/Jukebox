@@ -1,10 +1,9 @@
 ﻿using System.Threading;
-using Slew.WinRT.Data;
 using Slew.WinRT.Pages.Navigation;
 
 namespace Slew.WinRT.ViewModels
 {
-    public abstract class CanRequestNavigationBase : BindableBase
+    public abstract class CanRequestNavigationBase : HasPageTitleBase
     {
         protected CanRequestNavigationBase(INavigator navigator)
         {

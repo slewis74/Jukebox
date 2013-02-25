@@ -1,12 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
-using Jukebox.Common;
 using Jukebox.Features.MainPage;
 using Jukebox.Features.Search;
-using Jukebox.Features.Settings;
 using Jukebox.Model;
 using Jukebox.Storage;
 using Slew.WinRT.Data;
@@ -59,7 +56,7 @@ namespace Jukebox
             }
 
             var navigator = _container.Resolve<INavigator>();
-            var mainPageViewModel = new MainPageViewModel(bus, navigator, _playlists, playlistData.NowPlayingPlaylist);
+            var mainPageViewModel = new MainPageViewModel(bus, _playlists, playlistData.NowPlayingPlaylist);
             var mainPageView = new MainPageView
                                    {
                                        PresentationBus = bus, 

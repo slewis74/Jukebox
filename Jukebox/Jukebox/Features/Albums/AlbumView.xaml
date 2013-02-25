@@ -68,8 +68,12 @@
                 Grid.Column="0"
                 Width="{StaticResource GroupDetailLeftPanelWidth}">
                 <TextBlock 
-                    Text="{Binding ArtistName}" 
+                    Text="{Binding Title}" 
                     Style="{StaticResource SubheaderTextStyle}" 
+                    Margin="{StaticResource BottomMostControlMargin}"/>
+                <TextBlock 
+                    Text="{Binding ArtistName}" 
+                    Style="{StaticResource BodyTextStyle}" 
                     Margin="{StaticResource TopMostControlMargin}"/>
                 <Image 
                     Source="{Binding LargeBitmap}" 
@@ -78,10 +82,6 @@
                     Margin="{StaticResource VerticallyCentralControlMargin}" 
                     HorizontalAlignment="Left"
                     />
-                <TextBlock 
-                    Text="{Binding Title}" 
-                    Style="{StaticResource BodyTextStyle}" 
-                    Margin="{StaticResource BottomMostControlMargin}"/>
 
                 <Grid Margin="0 5 0 0" Width="{StaticResource LargeBitmapSize}" HorizontalAlignment="Left">
                     <Grid.ColumnDefinitions>

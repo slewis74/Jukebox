@@ -40,6 +40,11 @@ namespace Jukebox.Features.Albums
                 .Select(t => new TrackViewModel(t, TrackLocationCommandMappings)));
 		}
 
+        public override string PageTitle
+        {
+            get { return "Album"; }
+        }
+
 		public PlaySongCommand PlaySong { get; private set; }
 		public PlayAlbumCommand PlayAlbum { get; private set; }
 		public AddSongCommand AddSong { get; private set; }

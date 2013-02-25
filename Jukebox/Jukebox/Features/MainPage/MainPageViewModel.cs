@@ -6,14 +6,13 @@ using Jukebox.Features.MainPage.Requests;
 using Jukebox.Model;
 using Jukebox.Requests;
 using Slew.WinRT.Data;
-using Slew.WinRT.Pages.Navigation;
 using Slew.WinRT.PresentationBus;
 using Slew.WinRT.ViewModels;
 
 namespace Jukebox.Features.MainPage
 {
 	public class MainPageViewModel :
-        CanRequestNavigationBase,
+        BindableBase,
         IHandlePresentationRequest<PlayRequest>,
         IHandlePresentationRequest<PauseRequest>,
         IHandlePresentationRequest<StopRequest>,
@@ -24,9 +23,8 @@ namespace Jukebox.Features.MainPage
 
         public MainPageViewModel(
             IPresentationBus presentationBus,
-            INavigator navigator,
             DistinctAsyncObservableCollection<Playlist> playlists,
-            NowPlayingPlaylist currentPlaylist) : base(navigator)
+            NowPlayingPlaylist currentPlaylist)
         {
             _presentationBus = presentationBus;
             NowPlayingPlaylist = currentPlaylist;

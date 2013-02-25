@@ -28,6 +28,11 @@ namespace Jukebox.Features.Artists.All
             PlayAll = new PlayAllCommand(_presentationBus, _artists);
 		}
 
+        public override string PageTitle
+        {
+            get { return "Albums"; }
+        }
+
 		public DisplayArtistCommand DisplayArtist { get; private set; }
         public PlayAllCommand PlayAll { get; private set; }
 

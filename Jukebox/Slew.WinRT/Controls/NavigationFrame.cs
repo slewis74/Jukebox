@@ -6,6 +6,7 @@ using Slew.WinRT.Pages;
 using Slew.WinRT.Pages.Navigation;
 using Slew.WinRT.PresentationBus;
 using Slew.WinRT.Requests;
+using Slew.WinRT.ViewModels;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -17,27 +18,6 @@ namespace Slew.WinRT.Controls
         IHandlePresentationEvent<PageNavigationRequest>,
         IHandlePresentationEvent<ViewModelNavigationRequest>
     {
-        private class NavigationFrameStackItem
-        {
-            public NavigationFrameStackItem(string uri, FrameworkElement content)
-            {
-                Uri = uri;
-                Content = content;
-            }
-
-            public string Uri { get; private set; }
-            public FrameworkElement Content { get; set; }
-
-            public override bool Equals(object obj)
-            {
-                return obj is NavigationFrameStackItem && ((NavigationFrameStackItem) obj).Uri == Uri;
-            }
-            public override int GetHashCode()
-            {
-                return Uri.GetHashCode();
-            }
-        }
-
         private readonly Stack<NavigationFrameStackItem> _navigationStack;
 
         public NavigationFrame()
@@ -107,6 +87,15 @@ namespace Slew.WinRT.Controls
         {
             get { return (IControllerInvoker)GetValue(ControllerInvokerProperty); }
             set { SetValue(ControllerInvokerProperty, value); }
+        }
+
+        public static readonly DependencyProperty CurrentPageTitleProperty =
+            DependencyProperty.Register("CurrentPageTitle", typeof (string), typeof (NavigationFrame), new PropertyMetadata(default(string)));
+
+        public string CurrentPageTitle
+        {
+            get { return (string) GetValue(CurrentPageTitleProperty); }
+            set { SetValue(CurrentPageTitleProperty, value); }
         }
 
         public void RestoreNavigationStack()
@@ -197,15 +186,12 @@ namespace Slew.WinRT.Controls
             Content = newContent;
             SetCanGoBack();
 
+            UpdateCurrentPageTitle(newContent);
+
             if (NavigationStackStorage != null)
             {
                 NavigationStackStorage.StoreUris(_navigationStack.Select(i => i.Uri).ToArray());
             }
-        }
-
-        private void SetCanGoBack()
-        {
-            CanGoBack = _navigationStack.Count() > 1;
         }
 
         public void GoBack()
@@ -221,9 +207,25 @@ namespace Slew.WinRT.Controls
             Content = item.Content;
             SetCanGoBack();
 
+            UpdateCurrentPageTitle(item.Content);
+
             if (NavigationStackStorage != null)
             {
                 NavigationStackStorage.StoreUris(_navigationStack.Select(i => i.Uri).ToArray());
+            }
+        }
+
+        private void SetCanGoBack()
+        {
+            CanGoBack = _navigationStack.Count() > 1;
+        }
+
+        private void UpdateCurrentPageTitle(FrameworkElement newContent)
+        {
+            var hasPageTitle = newContent.DataContext as HasPageTitleBase;
+            if (hasPageTitle != null)
+            {
+                CurrentPageTitle = hasPageTitle.PageTitle;
             }
         }
 
@@ -241,6 +243,27 @@ namespace Slew.WinRT.Controls
             {
                 var view = NavigateToViewModel(((ViewModelActionResult)controllerResult).ViewModelInstance);
                 item.Content = view;
+            }
+        }
+
+        private class NavigationFrameStackItem
+        {
+            public NavigationFrameStackItem(string uri, FrameworkElement content)
+            {
+                Uri = uri;
+                Content = content;
+            }
+
+            public string Uri { get; private set; }
+            public FrameworkElement Content { get; set; }
+
+            public override bool Equals(object obj)
+            {
+                return obj is NavigationFrameStackItem && ((NavigationFrameStackItem)obj).Uri == Uri;
+            }
+            public override int GetHashCode()
+            {
+                return Uri.GetHashCode();
             }
         }
     }

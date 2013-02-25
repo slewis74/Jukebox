@@ -20,6 +20,11 @@ namespace Jukebox.Features.Search
             SearchResults = searchResults;
         }
 
+        public override string PageTitle
+        {
+            get { return "Search Results"; }
+        }
+
         public SearchResult[] SearchResults { get; set; }
 
         public AsyncObservableCollection<GroupedData<SearchResult>> GroupedItems
