@@ -165,18 +165,10 @@ namespace Slew.WinRT.Controls
             var contentSwitchingPage = new ContentSwitchingPage
                                            {
                                                DataContext = viewModel,
-                                               ViewLocator = ViewLocator
+                                               ViewLocator = ViewLocator,
+                                               PageCommandsPanel = PageCommandsPanel
                                            };
 
-            PageCommandsPanel.Children.Clear();
-            var hasAppBarContent = view as IHaveBottomAppBar;
-            if (hasAppBarContent != null)
-            {
-                var frameworkElement = (FrameworkElement) Activator.CreateInstance(hasAppBarContent.BottomAppBarContentType);
-                frameworkElement.DataContext = viewModel;
-
-                PageCommandsPanel.Children.Add(frameworkElement);
-            }
             return contentSwitchingPage;
         }
 
@@ -231,7 +223,7 @@ namespace Slew.WinRT.Controls
 
         private void CheckItemContent(NavigationFrameStackItem item)
         {
-            if (item.Content != null)
+            if (item.Content != null) 
                 return;
 
             var controllerResult = ControllerInvoker.Call(item.Uri);
@@ -241,7 +233,7 @@ namespace Slew.WinRT.Controls
             }
             else if (controllerResult is ViewModelActionResult)
             {
-                var view = NavigateToViewModel(((ViewModelActionResult)controllerResult).ViewModelInstance);
+                var view = NavigateToViewModel(((ViewModelActionResult) controllerResult).ViewModelInstance);
                 item.Content = view;
             }
         }

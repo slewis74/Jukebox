@@ -6,26 +6,15 @@ using Slew.WinRT.ViewModels;
 
 namespace Jukebox.Features.Search
 {
-    public class SearchResultsViewModel : CanRequestNavigationBase
+    public class SearchResultsViewModel : SearchViewModelBase<SearchResult>
     {
         public delegate SearchResultsViewModel Factory(SearchResult[] searchResults);
 
         private AsyncObservableCollection<GroupedData<SearchResult>> _groups;
 
-        public SearchResultsViewModel(
-            INavigator navigator,
-            SearchResult[] searchResults)
-            : base(navigator)
+        public SearchResultsViewModel(INavigator navigator, SearchResult[] searchResults) : base(navigator, searchResults)
         {
-            SearchResults = searchResults;
         }
-
-        public override string PageTitle
-        {
-            get { return "Search Results"; }
-        }
-
-        public SearchResult[] SearchResults { get; set; }
 
         public AsyncObservableCollection<GroupedData<SearchResult>> GroupedItems
         {
@@ -57,5 +46,4 @@ namespace Jukebox.Features.Search
             }
         }
     }
-
 }

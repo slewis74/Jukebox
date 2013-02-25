@@ -173,8 +173,10 @@
     <Compile Include="ViewModels\Command.cs" />
     <Compile Include="ViewModels\HasPageTitleBase.cs" />
     <Compile Include="ViewModels\ICanHandleNavigation.cs" />
+    <Compile Include="ViewModels\ISearchViewModelBase.cs" />
     <Compile Include="ViewModels\NavigationCommand.cs" />
     <Compile Include="ViewModels\PresentationRequestCommand.cs" />
+    <Compile Include="ViewModels\SearchViewModelBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="WinRtBehaviors">

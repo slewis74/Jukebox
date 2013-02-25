@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace Slew.WinRT.Pages
 {
@@ -23,6 +25,15 @@ namespace Slew.WinRT.Pages
         }
 
         public IViewLocator ViewLocator { get; set; }
+
+        public static readonly DependencyProperty PageCommandsPanelProperty =
+            DependencyProperty.Register("PageCommandsPanel", typeof(Panel), typeof(ContentSwitchingPage), new PropertyMetadata(default(Panel)));
+
+        public Panel PageCommandsPanel
+        {
+            get { return (Panel)GetValue(PageCommandsPanelProperty); }
+            set { SetValue(PageCommandsPanelProperty, value); }
+        }
 
         private void StartLayoutUpdates(object sender, RoutedEventArgs e)
         {
@@ -50,6 +61,20 @@ namespace Slew.WinRT.Pages
             }
 
             Content = frameworkElement;
+            ResetAppBarContentForView(frameworkElement);
+        }
+
+        private void ResetAppBarContentForView(FrameworkElement view)
+        {
+            PageCommandsPanel.Children.Clear();
+            var hasAppBarContent = view as IHaveBottomAppBar;
+            if (hasAppBarContent != null)
+            {
+                var frameworkElement = (FrameworkElement)Activator.CreateInstance(hasAppBarContent.BottomAppBarContentType);
+                frameworkElement.DataContext = view.DataContext;
+
+                PageCommandsPanel.Children.Add(frameworkElement);
+            }
         }
     }
 }
