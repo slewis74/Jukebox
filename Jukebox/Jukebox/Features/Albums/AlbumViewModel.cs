@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using Autofac;
-using Autofac.Core;
+﻿using System.Linq;
 using Jukebox.Model;
 using Jukebox.Requests;
 using Slew.WinRT.Data;
@@ -16,6 +13,8 @@ namespace Jukebox.Features.Albums
     public class AlbumViewModel : CanRequestNavigationBase
 	{
         private readonly Album _album;
+
+        public delegate AlbumViewModel Factory(Album album);
         
         public AlbumViewModel(
             IPresentationBus presentationBus, 

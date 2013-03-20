@@ -15,6 +15,8 @@ namespace Jukebox.Features.Artists.All
         private readonly DistinctAsyncObservableCollection<Artist> _artists;
         private AsyncObservableCollection<GroupedData<GroupedArtistViewModel>> _groups;
 
+        public delegate ArtistsViewModel Factory();
+
         public ArtistsViewModel(
             IPresentationBus presentationBus, 
             INavigator navigator,

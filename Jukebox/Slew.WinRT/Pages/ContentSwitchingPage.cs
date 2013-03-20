@@ -7,14 +7,12 @@ using Windows.UI.Xaml.Controls;
 
 namespace Slew.WinRT.Pages
 {
-    public sealed partial class ContentSwitchingPage
+    public class ContentSwitchingPage : UserControl
     {
         private readonly Dictionary<ApplicationViewState, FrameworkElement> _viewCache;
 
         public ContentSwitchingPage()
         {
-            InitializeComponent();
-
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled) return;
 
             _viewCache = new Dictionary<ApplicationViewState, FrameworkElement>();

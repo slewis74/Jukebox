@@ -1,10 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Jukebox.Common;
 using Jukebox.Features.Albums;
 using Jukebox.Features.Artists.All;
 using Jukebox.Features.Artists.Single;
-using Jukebox.Model;
 using Jukebox.Storage;
 using Slew.WinRT.Pages.Navigation;
 
@@ -13,15 +11,15 @@ namespace Jukebox.Features.Artists
     public class ArtistsController : JukeboxController
     {
         private readonly IMusicProvider _musicProvider;
-        private readonly Func<ArtistsViewModel> _artistsViewModelFactory;
-        private readonly Func<Album, AlbumViewModel> _albumViewModelFactory;
-        private readonly Func<Artist, ArtistViewModel> _artistViewModelFactory;
+        private readonly ArtistsViewModel.Factory _artistsViewModelFactory;
+        private readonly AlbumViewModel.Factory _albumViewModelFactory;
+        private readonly ArtistViewModel.Factory _artistViewModelFactory;
 
         public ArtistsController(
             IMusicProvider musicProvider,
-            Func<ArtistsViewModel> artistsViewModelFactory,
-            Func<Album, AlbumViewModel> albumViewModelFactory,
-            Func<Artist, ArtistViewModel> artistViewModelFactory)
+            ArtistsViewModel.Factory artistsViewModelFactory,
+            AlbumViewModel.Factory albumViewModelFactory,
+            ArtistViewModel.Factory artistViewModelFactory)
         {
             _musicProvider = musicProvider;
             _artistsViewModelFactory = artistsViewModelFactory;

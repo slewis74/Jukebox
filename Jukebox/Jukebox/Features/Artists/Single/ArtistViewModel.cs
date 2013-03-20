@@ -13,6 +13,8 @@ namespace Jukebox.Features.Artists.Single
 	{
 		private readonly Artist _artist;
 
+        public delegate ArtistViewModel Factory(Artist artist);
+
 		public ArtistViewModel(
             IPresentationBus presentationBus, 
             INavigator navigator, 
