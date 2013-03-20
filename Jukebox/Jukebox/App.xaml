@@ -8,13 +8,13 @@
             <ResourceDictionary.MergedDictionaries>
 
                 <!-- 
-                    Styles that define common aspects of the platform look and feel
-                    Required by Visual Studio project and item templates
+                    IMPORTANT: the following Sources must have the Slew.WinRT/ removed when the app is referencing the library
+                                using the Nuget package.
                  -->
-                <ResourceDictionary Source="ms-appx:///Slew.WinRT/Resources/StandardStyles.xaml"/>
-                <ResourceDictionary Source="ms-appx:///Slew.WinRT/Resources/Converters.xaml"/>
-
-                <ResourceDictionary Source="ms-appx:///Slew.WinRT/Resources/StandardLayout.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Slew.WinRT/SlewWinRTResources/StandardLayout.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Slew.WinRT/SlewWinRTResources/StandardStyles.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Slew.WinRT/SlewWinRTResources/Converters.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Slew.WinRT/SlewWinRTResources/Controls.xaml"/>
 
                 <ResourceDictionary Source="/Resources/ButtonStyles.xaml"/>
                 

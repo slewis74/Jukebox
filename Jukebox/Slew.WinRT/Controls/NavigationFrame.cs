@@ -246,6 +246,7 @@ namespace Slew.WinRT.Controls
             {
                 var view = NavigateToViewModel(((ViewModelActionResult)controllerResult.Result).ViewModelInstance);
                 item.Content = view;
+                UpdateCurrentPageTitle(item.Content);
             }
         }
 

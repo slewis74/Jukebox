@@ -20,6 +20,8 @@
     <Thickness x:Key="MainPageMargin">120 0 120 0</Thickness>
     <Thickness x:Key="MainPagePadding">120 0 120 50</Thickness>
 
+    <Thickness x:Key="LandscapePageMargin">120 0 0 0</Thickness>
+
     <Thickness x:Key="OuterMostControlMargin">10</Thickness>
 
     <Thickness x:Key="TopMostControlMargin">0 0 0 10</Thickness>

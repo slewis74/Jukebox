@@ -110,6 +110,8 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\HeaderedContent.cs" />
+    <Compile Include="Controls\LabelledContent.cs" />
     <Compile Include="Controls\NavigationFrame.cs" />
     <Compile Include="Data\GroupedData.cs" />
     <Compile Include="Data\BindableBase.cs" />
@@ -182,16 +184,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Resources\StandardLayout.xaml">
+    <Page Include="SlewWinRTResources\Controls.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="SlewWinRTResources\StandardLayout.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
-    <Page Include="Resources\StandardStyles.xaml">
+    <Page Include="SlewWinRTResources\StandardStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Resources\Converters.xaml">
+    <Page Include="SlewWinRTResources\Converters.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
