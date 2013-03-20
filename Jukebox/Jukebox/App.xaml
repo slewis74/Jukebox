@@ -14,7 +14,6 @@
                 <ResourceDictionary Source="ms-appx:///Slew.WinRT/SlewWinRTResources/StandardLayout.xaml"/>
                 <ResourceDictionary Source="ms-appx:///Slew.WinRT/SlewWinRTResources/StandardStyles.xaml"/>
                 <ResourceDictionary Source="ms-appx:///Slew.WinRT/SlewWinRTResources/Converters.xaml"/>
-                <ResourceDictionary Source="ms-appx:///Slew.WinRT/SlewWinRTResources/Controls.xaml"/>
 
                 <ResourceDictionary Source="/Resources/ButtonStyles.xaml"/>
                 

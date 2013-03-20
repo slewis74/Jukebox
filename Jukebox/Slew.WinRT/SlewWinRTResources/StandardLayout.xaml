@@ -25,7 +25,7 @@
     <Thickness x:Key="OuterMostControlMargin">10</Thickness>
 
     <Thickness x:Key="TopMostControlMargin">0 0 0 10</Thickness>
-    <Thickness x:Key="VerticallyCentralControlMargin">0 0 0 10</Thickness>
+    <Thickness x:Key="VerticallyCentralControlMargin">0 10 0 10</Thickness>
     <Thickness x:Key="BottomMostControlMargin">0 10 0 0</Thickness>
 
     <Thickness x:Key="LeftMostControlMargin">0 0 10 0</Thickness>

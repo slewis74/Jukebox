@@ -62,7 +62,7 @@
 
     <Style x:Key="LabelledContentStyle" TargetType="c:LabelledContent">
         <Setter Property="Template" Value="{StaticResource LabelledContentTemplate}"/>
-        <Setter Property="LabelWidth" Value="{StaticResource SevenUnits}" />
+        <Setter Property="LabelWidth" Value="{StaticResource FiveUnits}" />
         <Setter Property="LabelTextStyle" Value="{StaticResource BasicTextStyle}" />
     </Style>
     <Style TargetType="c:LabelledContent" BasedOn="{StaticResource LabelledContentStyle}">
