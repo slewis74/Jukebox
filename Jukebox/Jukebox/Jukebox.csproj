@@ -214,6 +214,7 @@
     <Compile Include="Modules\NavigationModule.cs" />
     <Compile Include="Modules\PlaylistModule.cs" />
     <Compile Include="Modules\PresentationBusModule.cs" />
+    <Compile Include="Modules\PresentationBusSubscriptionModule.cs" />
     <Compile Include="Modules\SettingsModule.cs" />
     <Compile Include="Modules\ViewModelModule.cs" />
     <Compile Include="Requests\AddToCurrentPlaylistRequest.cs" />

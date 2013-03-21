@@ -48,7 +48,7 @@ namespace Slew.WinRT.Pages
                 {
                     if (paramIndex > 0)
                     {
-                        uri += ";";
+                        uri += "&";
                     }
                     uri += parameters[paramIndex].Name + "=" + parameterValues[paramIndex];
                 }
@@ -115,7 +115,7 @@ namespace Slew.WinRT.Pages
             {
                 actionName = uri.Substring(indexOfControllerActionSeparator + 1, parametersIndex - (indexOfControllerActionSeparator + 1));
                 var parametersString = uri.Substring(parametersIndex + 1);
-                var paramPairs = parametersString.Split(';');
+                var paramPairs = parametersString.Split('&');
 
                 foreach (var paramPair in paramPairs)
                 {
