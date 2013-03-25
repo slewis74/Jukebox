@@ -49,7 +49,7 @@ namespace Jukebox.Model
                 SynchronizationContext.Post(x =>
                                                 {
                                                     SmallBitmap = new BitmapImage();
-                                                    GetBitmap(_smallBitmap, 200);
+                                                    GetBitmapAsync(_smallBitmap, 200);
                                                     _loadingSmallBitmap = false;
                                                 }, null);
             }
@@ -59,7 +59,7 @@ namespace Jukebox.Model
                 SynchronizationContext.Post(x =>
                                                 {
                                                     LargeBitmap = new BitmapImage();
-                                                    GetBitmap(_largeBitmap, 300);
+                                                    GetBitmapAsync(_largeBitmap, 300);
                                                     _loadingLargeBitmap = false;
                                                 }, null);
             }
@@ -79,37 +79,41 @@ namespace Jukebox.Model
             set { _largeBitmap = value; NotifyChanged(() => LargeBitmap); }
         }
 
-        private async void GetBitmap(BitmapImage image, uint requestedSize)
+        private async void GetBitmapAsync(BitmapImage image, uint requestedSize)
         {
-            var randomAccessStream = await GetThumbnailStream(this, requestedSize);
-            if (randomAccessStream == null)
-                return;
+            using (var randomAccessStream = await GetThumbnailStreamAsync(this, requestedSize))
+            {
+                if (randomAccessStream == null)
+                    return;
 
-            image.SetSource(randomAccessStream);
+                image.SetSource(randomAccessStream);
+            }
         }
 
-        private async Task<IRandomAccessStream> GetThumbnailStream(Album album, uint reqestedSize)
+        private async Task<IRandomAccessStream> GetThumbnailStreamAsync(Album album, uint reqestedSize)
         {
             var storageFile = await album.Songs.First().GetStorageFileAsync();
 
-            var thumbnail = await storageFile.GetThumbnailAsync(ThumbnailMode.MusicView, reqestedSize) ??
-                            await storageFile.GetThumbnailAsync(ThumbnailMode.VideosView, reqestedSize);
-            if (thumbnail == null)
-                return null;
+            using (var thumbnail = await storageFile.GetThumbnailAsync(ThumbnailMode.MusicView, reqestedSize) ??
+                                   await storageFile.GetThumbnailAsync(ThumbnailMode.VideosView, reqestedSize))
+            {
+                if (thumbnail == null)
+                    return null;
 
-            var reader = new DataReader(thumbnail);
-            var fileLength = (uint)thumbnail.Size;
-            await reader.LoadAsync(fileLength);
+                var reader = new DataReader(thumbnail);
+                var fileLength = (uint) thumbnail.Size;
+                await reader.LoadAsync(fileLength);
 
-            var buffer = reader.ReadBuffer(fileLength);
+                var buffer = reader.ReadBuffer(fileLength);
 
-            var memStream = new InMemoryRandomAccessStream();
+                var memStream = new InMemoryRandomAccessStream();
 
-            await memStream.WriteAsync(buffer);
-            await memStream.FlushAsync();
-            memStream.Seek(0);
+                await memStream.WriteAsync(buffer);
+                await memStream.FlushAsync();
+                memStream.Seek(0);
 
-            return memStream;
+                return memStream;
+            }
         }
 
 	}
