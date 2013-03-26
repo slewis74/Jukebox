@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Windows.Input;
 
 namespace Slew.WinRT.ViewModels
@@ -31,12 +32,16 @@ namespace Slew.WinRT.ViewModels
 
 		public override bool CanExecute(object parameter)
 		{
+		    if (parameter == null && typeof(T).GetTypeInfo().IsClass == false)
+		        return false;
 			return CanExecute((T)parameter);
 		}
 
 		public override void Execute(object parameter)
 		{
-			Execute((T)parameter);
+            if (CanExecute(parameter) == false)
+                return;
+            Execute((T)parameter);
 		}
 
 		public abstract void Execute(T parameter);

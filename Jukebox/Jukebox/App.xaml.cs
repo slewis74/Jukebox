@@ -83,7 +83,7 @@ namespace Jukebox
         {
             var navigator = _container.Resolve<INavigator>();
 
-            var result = navigator.NavigateForData<SearchController, SearchResult[]>(c => c.SearchForSuggestions(args.QueryText));
+            var result = navigator.GetData<SearchController, SearchResult[]>(c => c.SearchForSuggestions(args.QueryText));
 
             args.Request.SearchSuggestionCollection.AppendQuerySuggestions(
                 result.Data

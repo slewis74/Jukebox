@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Slew.WinRT.Pages.Settings;
 using Slew.WinRT.PresentationBus;
 using Slew.WinRT.Requests;
@@ -38,9 +39,17 @@ namespace Slew.WinRT.Pages.Navigation
             DoNavigate(controllerResult);
         }
 
-        public void Navigate(string uri)
+        public async void Navigate<TController>(Expression<Func<TController, Task<ActionResult>>> action)
+            where TController : IController
         {
-            var controllerResult = _controllerInvoker.Call(uri);
+            var controllerResult = await _controllerInvoker.CallAsync(action);
+
+            DoNavigate(controllerResult);
+        }
+
+        public async void Navigate(string uri)
+        {
+            var controllerResult = await _controllerInvoker.CallAsync(uri);
             DoNavigate(controllerResult);
         }
 
@@ -74,7 +83,7 @@ namespace Slew.WinRT.Pages.Navigation
             }
         }
 
-        public DataActionResult<TData> NavigateForData<TController, TData>(
+        public DataActionResult<TData> GetData<TController, TData>(
             Expression<Func<TController, ActionResult>> action)
             where TController : IController
         {
@@ -83,7 +92,21 @@ namespace Slew.WinRT.Pages.Navigation
 
             if ((result is DataActionResult<TData>) == false)
             {
-                throw new InvalidOperationException("Controller action must return a DataActionResult when using NavigateForData");
+                throw new InvalidOperationException("Controller action must return a DataActionResult when using GetData");
+            }
+            return (DataActionResult<TData>)result;
+        }
+
+        public async Task<DataActionResult<TData>> GetDataAsync<TController, TData>(
+            Expression<Func<TController, Task<ActionResult>>> action)
+            where TController : IController
+        {
+            var controllerResult = await _controllerInvoker.CallAsync(action);
+            var result = controllerResult.Result;
+
+            if ((result is DataActionResult<TData>) == false)
+            {
+                throw new InvalidOperationException("Controller action must return a DataActionResult when using GetData");
             }
             return (DataActionResult<TData>)result;
         }

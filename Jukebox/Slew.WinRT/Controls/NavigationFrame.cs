@@ -232,12 +232,12 @@ namespace Slew.WinRT.Controls
             }
         }
 
-        private void CheckItemContent(NavigationFrameStackItem item)
+        private async void CheckItemContent(NavigationFrameStackItem item)
         {
             if (item.Content != null) 
                 return;
 
-            var controllerResult = ControllerInvoker.Call(item.Uri);
+            var controllerResult = await ControllerInvoker.CallAsync(item.Uri);
             if (controllerResult.Result is IPageActionResult)
             {
                 //NavigateToPage();

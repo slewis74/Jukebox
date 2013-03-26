@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading.Tasks;
 using Slew.WinRT.Pages.Navigation;
 
 namespace Slew.WinRT.Pages
@@ -27,19 +28,52 @@ namespace Slew.WinRT.Pages
 
             var body = (MethodCallExpression)action.Body;
             var parameterValues = new List<object>();
+            var uri = BuildMethodCall<TController>(action, body, parameterValues);
+
+            var result = (ActionResult)body.Method.Invoke(instance, parameterValues.ToArray());
+            
+            return new ControllerInvokerResult
+                       {
+                           Uri = uri,
+                           Result = result
+                       };
+        }
+
+        public async Task<ControllerInvokerResult> CallAsync<TController>(Expression<Func<TController, Task<ActionResult>>> action)
+            where TController : IController
+        {
+            var instance = _controllerFactory.Create<TController>();
+
+            var body = (MethodCallExpression)action.Body;
+            var parameterValues = new List<object>();
+            var uri = BuildMethodCall<TController>(action, body, parameterValues);
+
+            var result = await (Task<ActionResult>)body.Method.Invoke(instance, parameterValues.ToArray());
+
+            return new ControllerInvokerResult
+            {
+                Uri = uri,
+                Result = result
+            };
+        }
+
+        private static string BuildMethodCall<TController>(LambdaExpression action, MethodCallExpression body, List<object> parameterValues)
+            where TController : IController
+        {
             var parameters = body.Method.GetParameters();
             var arguments = body.Arguments;
             for (var i = 0; i < parameters.Length && i < arguments.Count; i++)
             {
                 var argument = arguments[i];
-                var lambda = Expression.Lambda<Func<TController, object>>(Expression.Convert(argument, typeof(object)), action.Parameters.ToList());
+                var lambda = Expression.Lambda<Func<TController, object>>(Expression.Convert(argument, typeof (object)),
+                                                                          action.Parameters.ToList());
                 var compiled = lambda.Compile();
                 var value = compiled(default(TController));
 
                 parameterValues.Add(value);
             }
 
-            var uri = typeof(TController).Name.Replace("Controller", string.Empty) + "/" +
+            var uri = typeof (TController).Name.Replace("Controller", string.Empty) + "/" +
                       body.Method.Name;
             if (parameterValues.Any())
             {
@@ -53,17 +87,10 @@ namespace Slew.WinRT.Pages
                     uri += parameters[paramIndex].Name + "=" + parameterValues[paramIndex];
                 }
             }
-
-            var result = (ActionResult)body.Method.Invoke(instance, parameterValues.ToArray());
-            
-            return new ControllerInvokerResult
-                       {
-                           Uri = uri,
-                           Result = result
-                       };
+            return uri;
         }
 
-        public ControllerInvokerResult Call(string uri)
+        public async Task<ControllerInvokerResult> CallAsync(string uri)
         {
             var controllerUri = ParseUri(uri);
 
@@ -79,8 +106,9 @@ namespace Slew.WinRT.Pages
 
             var methodInfo = methodInfos[0];
 
-            if (typeof(ActionResult).GetTypeInfo().IsAssignableFrom(methodInfo.ReturnType.GetTypeInfo()) == false)
-                throw new InvalidOperationException(string.Format("Controller action {0} must return an ActionResult derivative.", controllerUri.ActionName));
+            if (typeof(ActionResult).GetTypeInfo().IsAssignableFrom(methodInfo.ReturnType.GetTypeInfo()) == false &&
+                typeof(Task<ActionResult>).GetTypeInfo().IsAssignableFrom(methodInfo.ReturnType.GetTypeInfo()) == false)
+                throw new InvalidOperationException(string.Format("Controller action {0} must return an ActionResult or Task<ActionResult>.", controllerUri.ActionName));
 
             var parameters = new List<object>();
             foreach (var methodParam in methodInfo.GetParameters())
@@ -92,13 +120,23 @@ namespace Slew.WinRT.Pages
                     parameters.Add(controllerUri.Parameters[methodParam.Name]);
             }
 
-            var result = methodInfo.Invoke(controller, parameters.ToArray());
-            
-            return new ControllerInvokerResult
+            if (typeof (ActionResult).GetTypeInfo().IsAssignableFrom(methodInfo.ReturnType.GetTypeInfo()))
             {
-                Uri = uri,
-                Result = (ActionResult)result
-            };
+                var result = methodInfo.Invoke(controller, parameters.ToArray());
+
+                return new ControllerInvokerResult
+                           {
+                               Uri = uri,
+                               Result = (ActionResult) result
+                           };
+            }
+
+            var result1 = await ((Task<ActionResult>)methodInfo.Invoke(controller, parameters.ToArray()));
+            return new ControllerInvokerResult
+                       {
+                           Uri = uri,
+                           Result = result1
+                       };
         }
 
         private ControllerUri ParseUri(string uri)

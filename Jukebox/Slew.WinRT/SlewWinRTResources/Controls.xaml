@@ -19,13 +19,14 @@
                 Grid.Row="0"
                 HorizontalAlignment="Left" 
                 Style="{StaticResource SubheaderTextStyle}"
-                Margin="0 0 0 5"
+                Margin="0 0 0 20"
+                FontSize="36"
                 Text="{Binding Header, RelativeSource={RelativeSource TemplatedParent}}"/>
 
             <ContentPresenter 
                 Grid.Row="1" 
-                HorizontalAlignment="Left"
                 VerticalAlignment="Top"
+                Margin="{StaticResource BottomMostControlMargin}"
                 Content="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}"/>
         </Grid>
     </ControlTemplate>
