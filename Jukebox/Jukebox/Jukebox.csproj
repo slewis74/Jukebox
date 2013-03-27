@@ -146,7 +146,6 @@
     </Compile>
     <Compile Include="Features\Artists\Single\ArtistViewModel.cs" />
     <Compile Include="Features\Artists\DesignTime\DesignArtistsViewModel.cs" />
-    <Compile Include="Common\BooleanNegationConverter.cs" />
     <Compile Include="Common\JukeboxController.cs" />
     <Compile Include="Common\JukeboxControllerFactory.cs" />
     <Compile Include="Common\RichTextColumns.cs" />

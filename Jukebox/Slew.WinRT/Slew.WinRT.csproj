@@ -121,6 +121,8 @@
     <Compile Include="Pages\ContentSwitchingPage.cs" />
     <Compile Include="Pages\ControllerInvoker.cs" />
     <Compile Include="Pages\ControllerLocator.cs" />
+    <Compile Include="Pages\Converters\BooleanNegationConverter.cs" />
+    <Compile Include="Pages\Converters\InverseBooleanToVisibilityConverter.cs" />
     <Compile Include="Pages\IContollerInvoker.cs" />
     <Compile Include="Pages\IControllerInvoker.cs" />
     <Compile Include="Pages\IControllerLocator.cs" />

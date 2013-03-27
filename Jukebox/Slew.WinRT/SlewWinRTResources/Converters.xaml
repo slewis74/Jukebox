@@ -4,4 +4,6 @@
     xmlns:c="using:Slew.WinRT.Pages.Converters">
 
     <c:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    <c:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
+    <c:BooleanNegationConverter x:Key="BooleanNegationConverter"/>
 </ResourceDictionary>
