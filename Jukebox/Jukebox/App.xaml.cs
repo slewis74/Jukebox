@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
+using Autofac.Core;
 using Jukebox.Features.MainPage;
 using Jukebox.Features.Search;
 using Jukebox.Model;
@@ -55,19 +56,17 @@ namespace Jukebox
                 //TODO: Load state from previously suspended application
             }
 
-            var navigator = _container.Resolve<INavigator>();
-            var mainPageViewModel = new MainPageViewModel(bus, _playlists, playlistData.NowPlayingPlaylist);
+            var mainPageViewModel = _container.Resolve<MainPageViewModel>( new Parameter[]
+                                                                               {
+                                                                                   new NamedParameter("playlists", _playlists), 
+                                                                                   new NamedParameter("currentPlaylist", playlistData.NowPlayingPlaylist), 
+                                                                                   new NamedParameter("defaultRoute", "Artists/ShowAll"), 
+                                                                               });
             var mainPageView = new MainPageView
                                    {
-                                       PresentationBus = bus, 
-                                       Navigator = navigator,
-                                       ViewLocator = _container.Resolve<IViewLocator>(),
-                                       NavigationStackStorage = _container.Resolve<INavigationStackStorage>(),
-                                       ControllerInvoker = _container.Resolve<IControllerInvoker>(),
-                                       DataContext = mainPageViewModel,
+                                       DataContext = mainPageViewModel
                                    };
             
-            bus.Subscribe(mainPageViewModel);
             bus.Subscribe(mainPageView);
             
             Window.Current.Content = mainPageView;

@@ -31,8 +31,8 @@ namespace Jukebox.Features.MainPage
             
             SettingsPane.GetForCurrentView().CommandsRequested += MainPageCommandsRequested;
 
-			Loaded += MainPageLoaded;
-            Unloaded += OnUnloaded;
+            //Loaded += MainPageLoaded;
+            //Unloaded += OnUnloaded;
 
 			MediaElement.MediaFailed += MediaElement_MediaFailed;
 
@@ -40,17 +40,17 @@ namespace Jukebox.Features.MainPage
 		    MediaControl.PausePressed += (sender, o) => DispatchCall(s => DoPausePlaying());
 		    MediaControl.PlayPauseTogglePressed += (sender, o) => DispatchCall(TogglePlayPause);
             MediaControl.StopPressed += (sender, o) => DispatchCall(s => DoStopPlaying());
-            MediaControl.PreviousTrackPressed += (sender, o) => DispatchCall(s => PresentationBus.Publish(new PreviousTrackRequest()));
-            MediaControl.NextTrackPressed += (sender, o) => DispatchCall(s => PresentationBus.Publish(new NextTrackRequest()));
+            MediaControl.PreviousTrackPressed += (sender, o) => DispatchCall(s => ViewModel.PresentationBus.Publish(new PreviousTrackRequest()));
+            MediaControl.NextTrackPressed += (sender, o) => DispatchCall(s => ViewModel.PresentationBus.Publish(new NextTrackRequest()));
 		}
 
-        public IPresentationBus PresentationBus { get; set; }
-        public INavigator Navigator { get; set; }
-        private MainPageViewModel ViewModel { get { return (MainPageViewModel)DataContext; } }
-        public IViewLocator ViewLocator { get; set; }
-        public INavigationStackStorage NavigationStackStorage { get; set; }
-        public IControllerInvoker ControllerInvoker { get; set; }
-
+        //public IPresentationBus PresentationBus { get; set; }
+        //public INavigator Navigator { get; set; }
+        //private MainPageViewModel ViewModel { get { return (MainPageViewModel)DataContext; } }
+        //public IViewLocator ViewLocator { get; set; }
+        //public INavigationStackStorage NavigationStackStorage { get; set; }
+        //public IControllerInvoker ControllerInvoker { get; set; }
+        
         private void DispatchCall(SendOrPostCallback call)
         {
             if (SynchronizationContext.Current != _synchronizationContext)
@@ -63,25 +63,27 @@ namespace Jukebox.Features.MainPage
             }
         }
 
-        void MainPageLoaded(object sender, RoutedEventArgs e)
-        {
-            if (PresentationBus == null) return;
+        public MainPageViewModel ViewModel { get { return ((MainPageViewModel) DataContext); } }
 
-            NavFrame.ViewLocator = ViewLocator;
-            NavFrame.NavigationStackStorage = NavigationStackStorage;
-            NavFrame.ControllerInvoker = ControllerInvoker;
-            NavFrame.DefaultRoute = "Artists/ShowAll";
+        //void MainPageLoaded(object sender, RoutedEventArgs e)
+        //{
+        //    if (ViewModel.PresentationBus == null) return;
+
+        //    NavFrame.ViewLocator = ViewLocator;
+        //    NavFrame.NavigationStackStorage = NavigationStackStorage;
+        //    NavFrame.ControllerInvoker = ControllerInvoker;
+        //    NavFrame.DefaultRoute = "Artists/ShowAll";
             
-            NavFrame.RestoreNavigationStack();
+        //    NavFrame.RestoreNavigationStack();
 
-            PresentationBus.Subscribe(NavFrame);
-        }
+        //    PresentationBus.Subscribe(NavFrame);
+        //}
 
-        private void OnUnloaded(object sender, RoutedEventArgs routedEventArgs)
-        {
-            if (PresentationBus == null) return;
-            PresentationBus.UnSubscribe(NavFrame);
-        }
+        //private void OnUnloaded(object sender, RoutedEventArgs routedEventArgs)
+        //{
+        //    if (PresentationBus == null) return;
+        //    PresentationBus.UnSubscribe(NavFrame);
+        //}
 
         protected override void GoBack(object sender, RoutedEventArgs routedEventArgs)
         {
@@ -92,7 +94,7 @@ namespace Jukebox.Features.MainPage
         {
             var viewType = NavFrame.Content.GetType();
             var request = new DisplaySettingsRequest(viewType, args.Request);
-            PresentationBus.Publish(request);
+            ViewModel.PresentationBus.Publish(request);
         }
 
         private void TogglePlayPause(object state)
@@ -158,7 +160,7 @@ namespace Jukebox.Features.MainPage
 
 		private void MediaElementMediaEnded1(object sender, RoutedEventArgs e)
 		{
-            PresentationBus.Publish(new SongEndedEvent());
+            ViewModel.PresentationBus.Publish(new SongEndedEvent());
 		}
 	}
 }

@@ -22,7 +22,6 @@ namespace Slew.WinRT.Controls
 
         public NavigationFrame()
         {
-            Loaded += OnLoaded;
             Unloaded += OnUnloaded;
 
             // Note: the top of the navigation stack is always the currently displayed page
@@ -39,7 +38,7 @@ namespace Slew.WinRT.Controls
         }
 
         public static readonly DependencyProperty ViewLocatorProperty =
-            DependencyProperty.Register("ViewLocator", typeof (IViewLocator), typeof (NavigationFrame), new PropertyMetadata(default(IViewLocator)));
+            DependencyProperty.Register("ViewLocator", typeof (object), typeof (NavigationFrame), new PropertyMetadata(default(IViewLocator)));
 
         public IViewLocator ViewLocator
         {
@@ -48,7 +47,7 @@ namespace Slew.WinRT.Controls
         }
 
         public static readonly DependencyProperty PageCommandsPanelProperty =
-            DependencyProperty.Register("PageCommandsPanel", typeof (Panel), typeof (NavigationFrame), new PropertyMetadata(default(Panel)));
+            DependencyProperty.Register("PageCommandsPanel", typeof (Panel), typeof (NavigationFrame), new PropertyMetadata(default(Panel), TryToRestoreNavigationStack));
 
         public Panel PageCommandsPanel
         {
@@ -66,7 +65,7 @@ namespace Slew.WinRT.Controls
         }
 
         public static readonly DependencyProperty NavigationStackStorageProperty =
-            DependencyProperty.Register("NavigationStackStorage", typeof(INavigationStackStorage), typeof(NavigationFrame), new PropertyMetadata(default(INavigationStackStorage)));
+            DependencyProperty.Register("NavigationStackStorage", typeof(object), typeof(NavigationFrame), new PropertyMetadata(default(INavigationStackStorage), TryToRestoreNavigationStack));
 
         public INavigationStackStorage NavigationStackStorage
         {
@@ -75,7 +74,7 @@ namespace Slew.WinRT.Controls
         }
 
         public static readonly DependencyProperty DefaultRouteProperty =
-            DependencyProperty.Register("DefaultRoute", typeof (string), typeof (NavigationFrame), new PropertyMetadata(default(string)));
+            DependencyProperty.Register("DefaultRoute", typeof (string), typeof (NavigationFrame), new PropertyMetadata(default(string), TryToRestoreNavigationStack));
 
         public string DefaultRoute
         {
@@ -84,7 +83,7 @@ namespace Slew.WinRT.Controls
         }
 
         public static readonly DependencyProperty ControllerInvokerProperty =
-            DependencyProperty.Register("ControllerInvoker", typeof(IControllerInvoker), typeof(NavigationFrame), new PropertyMetadata(default(IControllerInvoker)));
+            DependencyProperty.Register("ControllerInvoker", typeof(object), typeof(NavigationFrame), new PropertyMetadata(default(IControllerInvoker), TryToRestoreNavigationStack));
 
         public IControllerInvoker ControllerInvoker
         {
@@ -93,7 +92,7 @@ namespace Slew.WinRT.Controls
         }
 
         public static readonly DependencyProperty PresentationBusProperty =
-            DependencyProperty.Register("PresentationBus", typeof (IPresentationBus), typeof (NavigationFrame), new PropertyMetadata(default(IPresentationBus), OnPresentationBusChanged));
+            DependencyProperty.Register("PresentationBus", typeof (object), typeof (NavigationFrame), new PropertyMetadata(default(IPresentationBus), OnPresentationBusChanged));
 
         private static void OnPresentationBusChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -126,15 +125,23 @@ namespace Slew.WinRT.Controls
             PresentationBus.UnSubscribe(this);
         }
 
-        private void OnLoaded(object sender, RoutedEventArgs e)
+        private static void TryToRestoreNavigationStack(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            RestoreNavigationStack();
+            if (e.NewValue == null) return;
+
+            var frame = (NavigationFrame)d;
+            frame.RestoreNavigationStack();
         }
 
         public void RestoreNavigationStack()
         {
-            if (NavigationStackStorage == null)
+            if (NavigationStackStorage == null ||
+                string.IsNullOrWhiteSpace(DefaultRoute) ||
+                ControllerInvoker == null ||
+                PageCommandsPanel == null)
+            {
                 return;
+            }
 
             var routes = NavigationStackStorage.RetrieveRoutes();
 
