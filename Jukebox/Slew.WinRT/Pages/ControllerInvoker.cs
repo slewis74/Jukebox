@@ -28,13 +28,13 @@ namespace Slew.WinRT.Pages
 
             var body = (MethodCallExpression)action.Body;
             var parameterValues = new List<object>();
-            var uri = BuildMethodCall<TController>(action, body, parameterValues);
+            var route = BuildMethodCall<TController>(action, body, parameterValues);
 
             var result = (ActionResult)body.Method.Invoke(instance, parameterValues.ToArray());
             
             return new ControllerInvokerResult
                        {
-                           Uri = uri,
+                           Route = route,
                            Result = result
                        };
         }
@@ -46,13 +46,13 @@ namespace Slew.WinRT.Pages
 
             var body = (MethodCallExpression)action.Body;
             var parameterValues = new List<object>();
-            var uri = BuildMethodCall<TController>(action, body, parameterValues);
+            var route = BuildMethodCall<TController>(action, body, parameterValues);
 
             var result = await (Task<ActionResult>)body.Method.Invoke(instance, parameterValues.ToArray());
 
             return new ControllerInvokerResult
             {
-                Uri = uri,
+                Route = route,
                 Result = result
             };
         }
@@ -73,51 +73,51 @@ namespace Slew.WinRT.Pages
                 parameterValues.Add(value);
             }
 
-            var uri = typeof (TController).Name.Replace("Controller", string.Empty) + "/" +
+            var route = typeof (TController).Name.Replace("Controller", string.Empty) + "/" +
                       body.Method.Name;
             if (parameterValues.Any())
             {
-                uri += "?";
+                route += "?";
                 for (var paramIndex = 0; paramIndex < parameters.Length; paramIndex++)
                 {
                     if (paramIndex > 0)
                     {
-                        uri += "&";
+                        route += "&";
                     }
-                    uri += parameters[paramIndex].Name + "=" + parameterValues[paramIndex];
+                    route += parameters[paramIndex].Name + "=" + parameterValues[paramIndex];
                 }
             }
-            return uri;
+            return route;
         }
 
-        public async Task<ControllerInvokerResult> CallAsync(string uri)
+        public async Task<ControllerInvokerResult> CallAsync(string route)
         {
-            var controllerUri = ParseUri(uri);
+            var controllerRoute = ParseRoute(route);
 
-            var controller = _controllerLocator.Create(controllerUri.ControllerName);
+            var controller = _controllerLocator.Create(controllerRoute.ControllerName);
             var controllerType = controller.GetType().GetTypeInfo();
 
-            var methodInfos = controllerType.GetDeclaredMethods(controllerUri.ActionName).ToArray();
+            var methodInfos = controllerType.GetDeclaredMethods(controllerRoute.ActionName).ToArray();
 
             if (methodInfos == null || methodInfos.Any() == false)
             {
-                throw new InvalidOperationException(string.Format("Unable to locate action {0} on {1} controller.", controllerUri.ActionName, controllerUri.ControllerName));
+                throw new InvalidOperationException(string.Format("Unable to locate action {0} on {1} controller.", controllerRoute.ActionName, controllerRoute.ControllerName));
             }
 
             var methodInfo = methodInfos[0];
 
             if (typeof(ActionResult).GetTypeInfo().IsAssignableFrom(methodInfo.ReturnType.GetTypeInfo()) == false &&
                 typeof(Task<ActionResult>).GetTypeInfo().IsAssignableFrom(methodInfo.ReturnType.GetTypeInfo()) == false)
-                throw new InvalidOperationException(string.Format("Controller action {0} must return an ActionResult or Task<ActionResult>.", controllerUri.ActionName));
+                throw new InvalidOperationException(string.Format("Controller action {0} must return an ActionResult or Task<ActionResult>.", controllerRoute.ActionName));
 
             var parameters = new List<object>();
             foreach (var methodParam in methodInfo.GetParameters())
             {
                 // TODO: fix support for other types.
                 if (methodParam.ParameterType == typeof (int))
-                    parameters.Add(Convert.ToInt32(controllerUri.Parameters[methodParam.Name]));
+                    parameters.Add(Convert.ToInt32(controllerRoute.Parameters[methodParam.Name]));
                 else
-                    parameters.Add(controllerUri.Parameters[methodParam.Name]);
+                    parameters.Add(controllerRoute.Parameters[methodParam.Name]);
             }
 
             if (typeof (ActionResult).GetTypeInfo().IsAssignableFrom(methodInfo.ReturnType.GetTypeInfo()))
@@ -126,7 +126,7 @@ namespace Slew.WinRT.Pages
 
                 return new ControllerInvokerResult
                            {
-                               Uri = uri,
+                               Route = route,
                                Result = (ActionResult) result
                            };
             }
@@ -134,25 +134,25 @@ namespace Slew.WinRT.Pages
             var result1 = await ((Task<ActionResult>)methodInfo.Invoke(controller, parameters.ToArray()));
             return new ControllerInvokerResult
                        {
-                           Uri = uri,
+                           Route = route,
                            Result = result1
                        };
         }
 
-        private ControllerUri ParseUri(string uri)
+        private ControllerRoute ParseRoute(string route)
         {
-            var indexOfControllerActionSeparator = uri.IndexOf('/');
-            var controllerName = uri.Substring(0, indexOfControllerActionSeparator);
+            var indexOfControllerActionSeparator = route.IndexOf('/');
+            var controllerName = route.Substring(0, indexOfControllerActionSeparator);
 
             string actionName;
 
-            var parametersIndex = uri.IndexOf("?");
+            var parametersIndex = route.IndexOf("?");
             var parameters = new Dictionary<string, string>();
 
             if (parametersIndex != -1)
             {
-                actionName = uri.Substring(indexOfControllerActionSeparator + 1, parametersIndex - (indexOfControllerActionSeparator + 1));
-                var parametersString = uri.Substring(parametersIndex + 1);
+                actionName = route.Substring(indexOfControllerActionSeparator + 1, parametersIndex - (indexOfControllerActionSeparator + 1));
+                var parametersString = route.Substring(parametersIndex + 1);
                 var paramPairs = parametersString.Split('&');
 
                 foreach (var paramPair in paramPairs)
@@ -163,7 +163,7 @@ namespace Slew.WinRT.Pages
             }
             else
             {
-                actionName = uri.Substring(indexOfControllerActionSeparator + 1);
+                actionName = route.Substring(indexOfControllerActionSeparator + 1);
             }
 
             var controller = _controllerLocator.Create(controllerName);
@@ -176,7 +176,7 @@ namespace Slew.WinRT.Pages
                 throw new InvalidOperationException(string.Format("Unable to locate action {0} on {1} controller.", actionName, controllerName));
             }
             
-            return new ControllerUri
+            return new ControllerRoute
                        {
                            ControllerName = controllerName,
                            ActionName = actionName,
@@ -184,7 +184,7 @@ namespace Slew.WinRT.Pages
                        };
         }
 
-        private class ControllerUri
+        private class ControllerRoute
         {
             public string ControllerName { get; set; }
             public string ActionName { get; set; }

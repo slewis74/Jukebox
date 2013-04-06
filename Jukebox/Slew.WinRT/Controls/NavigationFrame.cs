@@ -22,6 +22,9 @@ namespace Slew.WinRT.Controls
 
         public NavigationFrame()
         {
+            Loaded += OnLoaded;
+            Unloaded += OnUnloaded;
+
             // Note: the top of the navigation stack is always the currently displayed page
             _navigationStack = new Stack<NavigationFrameStackItem>();
         }
@@ -71,13 +74,13 @@ namespace Slew.WinRT.Controls
             set { SetValue(NavigationStackStorageProperty, value); }
         }
 
-        public static readonly DependencyProperty DefaultUriProperty =
-            DependencyProperty.Register("DefaultUri", typeof (string), typeof (NavigationFrame), new PropertyMetadata(default(string)));
+        public static readonly DependencyProperty DefaultRouteProperty =
+            DependencyProperty.Register("DefaultRoute", typeof (string), typeof (NavigationFrame), new PropertyMetadata(default(string)));
 
-        public string DefaultUri
+        public string DefaultRoute
         {
-            get { return (string) GetValue(DefaultUriProperty); }
-            set { SetValue(DefaultUriProperty, value); }
+            get { return (string) GetValue(DefaultRouteProperty); }
+            set { SetValue(DefaultRouteProperty, value); }
         }
 
         public static readonly DependencyProperty ControllerInvokerProperty =
@@ -89,6 +92,24 @@ namespace Slew.WinRT.Controls
             set { SetValue(ControllerInvokerProperty, value); }
         }
 
+        public static readonly DependencyProperty PresentationBusProperty =
+            DependencyProperty.Register("PresentationBus", typeof (IPresentationBus), typeof (NavigationFrame), new PropertyMetadata(default(IPresentationBus), OnPresentationBusChanged));
+
+        private static void OnPresentationBusChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue == null) return;
+
+            var frame = (NavigationFrame) d;
+
+            frame.PresentationBus.Subscribe(frame);
+        }
+
+        public IPresentationBus PresentationBus
+        {
+            get { return (IPresentationBus) GetValue(PresentationBusProperty); }
+            set { SetValue(PresentationBusProperty, value); }
+        }
+
         public static readonly DependencyProperty CurrentPageTitleProperty =
             DependencyProperty.Register("CurrentPageTitle", typeof (string), typeof (NavigationFrame), new PropertyMetadata(default(string)));
 
@@ -98,24 +119,36 @@ namespace Slew.WinRT.Controls
             set { SetValue(CurrentPageTitleProperty, value); }
         }
 
+        private void OnUnloaded(object sender, RoutedEventArgs routedEventArgs)
+        {
+            if (PresentationBus == null) return;
+
+            PresentationBus.UnSubscribe(this);
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            RestoreNavigationStack();
+        }
+
         public void RestoreNavigationStack()
         {
             if (NavigationStackStorage == null)
                 return;
 
-            var uris = NavigationStackStorage.RetrieveUris();
+            var routes = NavigationStackStorage.RetrieveRoutes();
 
             NavigationFrameStackItem navigationFrameStackItem;
-            if (uris == null || uris.Any() == false)
+            if (routes == null || routes.Any() == false)
             {
-                navigationFrameStackItem = new NavigationFrameStackItem(DefaultUri, null);
+                navigationFrameStackItem = new NavigationFrameStackItem(DefaultRoute, null);
                 _navigationStack.Push(navigationFrameStackItem);
             }
             else
             {
-                foreach (var uri in uris)
+                foreach (var route in routes)
                 {
-                    _navigationStack.Push(new NavigationFrameStackItem(uri, null));
+                    _navigationStack.Push(new NavigationFrameStackItem(route, null));
                 }
                 navigationFrameStackItem = _navigationStack.Peek();
             }
@@ -131,16 +164,16 @@ namespace Slew.WinRT.Controls
             if (request.Args.Target != TargetName)
                 return;
 
-            NavigateToPage(request.Uri, request.Args.ViewType, request.Args.Parameter);
+            NavigateToPage(request.Route, request.Args.ViewType, request.Args.Parameter);
         }
 
-        private void NavigateToPage(string uri, Type viewType, object parameter)
+        private void NavigateToPage(string route, Type viewType, object parameter)
         {
             // create the view instance.
             var view = (FrameworkElement)Activator.CreateInstance(viewType);
             view.DataContext = parameter;
 
-            GoForward(uri, view);
+            GoForward(route, view);
         }
 
         public void Handle(ViewModelNavigationRequest request)
@@ -148,14 +181,14 @@ namespace Slew.WinRT.Controls
             if (request.Args.Target != TargetName)
                 return;
 
-            NavigateToViewModelAndAddToStack(request.Uri, request.Args.ViewModel);
+            NavigateToViewModelAndAddToStack(request.Route, request.Args.ViewModel);
         }
 
-        private void NavigateToViewModelAndAddToStack(string uri, object viewModel)
+        private void NavigateToViewModelAndAddToStack(string route, object viewModel)
         {
             var contentSwitchingPage = NavigateToViewModel(viewModel);
 
-            GoForward(uri, contentSwitchingPage);
+            GoForward(route, contentSwitchingPage);
         }
 
         private FrameworkElement NavigateToViewModel(object viewModel)
@@ -172,7 +205,7 @@ namespace Slew.WinRT.Controls
             return contentSwitchingPage;
         }
 
-        private void GoForward(string uri, FrameworkElement newContent)
+        private void GoForward(string route, FrameworkElement newContent)
         {
             // We only want 1 SearchViewModel on the top of the stack, so if the top item and the new content
             // are both SearchViewModels, we pop the top one off and discard it.
@@ -184,7 +217,7 @@ namespace Slew.WinRT.Controls
                 _navigationStack.Pop();
             }
 
-            _navigationStack.Push(new NavigationFrameStackItem(uri, newContent));
+            _navigationStack.Push(new NavigationFrameStackItem(route, newContent));
 
             Content = newContent;
             SetCanGoBack();
@@ -193,7 +226,7 @@ namespace Slew.WinRT.Controls
 
             if (NavigationStackStorage != null)
             {
-                NavigationStackStorage.StoreUris(_navigationStack.Select(i => i.Uri).ToArray());
+                NavigationStackStorage.StoreRoutes(_navigationStack.Select(i => i.Route).ToArray());
             }
         }
 
@@ -214,7 +247,7 @@ namespace Slew.WinRT.Controls
 
             if (NavigationStackStorage != null)
             {
-                NavigationStackStorage.StoreUris(_navigationStack.Select(i => i.Uri).ToArray());
+                NavigationStackStorage.StoreRoutes(_navigationStack.Select(i => i.Route).ToArray());
             }
         }
 
@@ -237,7 +270,7 @@ namespace Slew.WinRT.Controls
             if (item.Content != null) 
                 return;
 
-            var controllerResult = await ControllerInvoker.CallAsync(item.Uri);
+            var controllerResult = await ControllerInvoker.CallAsync(item.Route);
             if (controllerResult.Result is IPageActionResult)
             {
                 //NavigateToPage();
@@ -252,22 +285,22 @@ namespace Slew.WinRT.Controls
 
         private class NavigationFrameStackItem
         {
-            public NavigationFrameStackItem(string uri, FrameworkElement content)
+            public NavigationFrameStackItem(string route, FrameworkElement content)
             {
-                Uri = uri;
+                Route = route;
                 Content = content;
             }
 
-            public string Uri { get; private set; }
+            public string Route { get; private set; }
             public FrameworkElement Content { get; set; }
 
             public override bool Equals(object obj)
             {
-                return obj is NavigationFrameStackItem && ((NavigationFrameStackItem)obj).Uri == Uri;
+                return obj is NavigationFrameStackItem && ((NavigationFrameStackItem)obj).Route == Route;
             }
             public override int GetHashCode()
             {
-                return Uri.GetHashCode();
+                return Route.GetHashCode();
             }
         }
     }

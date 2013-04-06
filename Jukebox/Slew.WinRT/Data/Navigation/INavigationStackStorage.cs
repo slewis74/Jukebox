@@ -2,7 +2,7 @@
 {
     public interface INavigationStackStorage
     {
-        void StoreUris(string[] uris);
-        string[] RetrieveUris();
+        void StoreRoutes(string[] routes);
+        string[] RetrieveRoutes();
     }
 }

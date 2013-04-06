@@ -13,12 +13,6 @@ namespace Slew.WinRT.Pages
         Task<ControllerInvokerResult> CallAsync<TController>(Expression<Func<TController, Task<ActionResult>>> action)
             where TController : IController;
 
-        Task<ControllerInvokerResult> CallAsync(string uri);
-    }
-
-    public class ControllerInvokerResult
-    {
-        public string Uri { get; set; }
-        public ActionResult Result { get; set; }
+        Task<ControllerInvokerResult> CallAsync(string route);
     }
 }

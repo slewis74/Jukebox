@@ -16,7 +16,7 @@ namespace Slew.WinRT.Pages.Navigation
             Expression<Func<TController, Task<ActionResult>>> action)
             where TController : IController;
 
-        void Navigate(string uri);
+        void Navigate(string route);
 
         void SettingsNavigateBack();
     }

@@ -4,11 +4,11 @@ namespace Slew.WinRT.Requests
 {
     public class ViewModelNavigationRequest : PresentationRequest<ViewModelNavigationRequestEventArgs>
     {
-        public ViewModelNavigationRequest(string uri, ViewModelNavigationRequestEventArgs args) : base(args)
+        public ViewModelNavigationRequest(string route, ViewModelNavigationRequestEventArgs args) : base(args)
         {
-            Uri = uri;
+            Route = route;
         }
 
-        public string Uri { get; set; }
+        public string Route { get; set; }
     }
 }

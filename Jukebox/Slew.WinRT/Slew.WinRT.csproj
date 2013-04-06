@@ -120,6 +120,7 @@
     <Compile Include="Data\Navigation\NavigationStackStorage.cs" />
     <Compile Include="Pages\ContentSwitchingPage.cs" />
     <Compile Include="Pages\ControllerInvoker.cs" />
+    <Compile Include="Pages\ControllerInvokerResult.cs" />
     <Compile Include="Pages\ControllerLocator.cs" />
     <Compile Include="Pages\Converters\BooleanNegationConverter.cs" />
     <Compile Include="Pages\Converters\InverseBooleanToVisibilityConverter.cs" />

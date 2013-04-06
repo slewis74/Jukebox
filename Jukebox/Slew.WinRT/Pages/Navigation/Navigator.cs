@@ -47,15 +47,15 @@ namespace Slew.WinRT.Pages.Navigation
             DoNavigate(controllerResult);
         }
 
-        public async void Navigate(string uri)
+        public async void Navigate(string route)
         {
-            var controllerResult = await _controllerInvoker.CallAsync(uri);
+            var controllerResult = await _controllerInvoker.CallAsync(route);
             DoNavigate(controllerResult);
         }
 
         private void DoNavigate(ControllerInvokerResult controllerResult)
         {
-            var uri = controllerResult.Uri;
+            var route = controllerResult.Route;
             var result = controllerResult.Result;
 
             var settingsResult = result as ISettingsPageActionResult;
@@ -68,7 +68,7 @@ namespace Slew.WinRT.Pages.Navigation
             var pageResult = result as IPageActionResult;
             if (pageResult != null)
             {
-                _presentationBus.Publish(new PageNavigationRequest(uri,
+                _presentationBus.Publish(new PageNavigationRequest(route,
                                                                    new PageNavigationRequestEventArgs(pageResult.PageType,
                                                                                                       pageResult.Parameter)));
                 return;
@@ -77,7 +77,7 @@ namespace Slew.WinRT.Pages.Navigation
             var viewModelResult = result as IViewModelActionResult;
             if (viewModelResult != null)
             {
-                _presentationBus.Publish(new ViewModelNavigationRequest(uri,
+                _presentationBus.Publish(new ViewModelNavigationRequest(route,
                                                                         new ViewModelNavigationRequestEventArgs(
                                                                             viewModelResult.ViewModelInstance)));
             }

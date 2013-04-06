@@ -70,7 +70,7 @@ namespace Jukebox.Features.MainPage
             NavFrame.ViewLocator = ViewLocator;
             NavFrame.NavigationStackStorage = NavigationStackStorage;
             NavFrame.ControllerInvoker = ControllerInvoker;
-            NavFrame.DefaultUri = "Artists/ShowAll";
+            NavFrame.DefaultRoute = "Artists/ShowAll";
             
             NavFrame.RestoreNavigationStack();
 

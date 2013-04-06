@@ -4,11 +4,11 @@ namespace Slew.WinRT.Requests
 {
     public class PageNavigationRequest : PresentationRequest<PageNavigationRequestEventArgs>
     {
-        public PageNavigationRequest(string uri, PageNavigationRequestEventArgs args) : base(args)
+        public PageNavigationRequest(string route, PageNavigationRequestEventArgs args) : base(args)
         {
-            Uri = uri;
+            Route = route;
         }
 
-        public string Uri { get; set; }
+        public string Route { get; set; }
     }
 }
