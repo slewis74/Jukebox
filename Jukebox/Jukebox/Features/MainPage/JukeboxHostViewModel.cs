@@ -5,17 +5,15 @@ using Jukebox.Features.MainPage.Commands;
 using Jukebox.Features.MainPage.Requests;
 using Jukebox.Model;
 using Jukebox.Requests;
-using Slew.WinRT.Data;
-using Slew.WinRT.Data.Navigation;
-using Slew.WinRT.Pages;
-using Slew.WinRT.Pages.Navigation;
-using Slew.WinRT.PresentationBus;
-using Slew.WinRT.ViewModels;
+using Slab.Data;
+using Slab.PresentationBus;
+using Slab.ViewModels;
+using SlabRt.Host;
 
 namespace Jukebox.Features.MainPage
 {
-	public class MainPageViewModel :
-        BindableBase,
+	public class JukeboxHostViewModel :
+        HostViewModel,
         IHandlePresentationRequest<PlayRequest>,
         IHandlePresentationRequest<PauseRequest>,
         IHandlePresentationRequest<StopRequest>,
@@ -23,45 +21,29 @@ namespace Jukebox.Features.MainPage
 	{
         private readonly DistinctAsyncObservableCollection<Playlist> _playlists;
 
-        public delegate MainPageViewModel Factory(
+        public delegate JukeboxHostViewModel Factory(
+            string defaultRoute,
             DistinctAsyncObservableCollection<Playlist> playlists,
-            NowPlayingPlaylist currentPlaylist,
-            string defaultRoute);
+            NowPlayingPlaylist currentPlaylist);
 
-        public MainPageViewModel(
+        public JukeboxHostViewModel(
             IPresentationBus presentationBus,
-            INavigator navigator,
-            IViewLocator viewLocator,
-            INavigationStackStorage navigationStackStorage,
-            IControllerInvoker controllerInvoker,
+            string defaultRoute,
             DistinctAsyncObservableCollection<Playlist> playlists,
-            NowPlayingPlaylist currentPlaylist,
-            string defaultRoute)
+            NowPlayingPlaylist currentPlaylist) : 
+            base(defaultRoute)
         {
             PresentationBus = presentationBus;
-            Navigator = navigator;
-            ViewLocator = viewLocator;
-            NavigationStackStorage = navigationStackStorage;
-            ControllerInvoker = controllerInvoker;
-            DefaultRoute = defaultRoute;
-
             NowPlayingPlaylist = currentPlaylist;
             _playlists = playlists;
 
-            PlayCommand = new PresentationRequestCommand<PlayRequest>(presentationBus);
-            PauseCommand = new PresentationRequestCommand<PauseRequest>(presentationBus);
+            PlayCommand = new PresentationRequestCommand<PlayRequest>(PresentationBus);
+            PauseCommand = new PresentationRequestCommand<PauseRequest>(PresentationBus);
             PlaylistsCommand = new PlaylistsCommand(_playlists);
-            NextTrackCommand = new NextTrackCommand(presentationBus, NowPlayingPlaylist.CanMoveNext);
-            PreviousTrackCommand = new PreviousTrackCommand(presentationBus, NowPlayingPlaylist.CanMovePrevious);
+            NextTrackCommand = new NextTrackCommand(PresentationBus, NowPlayingPlaylist.CanMoveNext);
+            PreviousTrackCommand = new PreviousTrackCommand(PresentationBus, NowPlayingPlaylist.CanMovePrevious);
         }
-
-        public IPresentationBus PresentationBus { get; set; }
-        public INavigator Navigator { get; set; }
-        public IViewLocator ViewLocator { get; set; }
-        public INavigationStackStorage NavigationStackStorage { get; set; }
-        public IControllerInvoker ControllerInvoker { get; set; }
-        public string DefaultRoute { get; set; }
-
+        
         public ICommand PlayCommand { get; private set; }
         public ICommand PauseCommand { get; private set; }
         public ICommand PlaylistsCommand { get; private set; }

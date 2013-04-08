@@ -2,7 +2,7 @@
 using Jukebox.Common;
 using Jukebox.Model;
 using Jukebox.Storage;
-using Slew.WinRT.Pages.Navigation;
+using Slab.Pages.Navigation;
 
 namespace Jukebox.Features.Search
 {

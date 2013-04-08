@@ -1,5 +1,5 @@
 ﻿using Jukebox.Model;
-using Slew.WinRT.Data;
+using Slab.Data;
 
 namespace Jukebox.Features.Artists.All
 {

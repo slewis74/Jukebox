@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using Jukebox.Model;
-using Slew.WinRT.Data;
-using Slew.WinRT.Pages.Navigation;
-using Slew.WinRT.ViewModels;
+using Slab.Data;
+using Slab.Pages.Navigation;
+using SlabRt.ViewModels;
 
 namespace Jukebox.Features.Search
 {

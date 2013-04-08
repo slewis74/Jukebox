@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using Slew.WinRT.Data;
+using Slab.Data;
 
 namespace Jukebox.Model
 {

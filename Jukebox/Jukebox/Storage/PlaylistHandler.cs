@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Jukebox.Events;
 using Jukebox.Model;
-using Slew.WinRT.PresentationBus;
+using Slab.PresentationBus;
 using Windows.Storage;
 
 namespace Jukebox.Storage

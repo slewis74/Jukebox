@@ -1,5 +1,5 @@
 ﻿using Jukebox.Features.HomePage.PlaylistSummary;
-using Slew.WinRT.Data;
+using Slab.Data;
 
 namespace Jukebox.Features.HomePage
 {

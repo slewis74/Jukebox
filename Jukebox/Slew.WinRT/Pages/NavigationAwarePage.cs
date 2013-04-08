@@ -1,4 +1,6 @@
 ﻿using System;
+using Slew.WinRT.Messages;
+using Slew.WinRT.Pages.Host;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -70,23 +72,20 @@ namespace Slew.WinRT.Pages
 
         protected virtual void GoHome(object sender, RoutedEventArgs e)
         {
-            // Use the navigation frame to return to the topmost page
-            if (Frame != null)
-            {
-                while (Frame.CanGoBack) Frame.GoBack();
-            }
+            var viewModel = DataContext as HostViewModel;
+            if (viewModel == null)
+                return;
+
+            viewModel.PresentationBus.Publish(new GoHomeRequest());
         }
 
         protected virtual void GoBack(object sender, RoutedEventArgs e)
         {
-            // Use the navigation frame to return to the previous page
-            if (Frame != null && Frame.CanGoBack) Frame.GoBack();
-        }
+            var viewModel = DataContext as HostViewModel;
+            if (viewModel == null)
+                return;
 
-        protected virtual void GoForward(object sender, RoutedEventArgs e)
-        {
-            // Use the navigation frame to move to the next page
-            if (Frame != null && Frame.CanGoForward) Frame.GoForward();
+            viewModel.PresentationBus.Publish(new GoBackRequest());
         }
 
         /// <summary>
@@ -122,13 +121,6 @@ namespace Slew.WinRT.Pages
                     args.Handled = true;
                     GoBack(this, new RoutedEventArgs());
                 }
-                else if (((int)virtualKey == 167 && noModifiers) ||
-                         (virtualKey == VirtualKey.Right && onlyAlt))
-                {
-                    // When the next key or Alt+Right are pressed navigate forward
-                    args.Handled = true;
-                    GoForward(this, new RoutedEventArgs());
-                }
             }
         }
 
@@ -155,7 +147,6 @@ namespace Slew.WinRT.Pages
             {
                 args.Handled = true;
                 if (backPressed) GoBack(this, new RoutedEventArgs());
-                if (forwardPressed) GoForward(this, new RoutedEventArgs());
             }
         }
         

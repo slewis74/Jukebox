@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Slew.WinRT.Data.Navigation;
+using Slew.WinRT.Messages;
 using Slew.WinRT.Pages;
 using Slew.WinRT.Pages.Navigation;
 using Slew.WinRT.PresentationBus;
 using Slew.WinRT.Requests;
 using Slew.WinRT.ViewModels;
+using Windows.UI.ApplicationSettings;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -16,7 +18,8 @@ namespace Slew.WinRT.Controls
     public class NavigationFrame : 
         ContentControl,
         IHandlePresentationEvent<PageNavigationRequest>,
-        IHandlePresentationEvent<ViewModelNavigationRequest>
+        IHandlePresentationEvent<ViewModelNavigationRequest>,
+        IHandlePresentationEvent<GoBackRequest>
     {
         private readonly Stack<NavigationFrameStackItem> _navigationStack;
 
@@ -26,6 +29,18 @@ namespace Slew.WinRT.Controls
 
             // Note: the top of the navigation stack is always the currently displayed page
             _navigationStack = new Stack<NavigationFrameStackItem>();
+
+            SettingsPane.GetForCurrentView().CommandsRequested += HostCommandsRequested;
+        }
+
+        void HostCommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
+        {
+            if (Content == null)
+                return;
+
+            var viewType = Content.GetType();
+            var request = new DisplaySettingsRequest(viewType, args.Request);
+            PresentationBus.Publish(request);
         }
 
         public static readonly DependencyProperty TargetNameProperty =
@@ -164,6 +179,15 @@ namespace Slew.WinRT.Controls
             Content = navigationFrameStackItem.Content;
 
             SetCanGoBack();
+        }
+
+        public void Handle(GoBackRequest request)
+        {
+            if (CanGoBack)
+            {
+                GoBack();
+            }
+            request.IsHandled = true;
         }
 
         public void Handle(PageNavigationRequest request)

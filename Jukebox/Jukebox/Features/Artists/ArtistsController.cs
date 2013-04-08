@@ -4,7 +4,7 @@ using Jukebox.Features.Albums;
 using Jukebox.Features.Artists.All;
 using Jukebox.Features.Artists.Single;
 using Jukebox.Storage;
-using Slew.WinRT.Pages.Navigation;
+using Slab.Pages.Navigation;
 
 namespace Jukebox.Features.Artists
 {

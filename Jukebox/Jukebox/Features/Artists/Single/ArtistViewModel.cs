@@ -2,9 +2,9 @@
 using Jukebox.Features.Albums;
 using Jukebox.Model;
 using Jukebox.Requests;
-using Slew.WinRT.Pages.Navigation;
-using Slew.WinRT.PresentationBus;
-using Slew.WinRT.ViewModels;
+using Slab.Pages.Navigation;
+using Slab.PresentationBus;
+using Slab.ViewModels;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace Jukebox.Features.Artists.Single

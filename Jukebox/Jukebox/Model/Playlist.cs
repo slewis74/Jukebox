@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using Jukebox.Events;
-using Slew.WinRT.Data;
-using Slew.WinRT.PresentationBus;
+using Slab.Data;
+using Slab.PresentationBus;
 
 namespace Jukebox.Model
 {

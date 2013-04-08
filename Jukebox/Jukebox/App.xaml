@@ -7,13 +7,10 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
 
-                <!-- 
-                    IMPORTANT: the following Sources must have the Slew.WinRT/ removed when the app is referencing the library
-                                using the Nuget package.
-                 -->
-                <ResourceDictionary Source="ms-appx:///Slew.WinRT/SlewWinRTResources/StandardLayout.xaml"/>
-                <ResourceDictionary Source="ms-appx:///Slew.WinRT/SlewWinRTResources/StandardStyles.xaml"/>
-                <ResourceDictionary Source="ms-appx:///Slew.WinRT/SlewWinRTResources/Converters.xaml"/>
+                <ResourceDictionary Source="ms-appx:///SlabResources/StandardLayout.xaml"/>
+                <ResourceDictionary Source="ms-appx:///SlabResources/StandardStyles.xaml"/>
+                <ResourceDictionary Source="ms-appx:///SlabResources/Converters.xaml"/>
+                <ResourceDictionary Source="ms-appx:///SlabResources/Controls.xaml"/>
 
                 <ResourceDictionary Source="/Resources/ButtonStyles.xaml"/>
                 
@@ -22,6 +19,6 @@
 
 			<x:String x:Key="AppName">Jukebox</x:String>
 
-		</ResourceDictionary>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

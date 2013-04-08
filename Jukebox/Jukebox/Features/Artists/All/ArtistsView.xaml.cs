@@ -1,5 +1,5 @@
 ﻿using System;
-using Slew.WinRT.Pages;
+using Slab.Pages;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 

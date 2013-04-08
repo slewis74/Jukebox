@@ -1,6 +1,6 @@
 ﻿using Jukebox.Events;
-using Slew.WinRT.Data;
-using Slew.WinRT.PresentationBus;
+using Slab.Data;
+using Slab.PresentationBus;
 
 namespace Jukebox.Features.Settings.Player
 {

@@ -1,6 +1,6 @@
 ﻿using Jukebox.Events;
 using Jukebox.Requests;
-using Slew.WinRT.PresentationBus;
+using Slab.PresentationBus;
 using Windows.Storage;
 
 namespace Jukebox.Storage

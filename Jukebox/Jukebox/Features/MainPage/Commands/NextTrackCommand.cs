@@ -1,7 +1,7 @@
 using Jukebox.Events;
 using Jukebox.Requests;
-using Slew.WinRT.PresentationBus;
-using Slew.WinRT.ViewModels;
+using Slab.PresentationBus;
+using Slab.ViewModels;
 
 namespace Jukebox.Features.MainPage.Commands
 {

@@ -1,7 +1,7 @@
 ﻿using Jukebox.Common;
 using Jukebox.Model;
-using Slew.WinRT.Data;
-using Slew.WinRT.Pages.Navigation;
+using Slab.Data;
+using Slab.Pages.Navigation;
 
 namespace Jukebox.Features.Playlists
 {

@@ -1,4 +1,4 @@
-﻿using Slew.WinRT.PresentationBus;
+﻿using Slab.PresentationBus;
 using Windows.Storage;
 
 namespace Jukebox.Features.MainPage.Requests

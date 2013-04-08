@@ -1,4 +1,4 @@
-﻿using Slew.WinRT.PresentationBus;
+﻿using Slab.PresentationBus;
 
 namespace Jukebox.Features.MainPage.Events
 {

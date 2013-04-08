@@ -2,10 +2,10 @@
 using Autofac;
 using Jukebox.Model;
 using Jukebox.Storage;
-using Slew.WinRT.Data;
-using Slew.WinRT.Pages.Navigation;
-using Slew.WinRT.PresentationBus;
-using Slew.WinRT.ViewModels;
+using Slab.Data;
+using Slab.Pages.Navigation;
+using Slab.PresentationBus;
+using Slab.ViewModels;
 
 namespace Jukebox.Features.Artists.All
 {

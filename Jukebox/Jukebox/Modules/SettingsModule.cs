@@ -1,6 +1,6 @@
 ﻿using Autofac;
 using Jukebox.Storage;
-using Slew.WinRT.Pages.Settings;
+using SlabRt.Pages.Settings;
 
 namespace Jukebox.Modules
 {

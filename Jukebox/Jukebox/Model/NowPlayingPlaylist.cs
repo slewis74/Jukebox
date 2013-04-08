@@ -4,7 +4,7 @@ using System.Linq;
 using Jukebox.Events;
 using Jukebox.Features.MainPage.Events;
 using Jukebox.Requests;
-using Slew.WinRT.PresentationBus;
+using Slab.PresentationBus;
 
 namespace Jukebox.Model
 {

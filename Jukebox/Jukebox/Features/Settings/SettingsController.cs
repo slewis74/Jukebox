@@ -2,8 +2,9 @@
 using Jukebox.Common;
 using Jukebox.Features.Settings.Player;
 using Jukebox.Requests;
-using Slew.WinRT.Pages.Navigation;
-using Slew.WinRT.PresentationBus;
+using Slab.Pages.Navigation;
+using Slab.PresentationBus;
+using SlabRt.Pages.Navigation;
 
 namespace Jukebox.Features.Settings
 {

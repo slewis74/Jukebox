@@ -1,7 +1,7 @@
 ﻿using System;
 using Jukebox.Model;
-using Slew.WinRT.Data;
-using Slew.WinRT.Pages;
+using Slab.Data;
+using SlabRt.Pages;
 
 namespace Jukebox.Features.Albums
 {

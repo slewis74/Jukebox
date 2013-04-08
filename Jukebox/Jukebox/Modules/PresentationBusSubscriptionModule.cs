@@ -1,6 +1,6 @@
 ﻿using Autofac;
 using Autofac.Core;
-using Slew.WinRT.PresentationBus;
+using Slab.PresentationBus;
 
 namespace Jukebox.Modules
 {

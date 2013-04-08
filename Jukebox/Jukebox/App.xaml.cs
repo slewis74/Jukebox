@@ -7,12 +7,11 @@ using Jukebox.Features.MainPage;
 using Jukebox.Features.Search;
 using Jukebox.Model;
 using Jukebox.Storage;
-using Slew.WinRT.Data;
-using Slew.WinRT.Data.Navigation;
-using Slew.WinRT.Pages;
-using Slew.WinRT.Pages.Navigation;
-using Slew.WinRT.Pages.Settings;
-using Slew.WinRT.PresentationBus;
+using Slab.Data;
+using Slab.Pages.Navigation;
+using SlabRt.Host;
+using SlabRt.Pages.Navigation;
+using SlabRt.Pages.Settings;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Search;
@@ -39,8 +38,6 @@ namespace Jukebox
             builder.RegisterAssemblyModules(typeof(App).GetTypeInfo().Assembly);
             _container = builder.Build();
 
-            var bus = _container.Resolve<IPresentationBus>();
-
             // Resolve the SettingsManager, to wire up the settings handlers.
             _container.Resolve<ISettingsManager>();
 
@@ -56,19 +53,20 @@ namespace Jukebox
                 //TODO: Load state from previously suspended application
             }
 
-            var mainPageViewModel = _container.Resolve<MainPageViewModel>( new Parameter[]
+            var mainPageViewModel = _container.Resolve<JukeboxHostViewModel>( new Parameter[]
                                                                                {
                                                                                    new NamedParameter("playlists", _playlists), 
                                                                                    new NamedParameter("currentPlaylist", playlistData.NowPlayingPlaylist), 
-                                                                                   new NamedParameter("defaultRoute", "Artists/ShowAll"), 
+                                                                                   new NamedParameter("defaultRoute", "Artists/ShowAll") 
                                                                                });
-            var mainPageView = new MainPageView
+            _container.InjectUnsetProperties(mainPageViewModel);
+            
+            var nowPlayingHeaderView = _container.Resolve<NowPlayingHeaderView>();
+            var mainPageView = new HostView
                                    {
+                                       HeaderContent = nowPlayingHeaderView,
                                        DataContext = mainPageViewModel
                                    };
-            
-            bus.Subscribe(mainPageView);
-            
             Window.Current.Content = mainPageView;
             Window.Current.Activate();
 
@@ -80,7 +78,7 @@ namespace Jukebox
 
         private void SearchPaneOnSuggestionsRequested(SearchPane sender, SearchPaneSuggestionsRequestedEventArgs args)
         {
-            var navigator = _container.Resolve<INavigator>();
+            var navigator = _container.Resolve<IRtNavigator>();
 
             var result = navigator.GetData<SearchController, SearchResult[]>(c => c.SearchForSuggestions(args.QueryText));
 

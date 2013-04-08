@@ -1,4 +1,4 @@
-﻿using Slew.WinRT.Pages;
+﻿using Slab.Pages;
 
 namespace Jukebox.Common
 {

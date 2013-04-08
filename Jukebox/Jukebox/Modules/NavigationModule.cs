@@ -1,7 +1,7 @@
 ﻿using Autofac;
-using Slew.WinRT.Data.Navigation;
-using Slew.WinRT.Pages;
-using Slew.WinRT.Pages.Navigation;
+using SlabRt.Data.Navigation;
+using SlabRt.Pages;
+using SlabRt.Pages.Navigation;
 
 namespace Jukebox.Modules
 {
@@ -10,7 +10,9 @@ namespace Jukebox.Modules
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<NavigationStackStorage>().As<INavigationStackStorage>().InstancePerLifetimeScope();
-            builder.RegisterType<Navigator>().As<INavigator>().SingleInstance();
+            builder
+                .RegisterType<RtNavigator>().AsImplementedInterfaces()
+                .SingleInstance();
             
             builder.RegisterType<ViewLocator>().As<IViewLocator>().SingleInstance();
         }

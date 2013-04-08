@@ -3,8 +3,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Jukebox.Events;
-using Slew.WinRT.Data;
-using Slew.WinRT.PresentationBus;
+using Slab.Data;
+using Slab.PresentationBus;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace Jukebox.Model

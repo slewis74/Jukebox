@@ -108,13 +108,6 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <ProjectReference Include="..\Slew.WinRT\Slew.WinRT.csproj">
-      <Project>{2587fad9-73b0-4985-a23d-bb81134a2f00}</Project>
-      <Name>Slew.WinRT</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Events\AlbumAddedEvent.cs" />
     <Compile Include="Events\CanMoveNextChangedEvent.cs" />
     <Compile Include="Events\CanMovePreviousChangedEvent.cs" />
@@ -173,11 +166,11 @@
     </Compile>
     <Compile Include="Features\HomePage\PlaylistSummary\PlaylistSummaryViewModel.cs" />
     <Compile Include="Features\MainPage\Events\SongEndedEvent.cs" />
-    <Compile Include="Features\MainPage\MainPageView.xaml.cs">
-      <DependentUpon>MainPageView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Features\MainPage\MainPageViewModel.cs" />
+    <Compile Include="Features\MainPage\JukeboxHostViewModel.cs" />
     <Compile Include="Features\MainPage\Commands\NextTrackCommand.cs" />
+    <Compile Include="Features\MainPage\NowPlayingHeaderView.xaml.cs">
+      <DependentUpon>NowPlayingHeaderView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Features\MainPage\NowPlayingView.xaml.cs">
       <DependentUpon>NowPlayingView.xaml</DependentUpon>
     </Compile>
@@ -216,10 +209,12 @@
     <Compile Include="Modules\PresentationBusSubscriptionModule.cs" />
     <Compile Include="Modules\SettingsModule.cs" />
     <Compile Include="Modules\ViewModelModule.cs" />
+    <Compile Include="Modules\ViewModule.cs" />
     <Compile Include="Requests\AddToCurrentPlaylistRequest.cs" />
     <Compile Include="Requests\IsRandomPlayModeRequest.cs" />
     <Compile Include="Requests\PlayNowRequest.cs" />
     <Compile Include="Requests\PlayRequest.cs" />
+    <Compile Include="SlabResources\HostView.xaml.cs" />
     <Compile Include="Storage\IMusicProvider.cs" />
     <Compile Include="Storage\ISettingsHandler.cs" />
     <Compile Include="Storage\MusicProvider.cs" />
@@ -233,6 +228,7 @@
     </AppxManifest>
     <None Include="Common\ReadMe.txt" />
     <None Include="Jukebox_TemporaryKey.pfx" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Logo.png">
@@ -294,9 +290,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Features\MainPage\MainPageView.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="Features\MainPage\NowPlayingHeaderView.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Features\MainPage\NowPlayingView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -329,6 +325,26 @@
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
+    <Page Include="SlabResources\Controls.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SlabResources\Converters.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SlabResources\HostView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SlabResources\StandardLayout.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SlabResources\StandardStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Features\Search\Commands\" />
@@ -337,8 +353,17 @@
     <Reference Include="Autofac">
       <HintPath>..\Packages\Autofac\Autofac.dll</HintPath>
     </Reference>
-    <Reference Include="WinRtBehaviors">
-      <HintPath>..\Packages\WinRtBehaviours\WinRtBehaviors.dll</HintPath>
+    <Reference Include="Slab, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Slab.1.0.0\lib\netcore45\Slab.dll</HintPath>
+    </Reference>
+    <Reference Include="SlabRt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Slab.1.0.0\lib\netcore45\SlabRt.dll</HintPath>
+    </Reference>
+    <Reference Include="WinRtBehaviors, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Slab.1.0.0\lib\netcore45\WinRtBehaviors.dll</HintPath>
     </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' ">

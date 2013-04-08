@@ -5,8 +5,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Jukebox.Model;
-using Slew.WinRT.Data;
-using Slew.WinRT.PresentationBus;
+using Slab.Data;
+using Slab.PresentationBus;
 using Windows.Storage;
 using Windows.Storage.Search;
 

@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using Jukebox.Model;
 using Jukebox.Requests;
-using Slew.WinRT.Data;
-using Slew.WinRT.Pages;
-using Slew.WinRT.Pages.Navigation;
-using Slew.WinRT.PresentationBus;
-using Slew.WinRT.ViewModels;
+using Slab.Data;
+using Slab.Pages.Navigation;
+using Slab.PresentationBus;
+using Slab.ViewModels;
+using SlabRt.Pages;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace Jukebox.Features.Albums

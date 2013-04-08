@@ -1,6 +1,6 @@
 ﻿using Jukebox.Model;
-using Slew.WinRT.Data;
-using Slew.WinRT.ViewModels;
+using Slab.Data;
+using Slab.ViewModels;
 
 namespace Jukebox.Features.Playlists
 {
