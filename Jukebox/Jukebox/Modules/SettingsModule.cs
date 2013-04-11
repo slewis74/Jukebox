@@ -1,5 +1,7 @@
 ﻿using Autofac;
+using Jukebox.Features.Settings;
 using Jukebox.Storage;
+using Slab.PresentationBus;
 using SlabRt.Pages.Settings;
 
 namespace Jukebox.Modules
@@ -10,7 +12,13 @@ namespace Jukebox.Modules
         {
             builder.RegisterType<SettingsManager>()
                 .As<ISettingsManager>()
-                .SingleInstance();
+                .SingleInstance()
+                .OnActivated(x =>
+                {
+                    x.Instance.Add<SettingsController>("PlayerSettings", "Player Settings", c => c.PlayerSettings());
+                    var bus = x.Context.Resolve<IPresentationBus>();
+                    bus.Subscribe(x.Instance);
+                });
 
             builder
                 .RegisterType<SettingsHandler>()
