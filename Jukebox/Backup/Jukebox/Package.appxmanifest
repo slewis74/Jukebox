@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
-  <Identity Name="Jukebox1" Publisher="CN=Shannon" Version="1.1.0.0" />
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
+  <Identity Name="Jukebox1" Publisher="CN=Shannon" Version="1.0.0.0" />
   <Properties>
     <DisplayName>Jukebox</DisplayName>
     <PublisherDisplayName>Shannon</PublisherDisplayName>
@@ -8,33 +8,28 @@
     <Description>Jukebox</Description>
   </Properties>
   <Prerequisites>
-    <OSMinVersion>6.3.0</OSMinVersion>
-    <OSMaxVersionTested>6.3.0</OSMaxVersionTested>
+    <OSMinVersion>6.2.1</OSMinVersion>
+    <OSMaxVersionTested>6.2.1</OSMaxVersionTested>
   </Prerequisites>
   <Resources>
     <Resource Language="x-generate" />
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Jukebox.App">
+      <VisualElements DisplayName="Jukebox" Logo="Assets\Logo.png" SmallLogo="Assets\SmallLogo.png" Description="Jukebox" ForegroundText="light" BackgroundColor="#819FD8">
+        <LockScreen Notification="badgeAndTileText" BadgeLogo="Images\Jukebox.small.png" />
+        <DefaultTile ShowName="allLogos" WideLogo="Assets\WideLog.png" />
+        <SplashScreen Image="Assets\SplashScreen.png" />
+      </VisualElements>
       <Extensions>
         <Extension Category="windows.backgroundTasks" StartPage="MainPageView">
           <BackgroundTasks>
-            <Task Type="audio" />
             <Task Type="controlChannel" />
+            <Task Type="audio" />
           </BackgroundTasks>
         </Extension>
         <Extension Category="windows.search" />
       </Extensions>
-      <m2:VisualElements DisplayName="Jukebox" Description="Jukebox" BackgroundColor="#819FD8" ForegroundText="light" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png">
-        <m2:DefaultTile Wide310x150Logo="Assets\WideLog.png">
-          <m2:ShowNameOnTiles>
-            <m2:ShowOn Tile="square150x150Logo" />
-            <m2:ShowOn Tile="wide310x150Logo" />
-          </m2:ShowNameOnTiles>
-        </m2:DefaultTile>
-        <m2:LockScreen Notification="badgeAndTileText" BadgeLogo="Images\Jukebox.small.png" />
-        <m2:SplashScreen Image="Assets\SplashScreen.png" />
-      </m2:VisualElements>
     </Application>
   </Applications>
   <Capabilities>

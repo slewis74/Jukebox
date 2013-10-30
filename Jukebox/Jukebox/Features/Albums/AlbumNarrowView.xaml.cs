@@ -1,8 +1,8 @@
 ﻿namespace Jukebox.Features.Albums
 {
-    public sealed partial class AlbumSnappedView
+    public sealed partial class AlbumNarrowView
     {
-        public AlbumSnappedView()
+        public AlbumNarrowView()
         {
             InitializeComponent();
         }

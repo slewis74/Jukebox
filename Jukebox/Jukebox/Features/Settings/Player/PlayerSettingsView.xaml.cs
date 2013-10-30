@@ -1,4 +1,6 @@
-﻿namespace Jukebox.Features.Settings.Player
+﻿using System.Linq;
+
+namespace Jukebox.Features.Settings.Player
 {
     public sealed partial class PlayerSettingsView
     {
