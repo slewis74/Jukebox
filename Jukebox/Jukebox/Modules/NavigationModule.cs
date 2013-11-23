@@ -9,7 +9,13 @@ namespace Jukebox.Modules
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<NavigationStackStorage>().As<INavigationStackStorage>().InstancePerLifetimeScope();
+            builder
+                .RegisterType<NavigationStackStorage>()
+                .As<INavigationStackStorage>()
+                .WithParameter("defaultRoute", "Artists/ShowAll")
+                .WithParameter("alwaysStartFromDefaultRoute", false)
+                .InstancePerLifetimeScope();
+
             builder
                 .RegisterType<RtNavigator>().AsImplementedInterfaces()
                 .SingleInstance();

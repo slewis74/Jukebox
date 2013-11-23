@@ -22,16 +22,13 @@ namespace Jukebox.Features.MainPage
         private readonly DistinctAsyncObservableCollection<Playlist> _playlists;
 
         public delegate JukeboxHostViewModel Factory(
-            string defaultRoute,
             DistinctAsyncObservableCollection<Playlist> playlists,
             NowPlayingPlaylist currentPlaylist);
 
         public JukeboxHostViewModel(
             IPresentationBus presentationBus,
-            string defaultRoute,
             DistinctAsyncObservableCollection<Playlist> playlists,
-            NowPlayingPlaylist currentPlaylist) : 
-            base(defaultRoute)
+            NowPlayingPlaylist currentPlaylist)
         {
             PresentationBus = presentationBus;
             NowPlayingPlaylist = currentPlaylist;

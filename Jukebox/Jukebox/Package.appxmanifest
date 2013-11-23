@@ -24,6 +24,12 @@
           </BackgroundTasks>
         </Extension>
         <Extension Category="windows.search" />
+        <Extension Category="windows.protocol">
+          <Protocol Name="jukebox">
+            <Logo>Assets\Logo.png</Logo>
+            <DisplayName>Jukebox</DisplayName>
+          </Protocol>
+        </Extension>
       </Extensions>
       <m2:VisualElements DisplayName="Jukebox" Description="Jukebox" BackgroundColor="#819FD8" ForegroundText="light" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png">
         <m2:DefaultTile Wide310x150Logo="Assets\WideLog.png">

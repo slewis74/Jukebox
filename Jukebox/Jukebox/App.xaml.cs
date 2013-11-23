@@ -56,8 +56,7 @@ namespace Jukebox
             var mainPageViewModel = _container.Resolve<JukeboxHostViewModel>( new Parameter[]
                                                                                {
                                                                                    new NamedParameter("playlists", _playlists), 
-                                                                                   new NamedParameter("currentPlaylist", playlistData.NowPlayingPlaylist), 
-                                                                                   new NamedParameter("defaultRoute", "Artists/ShowAll") 
+                                                                                   new NamedParameter("currentPlaylist", playlistData.NowPlayingPlaylist)
                                                                                });
             _container.InjectUnsetProperties(mainPageViewModel);
             
