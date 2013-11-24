@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
@@ -9,6 +10,7 @@ using Jukebox.Model;
 using Jukebox.Storage;
 using Slab.Data;
 using Slab.Pages.Navigation;
+using SlabRt.Data.Navigation;
 using SlabRt.Host;
 using SlabRt.Pages.Navigation;
 using SlabRt.Pages.Settings;
@@ -37,6 +39,12 @@ namespace Jukebox
             var builder = new ContainerBuilder();
             builder.RegisterAssemblyModules(typeof(App).GetTypeInfo().Assembly);
             _container = builder.Build();
+
+            if (string.IsNullOrWhiteSpace(args.Arguments) == false)
+            {
+                var stackStorage = _container.Resolve<INavigationStackStorage>();
+                stackStorage.LaunchingDeepLink(args.Arguments);
+            }
 
             // Resolve the SettingsManager, to wire up the settings handlers.
             _container.Resolve<ISettingsManager>();

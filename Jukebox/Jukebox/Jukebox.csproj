@@ -119,6 +119,9 @@
     <Compile Include="Events\PlaylistContentChangedEvent.cs" />
     <Compile Include="Events\PlaylistCurrentTrackChangedEvent.cs" />
     <Compile Include="Events\RandomPlayModeChangedEvent.cs" />
+    <Compile Include="Features\Albums\AlbumBottomAppBarView.xaml.cs">
+      <DependentUpon>AlbumBottomAppBarView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Features\Albums\AlbumController.cs" />
     <Compile Include="Features\Albums\AlbumView.xaml.cs">
       <DependentUpon>AlbumView.xaml</DependentUpon>
@@ -128,6 +131,7 @@
     <Compile Include="Features\Albums\AlbumNarrowView.xaml.cs">
       <DependentUpon>AlbumNarrowView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Features\Albums\PinAlbumCommand.cs" />
     <Compile Include="Features\Albums\TrackViewModel.cs" />
     <Compile Include="Features\Artists\ArtistsController.cs" />
     <Compile Include="Features\Artists\All\ArtistsBottomAppBarView.xaml.cs">
@@ -246,7 +250,7 @@
     <Content Include="Assets\StoreLogo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\WideLog.png" />
+    <Content Include="Assets\WideLogo.png" />
     <Content Include="Images\Jukebox.small.png" />
     <Content Include="Images\no_image_large.png" />
     <Content Include="Images\no_image_medium.png" />
@@ -257,6 +261,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Features\Albums\AlbumBottomAppBarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Features\Albums\AlbumView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

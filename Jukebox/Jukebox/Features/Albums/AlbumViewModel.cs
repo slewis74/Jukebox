@@ -32,6 +32,8 @@ namespace Jukebox.Features.Albums
             AddSong = new AddSongCommand(presentationBus);
             AddAlbum = new AddAlbumCommand(presentationBus);
 
+            PinAlbum = new PinAlbumCommand(this);
+
             Tracks = new AsyncObservableCollection<TrackViewModel>(
                 album.Songs
                 .OrderBy(s => s.DiscNumber)
@@ -48,6 +50,8 @@ namespace Jukebox.Features.Albums
 		public PlayAlbumCommand PlayAlbum { get; private set; }
 		public AddSongCommand AddSong { get; private set; }
         public AddAlbumCommand AddAlbum { get; private set; }
+
+        public PinAlbumCommand PinAlbum { get; private set; }
 
         public string Title { get { return _album.Title; } }
         public string ArtistName { get { return _album.Artist.Name; } }
