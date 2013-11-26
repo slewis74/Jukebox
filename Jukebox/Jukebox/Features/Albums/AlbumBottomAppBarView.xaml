@@ -5,14 +5,12 @@
     xmlns:local="using:Jukebox.Features.Albums"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:SlabRt.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
     
     <Grid>
-        <Button 
-            Style="{StaticResource PinAppBarButtonStyle}"
-            Command="{Binding PinAlbum}"
-            CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
+        <controls:TogglePinButton Command="{Binding PinAlbum}"/>
     </Grid>
 </UserControl>

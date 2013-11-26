@@ -7,4 +7,3 @@
     <c:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
     <c:BooleanNegationConverter x:Key="BooleanNegationConverter"/>
 </ResourceDictionary>
-
