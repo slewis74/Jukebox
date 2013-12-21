@@ -3,7 +3,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="ms-appx:///SlabResources/StandardLayout.xaml" /><ResourceDictionary Source="ms-appx:///SlabResources/StandardStyles.xaml" /><ResourceDictionary Source="ms-appx:///SlabResources/Converters.xaml" /><ResourceDictionary Source="ms-appx:///SlabResources/Controls.xaml" />
+                <ResourceDictionary Source="ms-appx:///SlabResources/SlabResources.xaml" />
                 
                 <ResourceDictionary Source="/Resources/ButtonStyles.xaml" />
                 <ResourceDictionary Source="/Resources/Theme.xaml" />
