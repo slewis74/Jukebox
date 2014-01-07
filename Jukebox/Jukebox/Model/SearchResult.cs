@@ -1,5 +1,4 @@
-﻿using Windows.UI.Xaml.Media.Imaging;
-
+﻿
 namespace Jukebox.Model
 {
     public class SearchResult
@@ -8,7 +7,7 @@ namespace Jukebox.Model
         public string Description { get; set; }
         public string NavigationUri { get; set; }
 
-        public BitmapImage SmallBitmap { get; set; }
+        public string SmallBitmapUri { get; set; }
     }
 
     public enum SearchResultType

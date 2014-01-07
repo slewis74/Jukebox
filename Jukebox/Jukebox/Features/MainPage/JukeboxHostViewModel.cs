@@ -156,7 +156,7 @@ namespace Jukebox.Features.MainPage
 		{
             IsPaused = false;
             IsPlaying = true;
-            PresentationBus.Publish(
+            await PresentationBus.PublishAsync(
                 new PlayFileRequest(
                     song.Album.Artist.Name, 
                     song.Title, 
@@ -167,21 +167,21 @@ namespace Jukebox.Features.MainPage
         {
             IsPlaying = true;
             IsPaused = false;
-            PresentationBus.Publish(new RestartPlayingRequest());
+            PresentationBus.PublishAsync(new RestartPlayingRequest());
         }
 
-        private void PausePlaying()
+        private async void PausePlaying()
         {
             IsPlaying = false;
             IsPaused = true;
-            PresentationBus.Publish(new PausePlayingRequest());
+            PresentationBus.PublishAsync(new PausePlayingRequest());
         }
 
 		private void StopPlaying()
 		{
 		    IsPlaying = false;
 		    IsPaused = false;
-            PresentationBus.Publish(new StopPlayingRequest());
+            PresentationBus.PublishAsync(new StopPlayingRequest());
 		}
 	}
 }

@@ -62,7 +62,7 @@ namespace Jukebox.Model
 
         protected virtual void OnListChanged()
         {
-            PresentationBus.Publish(new PlaylistContentChangedEvent(this));
+            PresentationBus.PublishAsync(new PlaylistContentChangedEvent(this));
         }
     }
 }

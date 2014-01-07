@@ -158,22 +158,22 @@ namespace Jukebox.Model
             CurrentTrack = this[index];
         }
 
-        protected override void OnListChanged()
+        protected async override void OnListChanged()
         {
-            PresentationBus.Publish(new NowPlayingContentChangedEvent(this));
+            await PresentationBus.PublishAsync(new NowPlayingContentChangedEvent(this));
             OnCanMoveChanged();
         }
 
         protected void OnCurrentTrackChanged(Song e)
         {
-            PresentationBus.Publish(new NowPlayingCurrentTrackChangedEvent(this, e));
+            PresentationBus.PublishAsync(new NowPlayingCurrentTrackChangedEvent(this, e));
             OnCanMoveChanged();
         }
 
         private void OnCanMoveChanged()
         {
-            PresentationBus.Publish(new CanMovePreviousChangedEvent(this, CanMovePrevious));
-            PresentationBus.Publish(new CanMoveNextChangedEvent(this, CanMoveNext));
+            PresentationBus.PublishAsync(new CanMovePreviousChangedEvent(this, CanMovePrevious));
+            PresentationBus.PublishAsync(new CanMoveNextChangedEvent(this, CanMoveNext));
         }
 
         public void Handle(RandomPlayModeChangedEvent presentationEvent)

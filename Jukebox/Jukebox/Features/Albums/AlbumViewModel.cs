@@ -1,12 +1,12 @@
 ﻿using System.Linq;
 using Jukebox.Model;
 using Jukebox.Requests;
+using Jukebox.Storage;
 using Slab.Data;
 using Slab.Pages.Navigation;
 using Slab.PresentationBus;
 using Slab.ViewModels;
 using SlabRt.Pages;
-using Windows.UI.Xaml.Media.Imaging;
 
 namespace Jukebox.Features.Albums
 {
@@ -19,6 +19,7 @@ namespace Jukebox.Features.Albums
         public AlbumViewModel(
             IPresentationBus presentationBus, 
             INavigator navigator,
+            IAlbumArtStorage albumArtStorage,
             Album album)
             : base(navigator)
 		{
@@ -32,7 +33,7 @@ namespace Jukebox.Features.Albums
             AddSong = new AddSongCommand(presentationBus);
             AddAlbum = new AddAlbumCommand(presentationBus);
 
-            PinAlbum = new PinAlbumCommand(this);
+            PinAlbum = new PinAlbumCommand(albumArtStorage, this);
 
             Tracks = new AsyncObservableCollection<TrackViewModel>(
                 album.Songs
@@ -56,8 +57,8 @@ namespace Jukebox.Features.Albums
         public string Title { get { return _album.Title; } }
         public string ArtistName { get { return _album.Artist.Name; } }
 
-        public BitmapImage SmallBitmap { get { return _album.SmallBitmap; } }
-        public BitmapImage LargeBitmap { get { return _album.LargeBitmap; } }
+        public string SmallBitmapUri { get { return _album.SmallBitmapUri; } }
+        public string LargeBitmapUri { get { return _album.LargeBitmapUri; } }
 
         public AsyncObservableCollection<TrackViewModel> Tracks { get; private set; }
 
@@ -106,7 +107,7 @@ namespace Jukebox.Features.Albums
 
         public override void Execute(TrackViewModel parameter)
 		{
-            _presentationBus.Publish(new PlaySongNowRequest { Scope = parameter.GetSong() });
+            _presentationBus.PublishAsync(new PlaySongNowRequest { Scope = parameter.GetSong() });
 		}
 	}
 
@@ -121,7 +122,7 @@ namespace Jukebox.Features.Albums
 
         public override void Execute(AlbumViewModel parameter)
 		{
-            _presentationBus.Publish(new PlayAlbumNowRequest { Scope = parameter.GetAlbum() });
+            _presentationBus.PublishAsync(new PlayAlbumNowRequest { Scope = parameter.GetAlbum() });
 		}
 
 	}
@@ -137,7 +138,7 @@ namespace Jukebox.Features.Albums
 
         public override void Execute(TrackViewModel parameter)
         {
-            _presentationBus.Publish(new AddSongToCurrentPlaylistRequest { Song = parameter.GetSong() });
+            _presentationBus.PublishAsync(new AddSongToCurrentPlaylistRequest { Song = parameter.GetSong() });
         }
     }
 
@@ -152,7 +153,7 @@ namespace Jukebox.Features.Albums
 
         public override void Execute(AlbumViewModel parameter)
         {
-            _presentationBus.Publish(new AddAlbumToCurrentPlaylistRequest { Album = parameter.GetAlbum() });
+            _presentationBus.PublishAsync(new AddAlbumToCurrentPlaylistRequest { Album = parameter.GetAlbum() });
         }
     }
 }

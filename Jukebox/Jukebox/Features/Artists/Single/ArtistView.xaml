@@ -24,7 +24,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Image 
-                    Source="{Binding SmallBitmap}" 
+                    Source="{Binding SmallBitmapUri}" 
                     Stretch="Uniform" 
                     Height="{StaticResource SmallBitmapSize}"
                     Margin="{StaticResource LeftMostControlMargin}"/>
@@ -84,7 +84,7 @@
                     Style="{StaticResource SubheaderTextStyle}" 
                     Margin="{StaticResource TopMostControlMargin}"/>
                 <Image 
-                    Source="{Binding LargeBitmap}" 
+                    Source="{Binding LargeBitmapUri}" 
                     Width="{StaticResource LargeBitmapSize}" Height="{StaticResource LargeBitmapSize}" 
                     Stretch="Uniform"
                     Margin="{StaticResource BottomMostControlMargin}" 

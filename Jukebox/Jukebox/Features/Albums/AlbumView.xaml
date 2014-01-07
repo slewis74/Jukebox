@@ -68,7 +68,7 @@
                 Grid.Column="0"
                 Width="{StaticResource GroupDetailLeftPanelWidth}">
                 <Image 
-                    Source="{Binding LargeBitmap}" 
+                    Source="{Binding LargeBitmapUri}" 
                     Width="{StaticResource LargeBitmapSize}" Height="{StaticResource LargeBitmapSize}" 
                     Stretch="Uniform"
                     Margin="{StaticResource VerticallyCentralControlMargin}" 

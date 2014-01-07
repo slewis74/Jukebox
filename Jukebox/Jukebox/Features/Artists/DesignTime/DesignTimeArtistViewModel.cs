@@ -17,13 +17,13 @@ namespace Jukebox.Features.Artists.DesignTime
 
         public IEnumerable<DesignTimeAlbum> Albums { get; set; }
 
-        public string SmallBitmap { get { return "/Images/no_image_medium.png"; } }
-        public string LargeBitmap { get { return "/Images/no_image_large.png"; } }
+        public string SmallBitmapUri { get { return "/Images/no_image_medium.png"; } }
+        public string LargeBitmapUri { get { return "/Images/no_image_large.png"; } }
     }
 
     public class DesignTimeAlbum
     {
         public string Title { get; set; }
-        public string SmallBitmap { get { return "/Images/no_image_medium.png"; } }
+        public string SmallBitmapUri { get { return "/Images/no_image_medium.png"; } }
     }
 }

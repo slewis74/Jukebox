@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Jukebox.Common;
 using Jukebox.Features.Settings.Player;
 using Jukebox.Requests;
@@ -21,10 +22,10 @@ namespace Jukebox.Features.Settings
             _playerSettingsViewModelFactory = playerSettingsViewModelFactory;
         }
 
-        public ActionResult PlayerSettings()
+        public async Task<ActionResult> PlayerSettings()
          {
              var request = new IsRandomPlayModeRequest();
-             _presentationBus.Publish(request);
+             await _presentationBus.PublishAsync(request);
              var isRandomPlayMode = request.IsRandomPlayMode;
 
              return new SettingsPageActionResult<PlayerSettingsView, PlayerSettingsViewModel>(_playerSettingsViewModelFactory(isRandomPlayMode));

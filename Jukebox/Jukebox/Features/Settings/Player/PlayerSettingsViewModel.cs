@@ -22,7 +22,7 @@ namespace Jukebox.Features.Settings.Player
             {
                 if (SetProperty(ref _isRandomPlayMode, value))
                 {
-                    _presentationBus.Publish(new RandomPlayModeChangedEvent(_isRandomPlayMode));
+                    _presentationBus.PublishAsync(new RandomPlayModeChangedEvent(_isRandomPlayMode));
                 }
             }
         }

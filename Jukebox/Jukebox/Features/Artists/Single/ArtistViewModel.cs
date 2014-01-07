@@ -37,8 +37,8 @@ namespace Jukebox.Features.Artists.Single
 
 		public ObservableCollection<Album> Albums { get { return _artist.Albums; } }
 
-        public BitmapImage SmallBitmap { get { return _artist.SmallBitmap; } }
-        public BitmapImage LargeBitmap { get { return _artist.LargeBitmap; } }
+        public string SmallBitmapUri { get { return _artist.SmallBitmapUri; } }
+        public string LargeBitmapUri { get { return _artist.LargeBitmapUri; } }
 
         public PlayArtistCommand PlayArtist { get; private set; }
 
@@ -70,7 +70,7 @@ namespace Jukebox.Features.Artists.Single
 
         public override void Execute(ArtistViewModel parameter)
 		{
-            _presentationBus.Publish(new PlayArtistNowRequest { Scope = parameter.GetArtist() });
+            _presentationBus.PublishAsync(new PlayArtistNowRequest { Scope = parameter.GetArtist() });
 		}
     }
 }

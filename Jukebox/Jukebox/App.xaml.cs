@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Core;
+using Jukebox.EventHandlers;
 using Jukebox.Features.MainPage;
 using Jukebox.Features.Search;
 using Jukebox.Model;
@@ -39,6 +40,8 @@ namespace Jukebox
             var builder = new ContainerBuilder();
             builder.RegisterAssemblyModules(typeof(App).GetTypeInfo().Assembly);
             _container = builder.Build();
+
+            var eb = _container.Resolve<EventBroker>();
 
             if (string.IsNullOrWhiteSpace(args.Arguments) == false)
             {

@@ -20,7 +20,7 @@ namespace Jukebox.Features.Albums.DesignTime
         public string Title { get; set; }
         public string ArtistName { get; set; }
 
-        public string LargeBitmap
+        public string LargeBitmapUri
         {
             get
             {

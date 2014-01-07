@@ -2,8 +2,8 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using Slab.Data;
 using Windows.Storage;
+using Slab.Data;
 
 namespace Jukebox.Model
 {
@@ -23,18 +23,15 @@ namespace Jukebox.Model
 
         public TimeSpan Duration { get; set; }
 
-		private Album _album;
-		public Album Album
-		{
-			get { return _album; }
-			set
-			{
-				_album = value;
-				_album.AddSong(this);
-			}
-		}
+        private Album _album;
+        public Album Album
+        {
+            get { return _album; }
+            set { _album = value; _album.Songs.Add(this);}
+        }
 
         private StorageFile _storageFile;
+
         public async Task<StorageFile> GetStorageFileAsync()
         {
             return _storageFile ?? (_storageFile = await StorageFile.GetFileFromPathAsync(Path));

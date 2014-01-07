@@ -111,7 +111,10 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Events\AlbumAddedEvent.cs" />
+    <Compile Include="EventHandlers\AutofacEventBroker.cs" />
+    <Compile Include="EventHandlers\EventBroker.cs" />
+    <Compile Include="EventHandlers\OnDemandEventHandler.cs" />
+    <Compile Include="EventHandlers\WhenASong\GetsLoaded\LoadBitmapsForAlbum.cs" />
     <Compile Include="Events\CanMoveNextChangedEvent.cs" />
     <Compile Include="Events\CanMovePreviousChangedEvent.cs" />
     <Compile Include="Events\NowPlayingContentChangedEvent.cs" />
@@ -119,6 +122,7 @@
     <Compile Include="Events\PlaylistContentChangedEvent.cs" />
     <Compile Include="Events\PlaylistCurrentTrackChangedEvent.cs" />
     <Compile Include="Events\RandomPlayModeChangedEvent.cs" />
+    <Compile Include="Events\SongLoadedEvent.cs" />
     <Compile Include="Features\Albums\AlbumBottomAppBarView.xaml.cs">
       <DependentUpon>AlbumBottomAppBarView.xaml</DependentUpon>
     </Compile>
@@ -209,6 +213,7 @@
     <Compile Include="Features\Playlists\PlaylistsViewModel.cs" />
     <Compile Include="Features\Playlists\PlaylistViewModel.cs" />
     <Compile Include="Modules\ControllerModule.cs" />
+    <Compile Include="Modules\DomainModule.cs" />
     <Compile Include="Modules\LibraryModule.cs" />
     <Compile Include="Modules\NavigationModule.cs" />
     <Compile Include="Modules\PlaylistModule.cs" />
@@ -222,6 +227,7 @@
     <Compile Include="Requests\PlayNowRequest.cs" />
     <Compile Include="Requests\PlayRequest.cs" />
     <Compile Include="SlabResources\HostView.xaml.cs" />
+    <Compile Include="Storage\AlbumArtStorage.cs" />
     <Compile Include="Storage\IMusicProvider.cs" />
     <Compile Include="Storage\ISettingsHandler.cs" />
     <Compile Include="Storage\MusicProvider.cs" />
@@ -362,6 +368,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Facts\" />
     <Folder Include="Features\Search\Commands\" />
   </ItemGroup>
   <ItemGroup>

@@ -8,6 +8,7 @@ namespace Jukebox.Modules
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<MusicProvider>().As<IMusicProvider>().SingleInstance();
+            builder.RegisterType<AlbumArtStorage>().As<IAlbumArtStorage>().SingleInstance();
         }
     }
 }

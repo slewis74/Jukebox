@@ -1,15 +1,19 @@
 ﻿using System;
+using Jukebox.Storage;
 using SlabRt.ViewModels;
 
 namespace Jukebox.Features.Albums
 {
     public class PinAlbumCommand : TogglePinCommand
     {
+        private readonly IAlbumArtStorage _albumArtStorage;
         private readonly AlbumViewModel _albumViewModel;
 
         public PinAlbumCommand(
+            IAlbumArtStorage albumArtStorage,
             AlbumViewModel albumViewModel)
         {
+            _albumArtStorage = albumArtStorage;
             _albumViewModel = albumViewModel;
         }
 
@@ -35,7 +39,7 @@ namespace Jukebox.Features.Albums
 
         public override Uri TileImageUri
         {
-            get { return new Uri("ms-appx:///Assets/Logo.png"); }
+            get { return new Uri("ms-appdata:///local/" + _albumArtStorage.AlbumArtFileName(_albumViewModel.ArtistName, _albumViewModel.Title, 150)); }
         }
     }
 }

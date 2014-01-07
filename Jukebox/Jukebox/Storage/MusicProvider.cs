@@ -4,11 +4,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Jukebox.Events;
 using Jukebox.Model;
 using Slab.Data;
-using Slab.PresentationBus;
 using Windows.Storage;
 using Windows.Storage.Search;
+using Slab.PresentationBus;
 
 namespace Jukebox.Storage
 {
@@ -46,7 +47,7 @@ namespace Jukebox.Storage
             foreach (var artistKey in artistsContainer.Containers.Keys.OrderBy(x => x))
             {
                 var artistContainer = artistsContainer.Containers[artistKey];
-                var artist = new Artist(_presentationBus, _uicontext)
+                var artist = new Artist(_uicontext)
                                  {
                                      Name = (string) artistContainer.Values["Name"]
                                  };
@@ -58,6 +59,8 @@ namespace Jukebox.Storage
                     var album = new Album(_uicontext)
                                     {
                                         Title = (string)albumContainer.Values["Title"],
+                                        SmallBitmapUri = (string)albumContainer.Values["SmallBitmapUri"],
+                                        LargeBitmapUri = (string)albumContainer.Values["LargeBitmapUri"],
                                         Artist = artist,
                                     };
 
@@ -74,6 +77,8 @@ namespace Jukebox.Storage
                                            Album = album,
                                            Duration = new TimeSpan(songComposite.ContainsKey("Duration") ? (long)songComposite["Duration"] : 0)
                                        };
+
+                        _presentationBus.PublishAsync(new SongLoadedEvent(album, song));
                     }
                 }
                 artists.Add(artist);
@@ -112,7 +117,7 @@ namespace Jukebox.Storage
                         var artist = artists.FirstOrDefault(x => string.Compare(x.Name, fileProps.Artist, StringComparison.CurrentCultureIgnoreCase) == 0);
                         if (artist == null)
                         {
-                            artist = new Artist(_presentationBus, _uicontext)
+                            artist = new Artist(_uicontext)
                                             {
                                                 Name = fileProps.Artist
                                             };
@@ -150,6 +155,7 @@ namespace Jukebox.Storage
                                            Duration = fileProps.Duration
                                        };
                             newData = true;
+                            await _presentationBus.PublishAsync(new SongLoadedEvent(album, song));
                             // save new entry to app storage
                         }
                         song.SetStorageFile(f);
@@ -182,6 +188,8 @@ namespace Jukebox.Storage
                     var albumContainer = albumsContainer.CreateContainer(album.Title, ApplicationDataCreateDisposition.Always);
 
                     albumContainer.Values["Title"] = album.Title;
+                    albumContainer.Values["SmallBitmapUri"] = album.SmallBitmapUri;
+                    albumContainer.Values["LargeBitmapUri"] = album.LargeBitmapUri;
 
                     var songsContainer = albumContainer.CreateContainer("Songs", ApplicationDataCreateDisposition.Always);
                     foreach (var song in album.Songs)

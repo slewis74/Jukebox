@@ -41,7 +41,7 @@ namespace Jukebox.Features.Search
                                                                {
                                                                    Type = SearchResultType.Artist,
                                                                    Description = a.Name,
-                                                                   SmallBitmap = a.SmallBitmap,
+                                                                   SmallBitmapUri = a.SmallBitmapUri,
                                                                    NavigationUri = "Artists/ShowArtist?name=" + a.Name
                                                                });
             var albumResults = _musicProvider.Artists
@@ -51,7 +51,7 @@ namespace Jukebox.Features.Search
                                                               {
                                                                   Type = SearchResultType.Album,
                                                                   Description = a.Title,
-                                                                  SmallBitmap = a.SmallBitmap,
+                                                                  SmallBitmapUri = a.SmallBitmapUri,
                                                                   NavigationUri =
                                                                       string.Format(
                                                                           "Album/ShowAlbum?artistName={0};albumTitle={1}",
@@ -65,7 +65,7 @@ namespace Jukebox.Features.Search
                                                              {
                                                                  Type = SearchResultType.Song,
                                                                  Description = s.Title,
-                                                                 SmallBitmap = s.Album.SmallBitmap,
+                                                                 SmallBitmapUri = s.Album.SmallBitmapUri,
                                                                  NavigationUri =
                                                                      string.Format(
                                                                          "Album/ShowAlbum?artistName={0};albumTitle={1}",

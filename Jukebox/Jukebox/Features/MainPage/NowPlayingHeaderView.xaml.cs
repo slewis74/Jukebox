@@ -30,8 +30,8 @@ namespace Jukebox.Features.MainPage
             MediaControl.PausePressed += (sender, o) => DispatchCall(s => DoPausePlaying());
             MediaControl.PlayPauseTogglePressed += (sender, o) => DispatchCall(TogglePlayPause);
             MediaControl.StopPressed += (sender, o) => DispatchCall(s => DoStopPlaying());
-            MediaControl.PreviousTrackPressed += (sender, o) => DispatchCall(s => ViewModel.PresentationBus.Publish(new PreviousTrackRequest()));
-            MediaControl.NextTrackPressed += (sender, o) => DispatchCall(s => ViewModel.PresentationBus.Publish(new NextTrackRequest()));
+            MediaControl.PreviousTrackPressed += (sender, o) => DispatchCall(s => ViewModel.PresentationBus.PublishAsync(new PreviousTrackRequest()));
+            MediaControl.NextTrackPressed += (sender, o) => DispatchCall(s => ViewModel.PresentationBus.PublishAsync(new NextTrackRequest()));
 
         }
 
@@ -113,7 +113,7 @@ namespace Jukebox.Features.MainPage
 
         private void MediaElementMediaEnded1(object sender, RoutedEventArgs e)
         {
-            ViewModel.PresentationBus.Publish(new SongEndedEvent());
+            ViewModel.PresentationBus.PublishAsync(new SongEndedEvent());
         }
     }
 }

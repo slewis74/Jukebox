@@ -40,7 +40,7 @@
 			<Grid
                 x:Name="playPauseGrid">
                 <Image
-                    Source="{Binding NowPlayingPlaylist.CurrentTrack.Album.SmallBitmap}"
+                    Source="{Binding NowPlayingPlaylist.CurrentTrack.Album.SmallBitmapUri}"
                     Height="{StaticResource FourUnits}"
                     Stretch="Uniform"/>
                 <Button 

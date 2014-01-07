@@ -2,21 +2,16 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using Jukebox.Events;
 using Slab.Data;
 using Slab.PresentationBus;
-using Windows.UI.Xaml.Media.Imaging;
 
 namespace Jukebox.Model
 {
     [DebuggerDisplay("Artist - {Name}")]
 	public class Artist : BindableBase
     {
-        private readonly IPresentationBus _presentationBus;
-
-        public Artist(IPresentationBus presentationBus, SynchronizationContext synchronizationContext) : base(synchronizationContext)
+        public Artist(SynchronizationContext synchronizationContext) : base(synchronizationContext)
         {
-            _presentationBus = presentationBus;
             Albums = new ObservableCollection<Album>();
         }
 
@@ -31,17 +26,16 @@ namespace Jukebox.Model
 			if (Albums.Contains(album))
 				return;
 			Albums.Add(album);
-            _presentationBus.Publish(new AlbumAddedEvent(this, album));
 		}
 
-        public BitmapImage SmallBitmap
+        public string SmallBitmapUri
         {
-            get { return Albums.First().SmallBitmap; }
+            get { return Albums.First().SmallBitmapUri; }
         }
 
-        public BitmapImage LargeBitmap
+        public string LargeBitmapUri
         {
-            get { return Albums.First().LargeBitmap; }
+            get { return Albums.First().LargeBitmapUri; }
         }
 	}
 }

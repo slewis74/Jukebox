@@ -17,9 +17,9 @@ namespace Jukebox.Features.Artists.All
             _artists = artists;
         }
 
-        public override void Execute(object parameter)
+        public async override void Execute(object parameter)
         {
-            _presentationBus.Publish(new PlayAllNowRequest(_artists));
+            await _presentationBus.PublishAsync(new PlayAllNowRequest(_artists));
         }
     }
 }

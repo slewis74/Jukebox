@@ -27,7 +27,7 @@
                             <Setter.Value>
                                 <ControlTemplate>
                                     <Border BorderThickness="1" BorderBrush="AntiqueWhite" VerticalAlignment="Top">
-                                        <Image Source="{Binding Artist.LargeBitmap}" Stretch="UniformToFill" />
+                                        <Image Source="{Binding Artist.LargeBitmapUri}" Stretch="UniformToFill" />
                                     </Border>
                                 </ControlTemplate>
                             </Setter.Value>
