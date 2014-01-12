@@ -37,9 +37,19 @@ namespace Jukebox.Features.Albums
             get { return "Album/ShowAlbum?artistName=" + _albumViewModel.ArtistName + "&albumTitle=" + _albumViewModel.Title; }
         }
 
-        public override Uri TileImageUri
+        public override Uri TileMediumImageUri
         {
             get { return new Uri("ms-appdata:///local/" + _albumArtStorage.AlbumArtFileName(_albumViewModel.ArtistName, _albumViewModel.Title, 150)); }
+        }
+
+        public override Uri TileLargeImageUri
+        {
+            get { return new Uri("ms-appdata:///local/" + _albumArtStorage.AlbumArtFileName(_albumViewModel.ArtistName, _albumViewModel.Title, 310)); }
+        }
+
+        public override Uri TileWideImageUri
+        {
+            get { return new Uri("ms-appdata:///local/" + _albumArtStorage.AlbumArtFileName(_albumViewModel.ArtistName, _albumViewModel.Title, 310)); }
         }
     }
 }

@@ -34,8 +34,10 @@ namespace Jukebox.Features.Artists
 
         public ActionResult ShowArtist(string name)
         {
-            var artist = _musicProvider.Artists.Single(a => a.Name == name);
+            var artist = _musicProvider.Artists.SingleOrDefault(a => a.Name == name);
 
+            if (artist == null)
+                return ShowAll();
             if (artist.Albums.Count == 1)
                 return new ViewModelActionResult(() => _albumViewModelFactory(artist.Albums.Single()));
             return new ViewModelActionResult(() => _artistViewModelFactory(artist));

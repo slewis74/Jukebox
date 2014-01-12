@@ -42,9 +42,22 @@ namespace Jukebox.Storage
 
                 var albumArtFileName = AlbumArtFileName(artist, album, size);
                 var outputFile = await ApplicationData.Current.LocalFolder.CreateFileAsync(albumArtFileName, CreationCollisionOption.ReplaceExisting);
-                using (var outputStream = await outputFile.OpenStreamForWriteAsync())
+
+                // http://social.msdn.microsoft.com/Forums/windowsapps/en-US/1dda3a15-d299-40e0-b668-ec690a683f6e/how-to-resize-an-image-as-storagefile?forum=winappswithcsharp
+                var decoder = await BitmapDecoder.CreateAsync(memStream);
+                var transform = new BitmapTransform { ScaledHeight = size, ScaledWidth = size };
+                var pixelData = await decoder.GetPixelDataAsync(
+                    BitmapPixelFormat.Rgba8,
+                    BitmapAlphaMode.Straight,
+                    transform,
+                    ExifOrientationMode.RespectExifOrientation,
+                    ColorManagementMode.DoNotColorManage);
+
+                using (var destinationStream = await outputFile.OpenAsync(FileAccessMode.ReadWrite))
                 {
-                    await outputStream.WriteAsync(buffer.ToArray(), 0, (int)buffer.Length);
+                    BitmapEncoder encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, destinationStream);
+                    encoder.SetPixelData(BitmapPixelFormat.Rgba8, BitmapAlphaMode.Premultiplied, size, size, 96, 96, pixelData.DetachPixelData());
+                    await encoder.FlushAsync();
                 }
             }
         }
@@ -70,7 +83,7 @@ namespace Jukebox.Storage
 
         public string AlbumArtFileName(string artist, string album, uint size)
         {
-            return Path.Combine(AlbumArtFolderName(artist, album), size + ".jpg");
+            return Path.Combine(AlbumArtFolderName(artist, album), "AlbumArt" + size + "x" + size + ".jpg");
         }
     }
 

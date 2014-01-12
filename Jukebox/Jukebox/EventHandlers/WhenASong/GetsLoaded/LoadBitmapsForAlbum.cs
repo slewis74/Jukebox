@@ -28,11 +28,11 @@ namespace Jukebox.EventHandlers.WhenASong.GetsLoaded
             {
                 await _albumArtStorage.SaveBitmapAsync(fact.Album.Artist.Name, fact.Album.Title, 150, fact.Song.Path);
                 await _albumArtStorage.SaveBitmapAsync(fact.Album.Artist.Name, fact.Album.Title, 200, fact.Song.Path);
-                await _albumArtStorage.SaveBitmapAsync(fact.Album.Artist.Name, fact.Album.Title, 300, fact.Song.Path);
+                await _albumArtStorage.SaveBitmapAsync(fact.Album.Artist.Name, fact.Album.Title, 310, fact.Song.Path);
             }
 
             fact.Album.SmallBitmapUri = "ms-appdata:///local/" + _albumArtStorage.AlbumArtFileName(fact.Album.Artist.Name, fact.Album.Title, 200).Replace(@"\", "/");
-            fact.Album.LargeBitmapUri = "ms-appdata:///local/" + _albumArtStorage.AlbumArtFileName(fact.Album.Artist.Name, fact.Album.Title, 300).Replace(@"\", "/");
+            fact.Album.LargeBitmapUri = "ms-appdata:///local/" + _albumArtStorage.AlbumArtFileName(fact.Album.Artist.Name, fact.Album.Title, 310).Replace(@"\", "/");
         }
     }
 }
