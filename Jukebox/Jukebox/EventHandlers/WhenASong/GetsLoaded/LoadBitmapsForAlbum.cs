@@ -26,6 +26,7 @@ namespace Jukebox.EventHandlers.WhenASong.GetsLoaded
 
             if ((await _albumArtStorage.AlbumFolderExists(fact.Album.Artist.Name, fact.Album.Title)) == false)
             {
+                // 200 pixel is used by the pages, others are used for tiles
                 await _albumArtStorage.SaveBitmapAsync(fact.Album.Artist.Name, fact.Album.Title, 150, fact.Song.Path);
                 await _albumArtStorage.SaveBitmapAsync(fact.Album.Artist.Name, fact.Album.Title, 200, fact.Song.Path);
                 await _albumArtStorage.SaveBitmapAsync(fact.Album.Artist.Name, fact.Album.Title, 310, fact.Song.Path);
