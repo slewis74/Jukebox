@@ -421,10 +421,6 @@
     <Reference Include="Win8nl.Utilities">
       <HintPath>..\packages\Win8nl.1.0.9\lib\NetCore451\Win8nl.Utilities.dll</HintPath>
     </Reference>
-    <Reference Include="WinRtBehaviors, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Slab.1.0.0\lib\win8\WinRtBehaviors.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>

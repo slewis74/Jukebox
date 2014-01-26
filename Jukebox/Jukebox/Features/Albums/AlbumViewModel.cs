@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using Windows.ApplicationModel.DataTransfer;
+using Windows.Storage.Streams;
 using Jukebox.Model;
 using Jukebox.Requests;
 using Jukebox.Storage;
@@ -10,7 +12,7 @@ using SlabRt.Pages;
 
 namespace Jukebox.Features.Albums
 {
-    public class AlbumViewModel : CanRequestNavigationBase
+    public class AlbumViewModel : CanRequestNavigationBase, IShare
 	{
         private readonly Album _album;
 
@@ -94,6 +96,13 @@ namespace Jukebox.Features.Albums
 	                                          new LocationCommandMapping { Location = getPlaylistDropLocation, Command = AddSong }
 	                                      });
 	    }
+
+        public bool GetShareContent(DataRequest dataRequest)
+        {
+            dataRequest.Data.Properties.Title = _album.Artist.Name;
+            dataRequest.Data.SetText(_album.Title + "\n" + _album.Artist.Name);
+            return true;
+        }
 	}
 
     public class PlaySongCommand : Command<TrackViewModel>

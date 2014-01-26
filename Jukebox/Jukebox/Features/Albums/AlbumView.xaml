@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:designTime="using:Jukebox.Features.Albums.DesignTime"
     xmlns:pages="using:SlabRt.Pages"
-    xmlns:winRtBehaviors="using:WinRtBehaviors"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     mc:Ignorable="d"
     d:DataContext="{Binding Source={d:DesignInstance Type=designTime:DesignTimeAlbumViewModel, IsDesignTimeCreatable=True}}">
 
@@ -75,9 +75,9 @@
                     Stretch="Uniform"
                     Margin="{StaticResource VerticallyCentralControlMargin}" 
                     HorizontalAlignment="Left">
-                    <winRtBehaviors:Interaction.Behaviors>
+                    <interactivity:Interaction.Behaviors>
                         <pages:TapCommandBehaviour Command="{Binding PlayAlbum}" CommandParameter="{Binding}"/>
-                    </winRtBehaviors:Interaction.Behaviors>
+                    </interactivity:Interaction.Behaviors>
                 </Image>
                 <TextBlock 
                     Text="{Binding Title}" 

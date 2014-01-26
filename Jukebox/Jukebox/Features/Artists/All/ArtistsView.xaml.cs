@@ -1,7 +1,7 @@
 ﻿using System;
-using Slab.Pages;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using SlabRt.Pages;
 
 namespace Jukebox.Features.Artists.All
 {

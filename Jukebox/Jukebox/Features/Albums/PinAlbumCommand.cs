@@ -21,9 +21,9 @@ namespace Jukebox.Features.Albums
         {
             get
             {
-                return string.Format("Album.{0}.{1}", 
-                    _albumViewModel.ArtistName.Replace(' ', '.'),
-                    _albumViewModel.Title.Replace(' ', '.').Replace(':', '.'));
+                return string.Format("Album.{0}.{1}",
+                    _albumViewModel.ArtistName.Replace(' ', '.').Replace('!', '.'),
+                    _albumViewModel.Title.Replace(' ', '.').Replace(':', '.').Replace(",", string.Empty).Replace("!", string.Empty));
             }
         }
 

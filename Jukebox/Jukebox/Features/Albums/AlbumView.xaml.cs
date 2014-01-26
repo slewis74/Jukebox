@@ -1,5 +1,5 @@
 ﻿using System;
-using Slab.Pages;
+using SlabRt.Pages;
 
 namespace Jukebox.Features.Albums
 {
