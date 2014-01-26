@@ -6,6 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:designTime="using:Jukebox.Features.Albums.DesignTime"
+    xmlns:pages="using:SlabRt.Pages"
+    xmlns:winRtBehaviors="using:WinRtBehaviors"
     mc:Ignorable="d"
     d:DataContext="{Binding Source={d:DesignInstance Type=designTime:DesignTimeAlbumViewModel, IsDesignTimeCreatable=True}}">
 
@@ -72,8 +74,11 @@
                     Width="{StaticResource LargeBitmapSize}" Height="{StaticResource LargeBitmapSize}" 
                     Stretch="Uniform"
                     Margin="{StaticResource VerticallyCentralControlMargin}" 
-                    HorizontalAlignment="Left"
-                    />
+                    HorizontalAlignment="Left">
+                    <winRtBehaviors:Interaction.Behaviors>
+                        <pages:TapCommandBehaviour Command="{Binding PlayAlbum}" CommandParameter="{Binding}"/>
+                    </winRtBehaviors:Interaction.Behaviors>
+                </Image>
                 <TextBlock 
                     Text="{Binding Title}" 
                     Style="{StaticResource SubheaderTextStyle}" 
