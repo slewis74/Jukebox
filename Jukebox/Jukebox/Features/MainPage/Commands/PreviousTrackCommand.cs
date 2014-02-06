@@ -1,3 +1,4 @@
+using Windows.Media;
 using Jukebox.Events;
 using Jukebox.Requests;
 using Slab.PresentationBus;
@@ -9,10 +10,12 @@ namespace Jukebox.Features.MainPage.Commands
         PresentationRequestCommand<PreviousTrackRequest>,
         IHandlePresentationEvent<CanMovePreviousChangedEvent>
     {
+        private readonly SystemMediaTransportControls _systemMediaTransportControls;
         private bool _canMovePrevious;
 
         public PreviousTrackCommand(IPresentationBus presentationBus, bool canMovePrevious) : base(presentationBus)
         {
+            _systemMediaTransportControls = SystemMediaTransportControls.GetForCurrentView();
             _canMovePrevious = canMovePrevious;
         }
 
@@ -23,6 +26,7 @@ namespace Jukebox.Features.MainPage.Commands
 
         public void Handle(CanMovePreviousChangedEvent e)
         {
+            _systemMediaTransportControls.IsPreviousEnabled = e.CanMovePrevious;
             _canMovePrevious = e.CanMovePrevious;
             RaiseCanExecuteChanged();
         }

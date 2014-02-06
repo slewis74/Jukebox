@@ -97,7 +97,7 @@ namespace Jukebox.Storage
             if (newTracks)
             {
                 Artists.Replace(artists);
-                Task.Factory.StartNew(() => SaveData(Artists));
+                await Task.Factory.StartNew(() => SaveData(Artists));
             }
 
             return true;

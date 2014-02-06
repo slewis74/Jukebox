@@ -65,7 +65,10 @@ namespace Jukebox.Features.MainPage
 	        get { return _isPaused; }
 	        set
 	        {
-	            SetProperty(ref _isPaused, value);
+                if (SetProperty(ref _isPaused, value) && value)
+	            {
+	                IsPlaying = false;
+	            }
 	        }
 	    }
 
@@ -77,6 +80,10 @@ namespace Jukebox.Features.MainPage
 	        {
                 if (SetProperty(ref _isPlaying, value))
                 {
+                    if (_isPlaying)
+                    {
+                        IsPaused = false;
+                    }
                     NotifyChanged(() => IsNotPlaying);
                 }
 	        }
@@ -154,8 +161,6 @@ namespace Jukebox.Features.MainPage
         
 		private async void PlayFile(Song song)
 		{
-            IsPaused = false;
-            IsPlaying = true;
             await PresentationBus.PublishAsync(
                 new PlayFileRequest(
                     song.Album.Artist.Name, 
@@ -165,22 +170,16 @@ namespace Jukebox.Features.MainPage
 
 	    private void RestartPlaying()
         {
-            IsPlaying = true;
-            IsPaused = false;
             PresentationBus.PublishAsync(new RestartPlayingRequest());
         }
 
-        private async void PausePlaying()
+        private void PausePlaying()
         {
-            IsPlaying = false;
-            IsPaused = true;
             PresentationBus.PublishAsync(new PausePlayingRequest());
         }
 
 		private void StopPlaying()
 		{
-		    IsPlaying = false;
-		    IsPaused = false;
             PresentationBus.PublishAsync(new StopPlayingRequest());
 		}
 	}
