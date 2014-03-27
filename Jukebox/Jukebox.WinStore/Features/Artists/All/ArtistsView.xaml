@@ -1,0 +1,110 @@
+﻿<UserControl
+    x:Class="Jukebox.WinStore.Features.Artists.All.ArtistsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    >
+    
+    <UserControl.Resources>
+        <!-- Collection of items displayed by this page -->
+        <CollectionViewSource
+            x:Name="GroupedItemsViewSource"
+			IsSourceGrouped="True"
+            Source="{Binding GroupedItems}"
+            d:DataContext="{Binding Source={d:DesignInstance Type=designTime:DesignTimeGroupedItems, IsDesignTimeCreatable=True}}"/>
+
+        <DataTemplate x:Key="ArtistItemTemplate">
+			<Button 
+				Click="MoreClicked"
+				HorizontalAlignment="Left" 
+				>
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <Border BorderThickness="1" BorderBrush="AntiqueWhite" VerticalAlignment="Top">
+                                        <Image Source="{Binding Artist.LargeBitmapUri}" Stretch="UniformToFill" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+			</Button>
+		</DataTemplate>
+
+	</UserControl.Resources>
+    
+    <Grid Background="{StaticResource ThemeBackground}">
+
+        <SemanticZoom
+            x:Name="SemanticZoomControl">
+            <SemanticZoom.ZoomedOutView>
+                <GridView ScrollViewer.IsHorizontalScrollChainingEnabled="False">
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                Text="{Binding Group.Key}"
+                                Style="{StaticResource BasicTextStyle}"
+                                FontSize="24"/>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapGrid ItemWidth="75" ItemHeight="75" MaximumRowsOrColumns="1" VerticalChildrenAlignment="Center" />
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                    <GridView.ItemContainerStyle>
+                        <Style TargetType="GridViewItem">
+                            <Setter Property="Margin" Value="4" />
+                            <Setter Property="Padding" Value="10" />
+                            <Setter Property="BorderBrush" Value="Gray" />
+                            <Setter Property="BorderThickness" Value="1" />
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                            <Setter Property="VerticalContentAlignment" Value="Center" />
+                        </Style>
+                    </GridView.ItemContainerStyle>
+                </GridView>
+            </SemanticZoom.ZoomedOutView>
+            <SemanticZoom.ZoomedInView>
+			    <GridView
+				    AutomationProperties.AutomationId="ItemsGridView"
+                    AutomationProperties.Name="Items"
+                    ItemsSource="{Binding Source={StaticResource GroupedItemsViewSource}}"
+				    ItemTemplate="{StaticResource ArtistItemTemplate}"
+                    ItemContainerStyle="{StaticResource VariableGridViewItemStyle}"
+				    SelectionMode="None"
+                    IsSwipeEnabled="True" ScrollViewer.IsHorizontalScrollChainingEnabled="False"
+				    >
+				    <GridView.ItemsPanel>
+					    <ItemsPanelTemplate>
+						    <StackPanel Orientation="Horizontal"/>
+					    </ItemsPanelTemplate>
+				    </GridView.ItemsPanel>
+				
+				    <GridView.GroupStyle>
+					    <GroupStyle>
+						    <GroupStyle.HeaderTemplate>
+							    <DataTemplate>
+								    <Grid Background="White" Margin="10">
+									    <TextBlock Text='{Binding Key}' Foreground="Gray" FontSize="25" Margin="5" />
+								    </Grid>
+							    </DataTemplate>
+						    </GroupStyle.HeaderTemplate>
+
+						    <GroupStyle.Panel>
+							    <ItemsPanelTemplate>
+								    <VariableSizedWrapGrid Orientation="Vertical" ItemHeight="150" ItemWidth="150" />
+							    </ItemsPanelTemplate>
+						    </GroupStyle.Panel>
+					    </GroupStyle>
+				    </GridView.GroupStyle>
+			    </GridView>
+
+            </SemanticZoom.ZoomedInView>
+        </SemanticZoom>
+    </Grid>
+</UserControl>

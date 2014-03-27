@@ -1,0 +1,437 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CEDAC8FE-01F8-46D9-A88D-768F7C693B5E}</ProjectGuid>
+    <OutputType>AppContainerExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Jukebox.WinStore</RootNamespace>
+    <AssemblyName>Jukebox.WinStore</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <PackageCertificateKeyFile>Jukebox_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateThumbprint>32592A89130763CE2A239F25FD8FB8A0166C5356</PackageCertificateThumbprint>
+    <ExpressionBlendVersion>5.0.30709.0</ExpressionBlendVersion>
+    <TargetPlatformVersion>8.1</TargetPlatformVersion>
+    <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
+    <TargetFrameworkVersion />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>ExpressRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <OutputPath>bin\ARM\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>ExpressRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>ExpressRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>ExpressRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>ExpressRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>ExpressRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="EventHandlers\AutofacEventBroker.cs" />
+    <Compile Include="EventHandlers\EventBroker.cs" />
+    <Compile Include="EventHandlers\OnDemandEventHandler.cs" />
+    <Compile Include="EventHandlers\WhenASong\GetsLoaded\LoadBitmapsForAlbum.cs" />
+    <Compile Include="Events\CanMoveNextChangedEvent.cs" />
+    <Compile Include="Events\CanMovePreviousChangedEvent.cs" />
+    <Compile Include="Events\NowPlayingContentChangedEvent.cs" />
+    <Compile Include="Events\NowPlayingCurrentTrackChangedEvent.cs" />
+    <Compile Include="Events\PlaylistContentChangedEvent.cs" />
+    <Compile Include="Events\PlaylistCurrentTrackChangedEvent.cs" />
+    <Compile Include="Events\RandomPlayModeChangedEvent.cs" />
+    <Compile Include="Events\SongLoadedEvent.cs" />
+    <Compile Include="Features\Albums\AlbumBottomAppBarView.xaml.cs">
+      <DependentUpon>AlbumBottomAppBarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Albums\AlbumController.cs" />
+    <Compile Include="Features\Albums\AlbumView.xaml.cs">
+      <DependentUpon>AlbumView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Albums\AlbumViewModel.cs" />
+    <Compile Include="Features\Albums\DesignTime\DesignTimeAlbumViewModel.cs" />
+    <Compile Include="Features\Albums\AlbumNarrowView.xaml.cs">
+      <DependentUpon>AlbumNarrowView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Albums\PinAlbumCommand.cs" />
+    <Compile Include="Features\Albums\TrackViewModel.cs" />
+    <Compile Include="Features\Artists\ArtistsController.cs" />
+    <Compile Include="Features\Artists\All\ArtistsBottomAppBarView.xaml.cs">
+      <DependentUpon>ArtistsBottomAppBarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Artists\All\ArtistsView.xaml.cs">
+      <DependentUpon>ArtistsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Artists\All\ArtistsViewModel.cs" />
+    <Compile Include="Features\Artists\Single\ArtistView.xaml.cs">
+      <DependentUpon>ArtistView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Artists\Single\ArtistViewModel.cs" />
+    <Compile Include="Features\Artists\DesignTime\DesignArtistsViewModel.cs" />
+    <Compile Include="Common\JukeboxController.cs" />
+    <Compile Include="Common\JukeboxControllerFactory.cs" />
+    <Compile Include="Common\RichTextColumns.cs" />
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DataPersistence\SongPersister.cs" />
+    <Compile Include="Features\Artists\DesignTime\DesignTimeArtistViewModel.cs" />
+    <Compile Include="Features\Artists\All\DisplayArtistCommand.cs" />
+    <Compile Include="Features\Artists\All\GroupedArtistViewModel.cs" />
+    <Compile Include="Features\Artists\All\ArtistsSnappedView.xaml.cs">
+      <DependentUpon>ArtistsSnappedView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Artists\All\PlayAllCommand.cs" />
+    <Compile Include="Features\Artists\Single\ArtistSnappedView.xaml.cs">
+      <DependentUpon>ArtistSnappedView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\HomePage\ArtistsSummary\ArtistsSummaryViewModel.cs" />
+    <Compile Include="Features\HomePage\HomePageView.xaml.cs">
+      <DependentUpon>HomePageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\HomePage\HomePageViewModel.cs" />
+    <Compile Include="Features\HomePage\PlaylistSummary\PlaylistSummaryView.xaml.cs">
+      <DependentUpon>PlaylistSummaryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\HomePage\PlaylistSummary\PlaylistSummaryViewModel.cs" />
+    <Compile Include="Features\MainPage\Events\SongEndedEvent.cs" />
+    <Compile Include="Features\MainPage\JukeboxHostViewModel.cs" />
+    <Compile Include="Features\MainPage\Commands\NextTrackCommand.cs" />
+    <Compile Include="Features\MainPage\NowPlayingHeaderView.xaml.cs">
+      <DependentUpon>NowPlayingHeaderView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\MainPage\NowPlayingView.xaml.cs">
+      <DependentUpon>NowPlayingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\MainPage\Commands\PlaylistsCommand.cs" />
+    <Compile Include="Features\MainPage\Commands\PreviousTrackCommand.cs" />
+    <Compile Include="Features\MainPage\Requests\StopPlayingRequest.cs" />
+    <Compile Include="Features\Search\SearchController.cs" />
+    <Compile Include="Features\Search\SearchResultsView.xaml.cs">
+      <DependentUpon>SearchResultsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Search\SearchResultsViewModel.cs" />
+    <Compile Include="Features\Settings\Player\PlayerSettingsView.xaml.cs">
+      <DependentUpon>PlayerSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Settings\Player\PlayerSettingsViewModel.cs" />
+    <Compile Include="Features\Settings\SettingsController.cs" />
+    <Compile Include="Model\Album.cs" />
+    <Compile Include="Model\Artist.cs" />
+    <Compile Include="Model\Genre.cs" />
+    <Compile Include="Model\NowPlayingPlaylist.cs" />
+    <Compile Include="Model\Playlist.cs" />
+    <Compile Include="Model\PlaylistData.cs" />
+    <Compile Include="Model\SearchResult.cs" />
+    <Compile Include="Model\Song.cs" />
+    <Compile Include="Features\Playlists\PlaylistController.cs" />
+    <Compile Include="Features\Playlists\PlaylistsView.xaml.cs">
+      <DependentUpon>PlaylistsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Playlists\PlaylistsViewModel.cs" />
+    <Compile Include="Features\Playlists\PlaylistViewModel.cs" />
+    <Compile Include="Modules\ControllerModule.cs" />
+    <Compile Include="Modules\DomainModule.cs" />
+    <Compile Include="Modules\LibraryModule.cs" />
+    <Compile Include="Modules\NavigationModule.cs" />
+    <Compile Include="Modules\PlaylistModule.cs" />
+    <Compile Include="Modules\PresentationBusModule.cs" />
+    <Compile Include="Modules\PresentationBusSubscriptionModule.cs" />
+    <Compile Include="Modules\SettingsModule.cs" />
+    <Compile Include="Modules\ViewModelModule.cs" />
+    <Compile Include="Modules\ViewModule.cs" />
+    <Compile Include="Requests\AddToCurrentPlaylistRequest.cs" />
+    <Compile Include="Requests\IsRandomPlayModeRequest.cs" />
+    <Compile Include="Requests\PlayNowRequest.cs" />
+    <Compile Include="Requests\PlayRequest.cs" />
+    <Compile Include="SlabResources\HostView.xaml.cs" />
+    <Compile Include="Storage\AlbumArtStorage.cs" />
+    <Compile Include="Storage\IMusicProvider.cs" />
+    <Compile Include="Storage\ISettingsHandler.cs" />
+    <Compile Include="Storage\MusicProvider.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Storage\PlaylistHandler.cs" />
+    <Compile Include="Storage\SettingsHandler.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest">
+      <SubType>Designer</SubType>
+    </AppxManifest>
+    <None Include="Jukebox_TemporaryKey.pfx" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\LargeLogo.png" />
+    <Content Include="Assets\Logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\SmallLogo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\SplashScreen.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\StoreLogo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\WideLogo.png" />
+    <Content Include="Images\Jukebox.small.png" />
+    <Content Include="Images\no_image_large.png" />
+    <Content Include="Images\no_image_medium.png" />
+    <Content Include="Images\no_image_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="Features\Albums\AlbumBottomAppBarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Features\Albums\AlbumView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Features\Albums\AlbumNarrowView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Features\Artists\All\ArtistsBottomAppBarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Features\Artists\All\ArtistsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Features\Artists\Single\ArtistView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Features\Artists\All\ArtistsSnappedView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Features\Artists\Single\ArtistSnappedView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Features\HomePage\HomePageView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Features\HomePage\PlaylistSummary\PlaylistSummaryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Features\MainPage\NowPlayingHeaderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Features\MainPage\NowPlayingView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Features\MainPage\Resources\NowPlayingStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="Features\Playlists\PlaylistsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Features\Search\SearchResultsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Features\Settings\Player\PlayerSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\ButtonStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="Resources\Theme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="SlabResources\Controls.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SlabResources\Converters.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SlabResources\HostView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SlabResources\SlabResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SlabResources\StandardLayout.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SlabResources\StandardStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Facts\" />
+    <Folder Include="Features\Search\Commands\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Autofac.3.1.1\lib\portable-win+net40+sl50+wp8\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Extras.Win8">
+      <HintPath>..\packages\Win8nl.1.0.9\lib\NetCore451\GalaSoft.MvvmLight.Extras.Win8.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Win8">
+      <HintPath>..\packages\Win8nl.1.0.9\lib\NetCore451\GalaSoft.MvvmLight.Win8.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\packages\Win8nl.1.0.9\lib\NetCore451\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xaml.Interactions">
+      <HintPath>..\packages\Win8nl.1.0.9\lib\NetCore451\Microsoft.Xaml.Interactions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xaml.Interactivity">
+      <HintPath>..\packages\Win8nl.1.0.9\lib\NetCore451\Microsoft.Xaml.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="Slab">
+      <HintPath>..\packages\Slab.1.0.0\lib\win8\Slab.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Slab.WinStore">
+      <HintPath>..\packages\Slab.1.0.0\lib\win8\Slab.WinStore.dll</HintPath>
+    </Reference>
+    <Reference Include="Slab.Xaml">
+      <HintPath>..\packages\Slab.1.0.0\lib\win8\Slab.Xaml.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Core">
+      <HintPath>..\packages\Rx-Core.2.1.30214.0\lib\NetCore45\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\packages\Rx-Interfaces.2.1.30214.0\lib\NetCore45\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\packages\Rx-Linq.2.1.30214.0\lib\NetCore45\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\packages\Rx-PlatformServices.2.1.30214.0\lib\NetCore45\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="Win8nl">
+      <HintPath>..\packages\Win8nl.1.0.9\lib\NetCore451\Win8nl.dll</HintPath>
+    </Reference>
+    <Reference Include="Win8nl.External">
+      <HintPath>..\packages\Win8nl.1.0.9\lib\NetCore451\Win8nl.External.dll</HintPath>
+    </Reference>
+    <Reference Include="Win8nl.Utilities">
+      <HintPath>..\packages\Win8nl.1.0.9\lib\NetCore451\Win8nl.Utilities.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
+    <VisualStudioVersion>12.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
