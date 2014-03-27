@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
@@ -11,14 +10,14 @@ using Jukebox.Model;
 using Jukebox.Storage;
 using Slab.Data;
 using Slab.Pages.Navigation;
-using SlabRt.Data.Navigation;
-using SlabRt.Host;
-using SlabRt.Pages.Navigation;
-using SlabRt.Pages.Settings;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Search;
 using Windows.UI.Xaml;
+using Slab.WinStore.Data.Navigation;
+using Slab.WinStore.Host;
+using Slab.WinStore.Pages.Navigation;
+using Slab.WinStore.Pages.Settings;
 
 namespace Jukebox
 {

@@ -2,7 +2,7 @@
 using Jukebox.Model;
 using Jukebox.Requests;
 using Slab.PresentationBus;
-using Slab.ViewModels;
+using Slab.Xaml.ViewModels;
 
 namespace Jukebox.Features.Artists.All
 {

@@ -2,7 +2,7 @@
 using Jukebox.Model;
 using Slab.Data;
 using Slab.Pages.Navigation;
-using SlabRt.ViewModels;
+using Slab.WinStore.ViewModels;
 
 namespace Jukebox.Features.Search
 {

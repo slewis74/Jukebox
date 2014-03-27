@@ -2,7 +2,7 @@
 using Jukebox.Features.Settings;
 using Jukebox.Storage;
 using Slab.PresentationBus;
-using SlabRt.Pages.Settings;
+using Slab.WinStore.Pages.Settings;
 
 namespace Jukebox.Modules
 {

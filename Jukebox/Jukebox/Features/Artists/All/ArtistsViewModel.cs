@@ -5,7 +5,7 @@ using Jukebox.Storage;
 using Slab.Data;
 using Slab.Pages.Navigation;
 using Slab.PresentationBus;
-using Slab.ViewModels;
+using Slab.Xaml.ViewModels;
 
 namespace Jukebox.Features.Artists.All
 {

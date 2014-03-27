@@ -2,7 +2,7 @@ using Jukebox.Features.Playlists;
 using Jukebox.Model;
 using Slab.Data;
 using Slab.Pages.Navigation;
-using Slab.ViewModels;
+using Slab.Xaml.ViewModels;
 
 namespace Jukebox.Features.MainPage.Commands
 {

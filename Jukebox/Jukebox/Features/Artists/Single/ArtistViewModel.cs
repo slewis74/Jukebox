@@ -4,8 +4,7 @@ using Jukebox.Model;
 using Jukebox.Requests;
 using Slab.Pages.Navigation;
 using Slab.PresentationBus;
-using Slab.ViewModels;
-using Windows.UI.Xaml.Media.Imaging;
+using Slab.Xaml.ViewModels;
 
 namespace Jukebox.Features.Artists.Single
 {

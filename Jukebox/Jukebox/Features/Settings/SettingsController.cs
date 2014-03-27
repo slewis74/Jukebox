@@ -5,7 +5,7 @@ using Jukebox.Features.Settings.Player;
 using Jukebox.Requests;
 using Slab.Pages.Navigation;
 using Slab.PresentationBus;
-using SlabRt.Pages.Navigation;
+using Slab.WinStore.Pages.Navigation;
 
 namespace Jukebox.Features.Settings
 {

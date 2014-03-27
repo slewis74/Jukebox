@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using Autofac;
-using SlabRt.Commands;
+using Slab.WinStore.Commands;
 
 namespace Jukebox.Modules
 {

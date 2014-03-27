@@ -1,14 +1,13 @@
 ﻿using System.Linq;
 using Windows.ApplicationModel.DataTransfer;
-using Windows.Storage.Streams;
 using Jukebox.Model;
 using Jukebox.Requests;
 using Jukebox.Storage;
 using Slab.Data;
 using Slab.Pages.Navigation;
 using Slab.PresentationBus;
-using Slab.ViewModels;
-using SlabRt.Pages;
+using Slab.WinStore.Pages;
+using Slab.Xaml.ViewModels;
 
 namespace Jukebox.Features.Albums
 {

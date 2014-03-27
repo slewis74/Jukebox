@@ -1,11 +1,14 @@
-﻿using Autofac;
-using SlabRt.Data.Navigation;
-using SlabRt.Pages;
-using SlabRt.Pages.Navigation;
+﻿using System.Reflection;
+using Windows.UI.Xaml;
+using Autofac;
+using Slab.WinStore.Data.Navigation;
+using Slab.WinStore.Pages;
+using Slab.WinStore.Pages.Navigation;
+using Slab.Xaml;
 
 namespace Jukebox.Modules
 {
-    public class NavigationModule : Module
+    public class NavigationModule : Autofac.Module
     {
         protected override void Load(ContainerBuilder builder)
         {
@@ -20,7 +23,11 @@ namespace Jukebox.Modules
                 .RegisterType<RtNavigator>().AsImplementedInterfaces()
                 .SingleInstance();
             
-            builder.RegisterType<ViewLocator>().As<IViewLocator>().SingleInstance();
+            builder
+                .RegisterType<ViewLocator>()
+                .As<IViewLocator<FrameworkElement>>()
+                .SingleInstance()
+                .OnActivated(x => x.Instance.Configure(typeof(NavigationModule).GetTypeInfo().Assembly, "PortableClassLibrary1.Features", "PhoneApp1.Features"));
         }
     }
 }

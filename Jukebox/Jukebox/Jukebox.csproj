@@ -392,13 +392,15 @@
     <Reference Include="Microsoft.Xaml.Interactivity">
       <HintPath>..\packages\Win8nl.1.0.9\lib\NetCore451\Microsoft.Xaml.Interactivity.dll</HintPath>
     </Reference>
-    <Reference Include="Slab, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Slab">
       <HintPath>..\packages\Slab.1.0.0\lib\win8\Slab.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="SlabRt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Slab.1.0.0\lib\win8\SlabRt.dll</HintPath>
+    <Reference Include="Slab.WinStore">
+      <HintPath>..\packages\Slab.1.0.0\lib\win8\Slab.WinStore.dll</HintPath>
+    </Reference>
+    <Reference Include="Slab.Xaml">
+      <HintPath>..\packages\Slab.1.0.0\lib\win8\Slab.Xaml.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Core">
       <HintPath>..\packages\Rx-Core.2.1.30214.0\lib\NetCore45\System.Reactive.Core.dll</HintPath>

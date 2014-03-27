@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:designTime="using:Jukebox.Features.Albums.DesignTime"
-    xmlns:pages="using:SlabRt.Pages"
+    xmlns:pages="using:Slab.WinStore.Pages"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     mc:Ignorable="d"
     d:DataContext="{Binding Source={d:DesignInstance Type=designTime:DesignTimeAlbumViewModel, IsDesignTimeCreatable=True}}">

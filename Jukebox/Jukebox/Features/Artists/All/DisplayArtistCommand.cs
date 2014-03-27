@@ -1,6 +1,6 @@
 ﻿using Jukebox.Model;
 using Slab.Pages.Navigation;
-using Slab.ViewModels;
+using Slab.Xaml.ViewModels;
 
 namespace Jukebox.Features.Artists.All
 {
