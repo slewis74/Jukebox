@@ -115,7 +115,7 @@ namespace Jukebox.Features.MainPage
         private async void DoPlay(StorageFile storageFile)
         {
             await SetupToPlay(storageFile);
-            MediaElement.Play();
+            DoRestart();
         }
 
         private void TogglePlayPause()
