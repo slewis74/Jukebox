@@ -7,8 +7,8 @@ using Jukebox.WinStore.Model;
 using Jukebox.WinStore.Requests;
 using Slab.Data;
 using Slab.PresentationBus;
+using Slab.ViewModels;
 using Slab.WinStore.Host;
-using Slab.Xaml.ViewModels;
 
 namespace Jukebox.WinStore.Features.MainPage
 {

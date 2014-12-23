@@ -5,13 +5,12 @@ using Jukebox.WinStore.Storage;
 using Slab.Data;
 using Slab.Pages.Navigation;
 using Slab.PresentationBus;
-using Slab.Xaml.ViewModels;
+using Slab.ViewModels;
 
 namespace Jukebox.WinStore.Features.Artists.All
 {
     public class ArtistsViewModel : CanRequestNavigationBase
 	{
-        private readonly IPresentationBus _presentationBus;
         private readonly DistinctAsyncObservableCollection<Artist> _artists;
         private AsyncObservableCollection<GroupedData<GroupedArtistViewModel>> _groups;
 
@@ -22,12 +21,11 @@ namespace Jukebox.WinStore.Features.Artists.All
             INavigator navigator,
             IMusicProvider musicProvider) : base(navigator)
 		{
-            _presentationBus = presentationBus;
             _artists = musicProvider.Artists;
             _artists.CollectionChanged += (sender, args) => NotifyChanged(() => GroupedItems);
 
             DisplayArtist = new DisplayArtistCommand(Navigator);
-            PlayAll = new PlayAllCommand(_presentationBus, _artists);
+            PlayAll = new PlayAllCommand(presentationBus, _artists);
 		}
 
         public override string PageTitle

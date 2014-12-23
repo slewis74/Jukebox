@@ -6,8 +6,8 @@ using Jukebox.WinStore.Storage;
 using Slab.Data;
 using Slab.Pages.Navigation;
 using Slab.PresentationBus;
+using Slab.ViewModels;
 using Slab.WinStore.Pages;
-using Slab.Xaml.ViewModels;
 
 namespace Jukebox.WinStore.Features.Albums
 {

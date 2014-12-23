@@ -1,6 +1,6 @@
 ﻿using Jukebox.WinStore.Model;
 using Slab.Data;
-using Slab.Xaml.ViewModels;
+using Slab.ViewModels;
 
 namespace Jukebox.WinStore.Features.Playlists
 {

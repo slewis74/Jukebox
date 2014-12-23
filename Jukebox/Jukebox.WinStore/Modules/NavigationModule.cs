@@ -1,10 +1,8 @@
 ﻿using System.Reflection;
-using Windows.UI.Xaml;
 using Autofac;
 using Slab.WinStore.Data.Navigation;
 using Slab.WinStore.Pages;
 using Slab.WinStore.Pages.Navigation;
-using Slab.Xaml;
 
 namespace Jukebox.WinStore.Modules
 {
@@ -25,9 +23,9 @@ namespace Jukebox.WinStore.Modules
             
             builder
                 .RegisterType<ViewLocator>()
-                .As<IViewLocator<FrameworkElement>>()
+                .As<IViewLocator>()
                 .SingleInstance()
-                .OnActivated(x => x.Instance.Configure(typeof(NavigationModule).GetTypeInfo().Assembly, "PortableClassLibrary1.Features", "PhoneApp1.Features"));
+                .OnActivated(x => x.Instance.Configure(typeof(NavigationModule).GetTypeInfo().Assembly, "Jukebox.WinStore.Features", "Jukebox.WinStore.Features"));
         }
     }
 }

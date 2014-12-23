@@ -1,6 +1,6 @@
 ﻿using Windows.UI.Xaml;
 
-namespace Jukebox.WinStore.SlabResources
+namespace Slab.WinStore.Host
 {
     public sealed partial class HostView
     {

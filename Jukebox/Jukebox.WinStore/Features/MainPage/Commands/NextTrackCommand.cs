@@ -2,7 +2,7 @@ using Windows.Media;
 using Jukebox.WinStore.Events;
 using Jukebox.WinStore.Requests;
 using Slab.PresentationBus;
-using Slab.Xaml.ViewModels;
+using Slab.ViewModels;
 
 namespace Jukebox.WinStore.Features.MainPage.Commands
 {

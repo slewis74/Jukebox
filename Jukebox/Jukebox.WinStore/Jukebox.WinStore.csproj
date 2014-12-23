@@ -226,7 +226,9 @@
     <Compile Include="Requests\IsRandomPlayModeRequest.cs" />
     <Compile Include="Requests\PlayNowRequest.cs" />
     <Compile Include="Requests\PlayRequest.cs" />
-    <Compile Include="SlabResources\HostView.xaml.cs" />
+    <Compile Include="SlabResources\HostView.xaml.cs">
+      <DependentUpon>HostView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Storage\AlbumArtStorage.cs" />
     <Compile Include="Storage\IMusicProvider.cs" />
     <Compile Include="Storage\ISettingsHandler.cs" />
@@ -376,52 +378,19 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Autofac.3.1.1\lib\portable-win+net40+sl50+wp8\Autofac.dll</HintPath>
     </Reference>
-    <Reference Include="GalaSoft.MvvmLight.Extras.Win8">
-      <HintPath>..\packages\Win8nl.1.0.9\lib\NetCore451\GalaSoft.MvvmLight.Extras.Win8.dll</HintPath>
+    <Reference Include="Slab, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Slab.1.0.8\lib\win8\Slab.dll</HintPath>
     </Reference>
-    <Reference Include="GalaSoft.MvvmLight.Win8">
-      <HintPath>..\packages\Win8nl.1.0.9\lib\NetCore451\GalaSoft.MvvmLight.Win8.dll</HintPath>
+    <Reference Include="Slab.WinStore, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Slab.1.0.8\lib\win8\Slab.WinStore.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation">
-      <HintPath>..\packages\Win8nl.1.0.9\lib\NetCore451\Microsoft.Practices.ServiceLocation.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Xaml.Interactions">
-      <HintPath>..\packages\Win8nl.1.0.9\lib\NetCore451\Microsoft.Xaml.Interactions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Xaml.Interactivity">
-      <HintPath>..\packages\Win8nl.1.0.9\lib\NetCore451\Microsoft.Xaml.Interactivity.dll</HintPath>
-    </Reference>
-    <Reference Include="Slab">
-      <HintPath>..\packages\Slab.1.0.0\lib\win8\Slab.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Slab.WinStore">
-      <HintPath>..\packages\Slab.1.0.0\lib\win8\Slab.WinStore.dll</HintPath>
-    </Reference>
-    <Reference Include="Slab.Xaml">
-      <HintPath>..\packages\Slab.1.0.0\lib\win8\Slab.Xaml.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Core">
-      <HintPath>..\packages\Rx-Core.2.1.30214.0\lib\NetCore45\System.Reactive.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Interfaces">
-      <HintPath>..\packages\Rx-Interfaces.2.1.30214.0\lib\NetCore45\System.Reactive.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Linq">
-      <HintPath>..\packages\Rx-Linq.2.1.30214.0\lib\NetCore45\System.Reactive.Linq.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.PlatformServices">
-      <HintPath>..\packages\Rx-PlatformServices.2.1.30214.0\lib\NetCore45\System.Reactive.PlatformServices.dll</HintPath>
-    </Reference>
-    <Reference Include="Win8nl">
-      <HintPath>..\packages\Win8nl.1.0.9\lib\NetCore451\Win8nl.dll</HintPath>
-    </Reference>
-    <Reference Include="Win8nl.External">
-      <HintPath>..\packages\Win8nl.1.0.9\lib\NetCore451\Win8nl.External.dll</HintPath>
-    </Reference>
-    <Reference Include="Win8nl.Utilities">
-      <HintPath>..\packages\Win8nl.1.0.9\lib\NetCore451\Win8nl.Utilities.dll</HintPath>
-    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="BehaviorsXamlSDKManaged, Version=12.0">
+      <Name>Behaviors SDK %28XAML%29</Name>
+    </SDKReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>

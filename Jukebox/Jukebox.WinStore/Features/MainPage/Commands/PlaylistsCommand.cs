@@ -2,7 +2,7 @@ using Jukebox.WinStore.Features.Playlists;
 using Jukebox.WinStore.Model;
 using Slab.Data;
 using Slab.Pages.Navigation;
-using Slab.Xaml.ViewModels;
+using Slab.ViewModels;
 
 namespace Jukebox.WinStore.Features.MainPage.Commands
 {

@@ -11,11 +11,11 @@ using Jukebox.WinStore.EventHandlers;
 using Jukebox.WinStore.Features.MainPage;
 using Jukebox.WinStore.Features.Search;
 using Jukebox.WinStore.Model;
-using Jukebox.WinStore.SlabResources;
 using Jukebox.WinStore.Storage;
 using Slab.Data;
 using Slab.Pages.Navigation;
 using Slab.WinStore.Data.Navigation;
+using Slab.WinStore.Host;
 using Slab.WinStore.Pages.Navigation;
 using Slab.WinStore.Pages.Settings;
 
