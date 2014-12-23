@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Jukebox.WinStore.Events;
 using Jukebox.WinStore.Features.MainPage.Commands;
 using Jukebox.WinStore.Features.MainPage.Requests;
@@ -110,13 +109,13 @@ namespace Jukebox.WinStore.Features.MainPage
             if (e.Data != _nowPlayingPlaylist)
                 return;
 
-            var song = e.Song;
+            var song = e.PlaylistSong;
 
             if (song == null)
                 StopPlaying();
             else
             {
-                PlayFile(song);
+                PlayFile(e.PlaylistSong.ArtistName, e.PlaylistSong.Song);
             }
         }
 
@@ -137,15 +136,7 @@ namespace Jukebox.WinStore.Features.MainPage
                 return;
             StopPlaying();
         }
-
-	    private void AddToCurrentPlaylist(Artist artist)
-		{
-			foreach (var song in artist.Albums.SelectMany(a => a.Songs).OrderBy(s => s.Album.Title).ThenBy(s => s.TrackNumber))
-			{
-                NowPlayingPlaylist.Add(song);
-            }
-        }
-
+        
         private void StartPlaying()
         {
             if (IsPlaying)
@@ -155,15 +146,15 @@ namespace Jukebox.WinStore.Features.MainPage
                 RestartPlaying();
             else
             {
-                PlayFile(NowPlayingPlaylist.CurrentTrack);
+                PlayFile(NowPlayingPlaylist.CurrentTrack.ArtistName, NowPlayingPlaylist.CurrentTrack.Song);
             }
         }
         
-		private async void PlayFile(Song song)
+		private async void PlayFile(string artistName, Song song)
 		{
             await PresentationBus.PublishAsync(
                 new PlayFileRequest(
-                    song.Album.Artist.Name, 
+                    artistName, 
                     song.Title, 
                     await song.GetStorageFileAsync()));
 		}

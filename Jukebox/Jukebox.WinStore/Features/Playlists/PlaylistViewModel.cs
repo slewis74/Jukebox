@@ -12,6 +12,6 @@ namespace Jukebox.WinStore.Features.Playlists
             _playlist = playlist;
         }
 
-        public AsyncObservableCollection<Song> Tracks { get { return _playlist; } }
+        public AsyncObservableCollection<PlaylistSong> Tracks { get { return _playlist; } }
     }
 }

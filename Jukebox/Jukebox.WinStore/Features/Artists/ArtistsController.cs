@@ -39,7 +39,7 @@ namespace Jukebox.WinStore.Features.Artists
             if (artist == null)
                 return ShowAll();
             if (artist.Albums.Count == 1)
-                return new ViewModelActionResult(() => _albumViewModelFactory(artist.Albums.Single()));
+                return new ViewModelActionResult(() => _albumViewModelFactory(artist, artist.Albums.Single()));
             return new ViewModelActionResult(() => _artistViewModelFactory(artist));
         }
     }

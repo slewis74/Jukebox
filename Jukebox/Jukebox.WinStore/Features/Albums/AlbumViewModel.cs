@@ -13,18 +13,21 @@ namespace Jukebox.WinStore.Features.Albums
 {
     public class AlbumViewModel : CanRequestNavigationBase, IShare
 	{
+        private readonly Artist _artist;
         private readonly Album _album;
 
-        public delegate AlbumViewModel Factory(Album album);
+        public delegate AlbumViewModel Factory(Artist artist, Album album);
         
         public AlbumViewModel(
             IPresentationBus presentationBus, 
             INavigator navigator,
             IAlbumArtStorage albumArtStorage,
+            Artist artist, 
             Album album)
             : base(navigator)
 		{
-			_album = album;
+            _artist = artist;
+            _album = album;
 
             AlbumLocationCommandMappings = new AsyncObservableCollection<LocationCommandMapping>();
             TrackLocationCommandMappings = new AsyncObservableCollection<LocationCommandMapping>();
@@ -40,7 +43,7 @@ namespace Jukebox.WinStore.Features.Albums
                 album.Songs
                 .OrderBy(s => s.DiscNumber)
                 .ThenBy(s => s.TrackNumber)
-                .Select(t => new TrackViewModel(t, TrackLocationCommandMappings)));
+                .Select(t => new TrackViewModel(artist.Name, album.Title, t, TrackLocationCommandMappings)));
 		}
 
         public override string PageTitle
@@ -56,7 +59,7 @@ namespace Jukebox.WinStore.Features.Albums
         public PinAlbumCommand PinAlbum { get; private set; }
 
         public string Title { get { return _album.Title; } }
-        public string ArtistName { get { return _album.Artist.Name; } }
+        public string ArtistName { get { return _artist.Name; } }
 
         public string SmallBitmapUri { get { return _album.SmallBitmapUri; } }
         public string LargeBitmapUri { get { return _album.LargeBitmapUri; } }
@@ -98,8 +101,8 @@ namespace Jukebox.WinStore.Features.Albums
 
         public bool GetShareContent(DataRequest dataRequest)
         {
-            dataRequest.Data.Properties.Title = _album.Artist.Name;
-            dataRequest.Data.SetText(_album.Title + "\n" + _album.Artist.Name);
+            dataRequest.Data.Properties.Title = _artist.Name;
+            dataRequest.Data.SetText(_album.Title + "\n" + _artist.Name);
             return true;
         }
 	}
@@ -115,7 +118,7 @@ namespace Jukebox.WinStore.Features.Albums
 
         public override void Execute(TrackViewModel parameter)
 		{
-            _presentationBus.PublishAsync(new PlaySongNowRequest { Scope = parameter.GetSong() });
+            _presentationBus.PublishAsync(new PlaySongNowRequest(parameter.ArtistName, parameter.AlbumTitle, parameter.GetSong()));
 		}
 	}
 
@@ -130,7 +133,7 @@ namespace Jukebox.WinStore.Features.Albums
 
         public override void Execute(AlbumViewModel parameter)
 		{
-            _presentationBus.PublishAsync(new PlayAlbumNowRequest { Scope = parameter.GetAlbum() });
+            _presentationBus.PublishAsync(new PlayAlbumNowRequest(parameter.ArtistName, parameter.GetAlbum()));
 		}
 
 	}

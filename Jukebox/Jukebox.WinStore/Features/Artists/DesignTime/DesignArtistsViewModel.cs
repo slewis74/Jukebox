@@ -17,7 +17,7 @@ namespace Jukebox.WinStore.Features.Artists.DesignTime
                     _groups = new AsyncObservableCollection<GroupedData<Artist>>();
                     
                     var groupedData = new GroupedData<Artist> {Key = "A"};
-                    groupedData.Add(new Artist(null) { Name = "Artist A"});
+                    groupedData.Add(new Artist { Name = "Artist A"});
                     _groups.Add(groupedData);
                 }
                 return _groups;

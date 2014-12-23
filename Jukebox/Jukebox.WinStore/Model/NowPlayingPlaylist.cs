@@ -29,7 +29,7 @@ namespace Jukebox.WinStore.Model
 
             presentationBus.Subscribe(this);
         }
-        public NowPlayingPlaylist(IPresentationBus presentationBus, bool isRandomPlayMode, IEnumerable<Song> tracks, int? currentTrackIndex)
+        public NowPlayingPlaylist(IPresentationBus presentationBus, bool isRandomPlayMode, IEnumerable<PlaylistSong> tracks, int? currentTrackIndex)
             : base(presentationBus, NowPlayingName, tracks)
         {
             _isRandomPlayMode = isRandomPlayMode;
@@ -38,8 +38,8 @@ namespace Jukebox.WinStore.Model
             presentationBus.Subscribe(this);
         }
 
-        private Song _currentTrack;
-        public Song CurrentTrack
+        private PlaylistSong _currentTrack;
+        public PlaylistSong CurrentTrack
         {
             get { return _currentTrack; }
             set
@@ -51,7 +51,7 @@ namespace Jukebox.WinStore.Model
             }
         }
 
-        protected override void InsertItem(int index, Song item)
+        protected override void InsertItem(int index, PlaylistSong item)
         {
             base.InsertItem(index, item);
 
@@ -164,7 +164,7 @@ namespace Jukebox.WinStore.Model
             OnCanMoveChanged();
         }
 
-        protected void OnCurrentTrackChanged(Song e)
+        protected void OnCurrentTrackChanged(PlaylistSong e)
         {
             PresentationBus.PublishAsync(new NowPlayingCurrentTrackChangedEvent(this, e));
             OnCanMoveChanged();
@@ -203,7 +203,7 @@ namespace Jukebox.WinStore.Model
         {
             request.IsHandled = true;
             Clear();
-            Add(request.Scope);
+            Add(new PlaylistSong { ArtistName = request.ArtistName, AlbumTitle = request.AlbumTitle, Song = request.Scope });
             CurrentTrack = this[0];
         }
 
@@ -213,7 +213,7 @@ namespace Jukebox.WinStore.Model
             
             StartLargeUpdate();
             Clear();
-            AddAlbum(request.Scope);
+            AddAlbum(request.ArtistName, request.Scope);
             CompleteLargeUpdate();
 
             CurrentTrack = this[0];
@@ -227,18 +227,18 @@ namespace Jukebox.WinStore.Model
             Clear();
             foreach (var album in request.Scope.Albums)
             {
-                AddAlbum(album);
+                AddAlbum(request.Scope.Name, album);
             }
             CompleteLargeUpdate();
 
             CurrentTrack = this[0];
         }
 
-        private void AddAlbum(Album album)
+        private void AddAlbum(string artistName, Album album)
         {
             foreach (var song in album.Songs.OrderBy(s => s.DiscNumber).ThenBy(s => s.TrackNumber))
             {
-                Add(song);
+                Add(new PlaylistSong { ArtistName = artistName, AlbumTitle = album.Title, Song = song });
             }
         }
 
@@ -252,7 +252,7 @@ namespace Jukebox.WinStore.Model
             {
                 foreach (var album in artist.Albums)
                 {
-                    AddAlbum(album);
+                    AddAlbum(artist.Name, album);
                 }
             }
             CompleteLargeUpdate();

@@ -1,7 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using Slab.Data;
 using Slab.PresentationBus;
 
@@ -10,7 +9,7 @@ namespace Jukebox.WinStore.Model
     [DebuggerDisplay("Artist - {Name}")]
 	public class Artist : BindableBase
     {
-        public Artist(SynchronizationContext synchronizationContext) : base(synchronizationContext)
+        public Artist()
         {
             Albums = new ObservableCollection<Album>();
         }

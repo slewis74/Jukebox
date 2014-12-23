@@ -39,17 +39,17 @@ namespace Jukebox.WinStore.Features.Albums
 
         public override Uri TileMediumImageUri
         {
-            get { return new Uri("ms-appdata:///local/" + _albumArtStorage.AlbumArtFileName(_albumViewModel.ArtistName, _albumViewModel.Title, 150)); }
+            get { return new Uri("ms-appdata:///local/" + _albumArtStorage.AlbumArtFileName(_albumViewModel.GetAlbum().Folder, 150)); }
         }
 
         public override Uri TileLargeImageUri
         {
-            get { return new Uri("ms-appdata:///local/" + _albumArtStorage.AlbumArtFileName(_albumViewModel.ArtistName, _albumViewModel.Title, 310)); }
+            get { return new Uri("ms-appdata:///local/" + _albumArtStorage.AlbumArtFileName(_albumViewModel.GetAlbum().Folder, 310)); }
         }
 
         public override Uri TileWideImageUri
         {
-            get { return new Uri("ms-appdata:///local/" + _albumArtStorage.AlbumArtFileName(_albumViewModel.ArtistName, _albumViewModel.Title, 310)); }
+            get { return new Uri("ms-appdata:///local/" + _albumArtStorage.AlbumArtFileName(_albumViewModel.GetAlbum().Folder, 310)); }
         }
     }
 }

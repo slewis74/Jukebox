@@ -7,7 +7,7 @@ using Slab.PresentationBus;
 namespace Jukebox.WinStore.Model
 {
     [DebuggerDisplay("Playlist {Name}")]
-    public class Playlist : DistinctAsyncObservableCollection<Song>
+    public class Playlist : DistinctAsyncObservableCollection<PlaylistSong>
     {
         public Playlist(IPresentationBus presentationBus, string name)
         {
@@ -15,7 +15,8 @@ namespace Jukebox.WinStore.Model
             Name = name;
         }
 
-        public Playlist(IPresentationBus presentationBus, string name, IEnumerable<Song> tracks) : base(tracks)
+        public Playlist(IPresentationBus presentationBus, string name, IEnumerable<PlaylistSong> tracks)
+            : base(tracks)
         {
             PresentationBus = presentationBus;
             Name = name;
@@ -24,13 +25,13 @@ namespace Jukebox.WinStore.Model
         protected IPresentationBus PresentationBus { get; private set; }
         public string Name { get; set; }
 
-        public override void Add(Song item)
+        public override void Add(PlaylistSong item)
         {
             base.Add(item);
             OnListChanged();
         }
 
-        protected override void SetItem(int index, Song item)
+        protected override void SetItem(int index, PlaylistSong item)
         {
             base.SetItem(index, item);
             OnListChanged();
@@ -42,7 +43,7 @@ namespace Jukebox.WinStore.Model
             OnListChanged();
         }
 
-        protected override void InsertItem(int index, Song item)
+        protected override void InsertItem(int index, PlaylistSong item)
         {
             base.InsertItem(index, item);
             OnListChanged();

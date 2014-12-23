@@ -10,7 +10,7 @@ namespace Jukebox.WinStore.Storage
 {
     public class AlbumArtStorage : IAlbumArtStorage
     {
-        public async Task SaveBitmapAsync(string artist, string album, uint size, string songPath)
+        public async Task SaveBitmapAsync(string albumFolder, uint size, string songPath)
         {
             var songFile = await StorageFile.GetFileFromPathAsync(songPath);
 
@@ -32,9 +32,9 @@ namespace Jukebox.WinStore.Storage
                 await memStream.FlushAsync();
                 memStream.Seek(0);
 
-                await ApplicationData.Current.LocalFolder.CreateFolderAsync(AlbumArtFolderName(artist, album), CreationCollisionOption.OpenIfExists);
+                await ApplicationData.Current.LocalFolder.CreateFolderAsync(AlbumArtFolderName(albumFolder), CreationCollisionOption.OpenIfExists);
 
-                var albumArtFileName = AlbumArtFileName(artist, album, size);
+                var albumArtFileName = AlbumArtFileName(albumFolder, size);
                 var outputFile = await ApplicationData.Current.LocalFolder.CreateFileAsync(albumArtFileName, CreationCollisionOption.ReplaceExisting);
 
                 // http://social.msdn.microsoft.com/Forums/windowsapps/en-US/1dda3a15-d299-40e0-b668-ec690a683f6e/how-to-resize-an-image-as-storagefile?forum=winappswithcsharp
@@ -56,12 +56,13 @@ namespace Jukebox.WinStore.Storage
             }
         }
 
-        public async Task<bool> AlbumFolderExists(string artist, string album)
+        public async Task<bool> AlbumFolderExists(string albumFolder)
         {
             try
             {
+                var albumArtFolderName = AlbumArtFolderName(albumFolder);
                 var imageFile =
-                    await ApplicationData.Current.LocalFolder.GetFolderAsync(AlbumArtFolderName(artist, album));
+                    await ApplicationData.Current.LocalFolder.GetFolderAsync(albumArtFolderName);
                 return true;
             }
             catch (FileNotFoundException)
@@ -70,22 +71,22 @@ namespace Jukebox.WinStore.Storage
             }
         }
 
-        private static string AlbumArtFolderName(string artist, string album)
+        private static string AlbumArtFolderName(string albumFolder)
         {
-            return Path.Combine("AlbumArt", artist, album.Replace(":", ""));
+            return Path.Combine(albumFolder, "AlbumArt");
         }
 
-        public string AlbumArtFileName(string artist, string album, uint size)
+        public string AlbumArtFileName(string albumFolder, uint size)
         {
-            return Path.Combine(AlbumArtFolderName(artist, album), "AlbumArt" + size + "x" + size + ".jpg");
+            return Path.Combine(AlbumArtFolderName(albumFolder), "AlbumArt" + size + "x" + size + ".jpg");
         }
     }
 
     public interface IAlbumArtStorage
     {
-        string AlbumArtFileName(string artist, string album, uint size);
-        Task SaveBitmapAsync(string artist, string album, uint size, string songPath);
+        string AlbumArtFileName(string albumFolder, uint size);
+        Task SaveBitmapAsync(string albumFolder, uint size, string songPath);
 
-        Task<bool> AlbumFolderExists(string artist, string album);
+        Task<bool> AlbumFolderExists(string albumFolder);
     }
 }

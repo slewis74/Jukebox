@@ -4,7 +4,7 @@ namespace Jukebox.WinStore.Events
 {
     public class NowPlayingCurrentTrackChangedEvent : PlaylistCurrentTrackChangedEvent
     {
-        public NowPlayingCurrentTrackChangedEvent(Playlist data, Song song) : base(data, song)
+        public NowPlayingCurrentTrackChangedEvent(Playlist data, PlaylistSong playlistSong) : base(data, playlistSong)
         {
         }
     }

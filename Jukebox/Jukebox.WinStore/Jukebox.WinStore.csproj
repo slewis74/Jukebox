@@ -156,7 +156,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DataPersistence\SongPersister.cs" />
     <Compile Include="Features\Artists\DesignTime\DesignTimeArtistViewModel.cs" />
     <Compile Include="Features\Artists\All\DisplayArtistCommand.cs" />
     <Compile Include="Features\Artists\All\GroupedArtistViewModel.cs" />
@@ -204,6 +203,7 @@
     <Compile Include="Model\NowPlayingPlaylist.cs" />
     <Compile Include="Model\Playlist.cs" />
     <Compile Include="Model\PlaylistData.cs" />
+    <Compile Include="Model\PlaylistSong.cs" />
     <Compile Include="Model\SearchResult.cs" />
     <Compile Include="Model\Song.cs" />
     <Compile Include="Features\Playlists\PlaylistController.cs" />
@@ -370,6 +370,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="DataPersistence\" />
     <Folder Include="Facts\" />
     <Folder Include="Features\Search\Commands\" />
   </ItemGroup>
@@ -377,6 +378,9 @@
     <Reference Include="Autofac, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Autofac.3.1.1\lib\portable-win+net40+sl50+wp8\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.7\lib\netcore45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Slab, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

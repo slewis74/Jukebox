@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using System.Threading;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Slab.Data;
@@ -10,7 +9,7 @@ namespace Jukebox.WinStore.Model
     [DebuggerDisplay("Song - {TrackNumber} {Title}")]
     public class Song : BindableBase
     {
-        public Song(SynchronizationContext synchronizationContext) : base(synchronizationContext)
+        public Song()
         {
             DiscNumber = 1;
         }
@@ -22,13 +21,6 @@ namespace Jukebox.WinStore.Model
         public string Path { get; set; }
 
         public TimeSpan Duration { get; set; }
-
-        private Album _album;
-        public Album Album
-        {
-            get { return _album; }
-            set { _album = value; _album.Songs.Add(this);}
-        }
 
         private StorageFile _storageFile;
 

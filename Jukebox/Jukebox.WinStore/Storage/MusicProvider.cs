@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using Windows.Storage;
 using Windows.Storage.Search;
 using Jukebox.WinStore.Events;
 using Jukebox.WinStore.Model;
+using Newtonsoft.Json;
 using Slab.Data;
 using Slab.PresentationBus;
 
@@ -44,43 +46,11 @@ namespace Jukebox.WinStore.Storage
 
             var artistsContainer = ApplicationData.Current.LocalSettings.Containers["Artists"];
 
-            foreach (var artistKey in artistsContainer.Containers.Keys.OrderBy(x => x))
+            var data = artistsContainer.Values["Data"].ToString();
+            var artistsData = JsonConvert.DeserializeObject<IEnumerable<Artist>>(data);
+
+            foreach (var artist in artistsData)
             {
-                var artistContainer = artistsContainer.Containers[artistKey];
-                var artist = new Artist(_uicontext)
-                                 {
-                                     Name = (string) artistContainer.Values["Name"]
-                                 };
-
-                var albumsContainer = artistContainer.Containers["Albums"];
-                foreach (var albumContainerKey in albumsContainer.Containers.Keys.OrderBy(x => x))
-                {
-                    var albumContainer = albumsContainer.Containers[albumContainerKey];
-                    var album = new Album(_uicontext)
-                                    {
-                                        Title = (string)albumContainer.Values["Title"],
-                                        SmallBitmapUri = (string)albumContainer.Values["SmallBitmapUri"],
-                                        LargeBitmapUri = (string)albumContainer.Values["LargeBitmapUri"],
-                                        Artist = artist,
-                                    };
-
-                    var songsContainer = albumContainer.Containers["Songs"];
-                    foreach (var songKey in songsContainer.Values.Keys.OrderBy(Convert.ToInt32))
-                    {
-                        var songComposite = (ApplicationDataCompositeValue)songsContainer.Values[songKey];
-                        var song = new Song(_uicontext)
-                                       {
-                                           DiscNumber = (uint)songComposite["DiscNumber"],
-                                           TrackNumber = (uint)songComposite["TrackNumber"],
-                                           Title = (string)songComposite["Title"],
-                                           Path = (string)songComposite["Path"],
-                                           Album = album,
-                                           Duration = new TimeSpan(songComposite.ContainsKey("Duration") ? (long)songComposite["Duration"] : 0)
-                                       };
-
-                        _presentationBus.PublishAsync(new SongLoadedEvent(album, song));
-                    }
-                }
                 artists.Add(artist);
             }
 
@@ -117,7 +87,7 @@ namespace Jukebox.WinStore.Storage
                         var artist = artists.FirstOrDefault(x => string.Compare(x.Name, fileProps.Artist, StringComparison.CurrentCultureIgnoreCase) == 0);
                         if (artist == null)
                         {
-                            artist = new Artist(_uicontext)
+                            artist = new Artist
                                             {
                                                 Name = fileProps.Artist
                                             };
@@ -125,13 +95,14 @@ namespace Jukebox.WinStore.Storage
                             artists.Add(artist);
                         }
                         var album = artist.Albums.FirstOrDefault(x =>
-                                string.Compare(x.Title, fileProps.Album, StringComparison.CurrentCultureIgnoreCase) == 0 && x.Artist == artist);
+                                string.Compare(x.Title, fileProps.Album, StringComparison.CurrentCultureIgnoreCase) == 0);
                         if (album == null)
                         {
-                            album = new Album(_uicontext)
+                            var relativeFolder = folder.FolderRelativeId.Substring(folder.FolderRelativeId.IndexOf(@"\") + 1);
+                            album = new Album
                                 {
                                     Title = fileProps.Album,
-                                    Artist = artist
+                                    Folder = Path.Combine(relativeFolder, folder.Name)
                                 };
                             newData = true;
                         }
@@ -145,13 +116,12 @@ namespace Jukebox.WinStore.Storage
                         var song = album.Songs.FirstOrDefault(s => s.DiscNumber == discNumber && s.TrackNumber == fileProps.TrackNumber);
                         if (song == null)
                         {
-                            song = new Song(_uicontext)
+                            song = new Song
                                        {
                                            Title = fileProps.Title,
                                            DiscNumber = discNumber,
                                            TrackNumber = fileProps.TrackNumber,
                                            Path = f.Path,
-                                           Album = album,
                                            Duration = fileProps.Duration
                                        };
                             newData = true;
@@ -168,43 +138,10 @@ namespace Jukebox.WinStore.Storage
         
         private void SaveData(IEnumerable<Artist> artists)
         {
-            if (ApplicationData.Current.LocalSettings.Containers.ContainsKey("Artists"))
-            {
-                ApplicationData.Current.LocalSettings.DeleteContainer("Artists");
-            }
-
             var artistsContainer = ApplicationData.Current.LocalSettings.CreateContainer("Artists", ApplicationDataCreateDisposition.Always);
 
-            foreach (var artist in artists)
-            {
-                var artistContainer = artistsContainer.CreateContainer(artist.Name, ApplicationDataCreateDisposition.Always);
-
-                artistContainer.Values["Name"] = artist.Name;
-
-                var albumsContainer = artistContainer.CreateContainer("Albums", ApplicationDataCreateDisposition.Always);
-
-                foreach (var album in artist.Albums)
-                {
-                    var albumContainer = albumsContainer.CreateContainer(album.Title, ApplicationDataCreateDisposition.Always);
-
-                    albumContainer.Values["Title"] = album.Title;
-                    albumContainer.Values["SmallBitmapUri"] = album.SmallBitmapUri;
-                    albumContainer.Values["LargeBitmapUri"] = album.LargeBitmapUri;
-
-                    var songsContainer = albumContainer.CreateContainer("Songs", ApplicationDataCreateDisposition.Always);
-                    foreach (var song in album.Songs)
-                    {
-                        var songComposite = new ApplicationDataCompositeValue();
-                        songComposite["Title"] = song.Title;
-                        songComposite["DiscNumber"] = song.DiscNumber;
-                        songComposite["TrackNumber"] = song.TrackNumber;
-                        songComposite["Path"] = song.Path;
-                        songComposite["Duration"] = song.Duration.Ticks;
-
-                        songsContainer.Values[string.Format("{0}", song.DiscNumber * 1000 + song.TrackNumber)] = songComposite;
-                    }
-                }
-            }
+            var artistsData = JsonConvert.SerializeObject(artists);
+            artistsContainer.Values["Data"] = artistsData;
             
             Debug.WriteLine("Save completed");
         }

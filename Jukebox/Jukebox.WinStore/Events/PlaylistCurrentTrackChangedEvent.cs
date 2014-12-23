@@ -5,12 +5,12 @@ namespace Jukebox.WinStore.Events
 {
     public class PlaylistCurrentTrackChangedEvent : PresentationEvent<Playlist>
     {
-        public PlaylistCurrentTrackChangedEvent(Playlist data, Song song)
+        public PlaylistCurrentTrackChangedEvent(Playlist data, PlaylistSong playlistSong)
             : base(data)
         {
-            Song = song;
+            PlaylistSong = playlistSong;
         }
 
-        public Song Song { get; set; }
+        public PlaylistSong PlaylistSong { get; set; }
     }
 }

@@ -39,6 +39,7 @@ namespace Jukebox.WinStore.Storage
             var playlists = new List<Playlist>();
 
             var playlistContainer = ApplicationData.Current.LocalSettings.CreateContainer(NowPlayingPlaylist.NowPlayingName, ApplicationDataCreateDisposition.Always);
+
             var playlistData = new PlaylistData(_presentationBus, isRandomPlayMode, LoadPlaylist(artists, playlistContainer), (int?)playlistContainer.Values["CurrentTrackIndex"]);
 
             var playlistsContainer = ApplicationData.Current.LocalSettings.CreateContainer("Playlists", ApplicationDataCreateDisposition.Always);
@@ -56,12 +57,12 @@ namespace Jukebox.WinStore.Storage
             return playlistData;
         }
 
-        private static IEnumerable<Song> LoadPlaylist(IDictionary<string, Artist> artists, ApplicationDataContainer playlistContainer)
+        private static IEnumerable<PlaylistSong> LoadPlaylist(IDictionary<string, Artist> artists, ApplicationDataContainer playlistContainer)
         {
             if (playlistContainer.Containers.ContainsKey("Songs") == false)
-                return Enumerable.Empty<Song>();
+                return Enumerable.Empty<PlaylistSong>();
 
-            var songs = new List<Song>();
+            var songs = new List<PlaylistSong>();
 
             var songsContainer = playlistContainer.Containers["Songs"];
             foreach (var songKey in songsContainer.Values.Keys.OrderBy(Convert.ToInt32))
@@ -77,7 +78,7 @@ namespace Jukebox.WinStore.Storage
                 var song = album.Songs.SingleOrDefault(s => s.DiscNumber == discNumber && s.TrackNumber == trackNumber);
                 if (song != null)
                 {
-                    songs.Add(song);
+                    songs.Add(new PlaylistSong { ArtistName = artistName, AlbumTitle = albumTitle, Song = song });
                 }
                 else
                 {
@@ -129,20 +130,20 @@ namespace Jukebox.WinStore.Storage
             DoSavePlaylistData(playlist.Name, playlist.ToArray(), playlistContainer);
         }
 
-        private static void DoSavePlaylistData(string playlistName, IEnumerable<Song> playlist, ApplicationDataContainer playlistContainer)
+        private static void DoSavePlaylistData(string playlistName, IEnumerable<PlaylistSong> playlist, ApplicationDataContainer playlistContainer)
         {
             playlistContainer.Values["Name"] = playlistName;
 
             var songsContainer = playlistContainer.CreateContainer("Songs", ApplicationDataCreateDisposition.Always);
             songsContainer.Values.Clear();
             var songIndex = 0;
-            foreach (var song in playlist)
+            foreach (var playlistSong in playlist)
             {
                 var songComposite = new ApplicationDataCompositeValue();
-                songComposite["ArtistName"] = song.Album.Artist.Name;
-                songComposite["AlbumTitle"] = song.Album.Title;
-                songComposite["DiscNumber"] = song.DiscNumber;
-                songComposite["TrackNumber"] = song.TrackNumber;
+                songComposite["ArtistName"] = playlistSong.ArtistName;
+                songComposite["AlbumTitle"] = playlistSong.AlbumTitle;
+                songComposite["DiscNumber"] = playlistSong.Song.DiscNumber;
+                songComposite["TrackNumber"] = playlistSong.Song.TrackNumber;
 
                 songsContainer.Values[songIndex.ToString()] = songComposite;
                 songIndex++;

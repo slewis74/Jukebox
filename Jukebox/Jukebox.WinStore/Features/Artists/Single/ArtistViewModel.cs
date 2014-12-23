@@ -20,7 +20,8 @@ namespace Jukebox.WinStore.Features.Artists.Single
             Artist artist) : base(navigator)
 		{
 			_artist = artist;
-			DisplayAlbum = new DisplayAlbumCommand(Navigator);
+			
+            DisplayAlbum = new DisplayAlbumCommand(Navigator, _artist);
 
             PlayArtist = new PlayArtistCommand(presentationBus);
 		}
@@ -49,12 +50,17 @@ namespace Jukebox.WinStore.Features.Artists.Single
 
     public class DisplayAlbumCommand : NavigationCommand<Album>
 	{
-        public DisplayAlbumCommand(INavigator navigator) : base(navigator)
-		{}
+        private readonly Artist _artist;
+        
+        public DisplayAlbumCommand(INavigator navigator, Artist artist)
+            : base(navigator)
+        {
+            _artist = artist;
+        }
 
-	    public override void Execute(Album album)
+        public override void Execute(Album album)
 		{
-			Navigator.Navigate<AlbumController>(c => c.ShowAlbum(album.Artist.Name, album.Title));
+			Navigator.Navigate<AlbumController>(c => c.ShowAlbum(_artist.Name, album.Title));
 		}
 	}
 
@@ -68,8 +74,9 @@ namespace Jukebox.WinStore.Features.Artists.Single
         }
 
         public override void Execute(ArtistViewModel parameter)
-		{
-            _presentationBus.PublishAsync(new PlayArtistNowRequest { Scope = parameter.GetArtist() });
-		}
+        {
+            var artist = parameter.GetArtist();
+            _presentationBus.PublishAsync(new PlayArtistNowRequest(artist));
+        }
     }
 }

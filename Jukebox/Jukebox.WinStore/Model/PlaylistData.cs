@@ -6,7 +6,7 @@ namespace Jukebox.WinStore.Model
 {
     public class PlaylistData
     {
-        public PlaylistData(IPresentationBus presentationBus, bool isRandomPlayMode, IEnumerable<Song> nowPlayingSongs, int? currentTrackIndex)
+        public PlaylistData(IPresentationBus presentationBus, bool isRandomPlayMode, IEnumerable<PlaylistSong> nowPlayingSongs, int? currentTrackIndex)
         {
             NowPlayingPlaylist =
                 new NowPlayingPlaylist(presentationBus, isRandomPlayMode, nowPlayingSongs, currentTrackIndex);

@@ -47,7 +47,7 @@ namespace Jukebox.WinStore.Features.MainPage
             {
                 // Don't start playing, if Next/Previous are pressed first.
                 MediaElement.AutoPlay = false;
-                var storageFile = await ViewModel.NowPlayingPlaylist.CurrentTrack.GetStorageFileAsync();
+                var storageFile = await ViewModel.NowPlayingPlaylist.CurrentTrack.Song.GetStorageFileAsync();
                 await SetupToPlay(storageFile);
 
                 _systemMediaTransportControls.IsPreviousEnabled = ViewModel.NowPlayingPlaylist.CanMovePrevious;
