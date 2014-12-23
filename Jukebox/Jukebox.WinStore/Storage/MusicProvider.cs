@@ -46,7 +46,10 @@ namespace Jukebox.WinStore.Storage
 
             var artistsContainer = ApplicationData.Current.LocalSettings.Containers["Artists"];
 
-            var data = artistsContainer.Values["Data"].ToString();
+            var data = (string)artistsContainer.Values["Data"];
+            if (data == null)
+                return false;
+
             var artistsData = JsonConvert.DeserializeObject<IEnumerable<Artist>>(data);
 
             foreach (var artist in artistsData)

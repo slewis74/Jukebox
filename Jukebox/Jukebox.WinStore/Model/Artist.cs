@@ -29,12 +29,20 @@ namespace Jukebox.WinStore.Model
 
         public string SmallBitmapUri
         {
-            get { return Albums.First().SmallBitmapUri; }
+            get
+            {
+                var album = Albums.FirstOrDefault();
+                return album == null ? string.Empty : album.SmallBitmapUri;
+            }
         }
 
         public string LargeBitmapUri
         {
-            get { return Albums.First().LargeBitmapUri; }
+            get
+            {
+                var album = Albums.FirstOrDefault();
+                return album == null ? string.Empty : album.LargeBitmapUri;
+            }
         }
 	}
 }

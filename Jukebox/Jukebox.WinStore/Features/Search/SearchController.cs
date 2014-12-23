@@ -45,32 +45,32 @@ namespace Jukebox.WinStore.Features.Search
                                                                    NavigationUri = "Artists/ShowArtist?name=" + a.Name
                                                                });
             var albumResults = _musicProvider.Artists
-                                             .SelectMany(a => a.Albums)
-                                             .Where(a => a.Title.ToUpper().Contains(lowerCaseSearchText))
-                                             .Select(a => new SearchResult
-                                                              {
-                                                                  Type = SearchResultType.Album,
-                                                                  Description = a.Title,
-                                                                  SmallBitmapUri = a.SmallBitmapUri,
-                                                                  NavigationUri =
-                                                                      string.Format(
-                                                                          "Album/ShowAlbum?artistName={0};albumTitle={1}",
-                                                                          a.Artist.Name, a.Title)
-                                                              });
+                                             .SelectMany(artist => artist.Albums
+                                                 .Where(album => album.Title.ToUpper().Contains(lowerCaseSearchText))
+                                                 .Select(album => new SearchResult
+                                                                  {
+                                                                      Type = SearchResultType.Album,
+                                                                      Description = album.Title,
+                                                                      SmallBitmapUri = album.SmallBitmapUri,
+                                                                      NavigationUri =
+                                                                          string.Format(
+                                                                              "Album/ShowAlbum?artistName={0};albumTitle={1}",
+                                                                              artist.Name, album.Title)
+                                                                  }));
             var songResults = _musicProvider.Artists
-                                            .SelectMany(a => a.Albums)
-                                            .SelectMany(a => a.Songs)
-                                            .Where(s => s.Title.ToUpper().Contains(lowerCaseSearchText))
-                                            .Select(s => new SearchResult
+                                            .SelectMany(artist => artist.Albums
+                                                .SelectMany(album => album.Songs
+                                                    .Where(song => song.Title.ToUpper().Contains(lowerCaseSearchText))
+                                                    .Select(song => new SearchResult
                                                              {
                                                                  Type = SearchResultType.Song,
-                                                                 Description = s.Title,
-                                                                 SmallBitmapUri = s.Album.SmallBitmapUri,
+                                                                 Description = song.Title,
+                                                                 SmallBitmapUri = album.SmallBitmapUri,
                                                                  NavigationUri =
                                                                      string.Format(
                                                                          "Album/ShowAlbum?artistName={0};albumTitle={1}",
-                                                                         s.Album.Artist.Name, s.Album.Title)
-                                                             });
+                                                                         artist.Name, album.Title)
+                                                             })));
 
             var results = artistResults
                 .Concat(albumResults)
