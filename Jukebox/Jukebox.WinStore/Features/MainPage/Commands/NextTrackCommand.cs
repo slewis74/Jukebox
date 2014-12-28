@@ -1,8 +1,8 @@
 using Windows.Media;
 using Jukebox.WinStore.Events;
 using Jukebox.WinStore.Requests;
-using Slab.PresentationBus;
 using Slab.ViewModels;
+using Slew.PresentationBus;
 
 namespace Jukebox.WinStore.Features.MainPage.Commands
 {

@@ -4,7 +4,7 @@ using Jukebox.WinStore.Model;
 using Jukebox.WinStore.Storage;
 using Slab.Data;
 using Slab.Pages.Navigation;
-using Slab.PresentationBus;
+using Slew.PresentationBus;
 using Slab.ViewModels;
 
 namespace Jukebox.WinStore.Features.Artists.All

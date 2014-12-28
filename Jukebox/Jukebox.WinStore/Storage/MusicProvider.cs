@@ -3,74 +3,84 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Search;
 using Jukebox.WinStore.Events;
 using Jukebox.WinStore.Model;
 using Newtonsoft.Json;
+using Serilog;
 using Slab.Data;
-using Slab.PresentationBus;
+using Slew.PresentationBus;
 
 namespace Jukebox.WinStore.Storage
 {
     public class MusicProvider : IMusicProvider
     {
         private readonly IPresentationBus _presentationBus;
-        private readonly SynchronizationContext _uicontext;
 
         public MusicProvider(IPresentationBus presentationBus)
         {
             _presentationBus = presentationBus;
-            _uicontext = SynchronizationContext.Current;
+
+            Artists = new DistinctAsyncObservableCollection<Artist>();
         }
 
         public DistinctAsyncObservableCollection<Artist> Artists { get; private set; }
 
-        public void LoadContent()
+        public async Task LoadContent()
         {
             var artists = new List<Artist>();
-            LoadDataAsync(artists);
+            await LoadData(artists);
             
-            Artists = new DistinctAsyncObservableCollection<Artist>(artists);
+            Artists.StartLargeUpdate();
+            Artists.AddRange(artists);
+            Artists.CompleteLargeUpdate();
+
+            await _presentationBus.PublishAsync(new AlbumDataLoaded());
         }
 
         /// <summary>
         /// Loads the existing content from the application data
         /// </summary>
-        private bool LoadDataAsync(List<Artist> artists)
+        private async Task<bool> LoadData(List<Artist> artists)
         {
-            if (ApplicationData.Current.LocalSettings.Containers.ContainsKey("Artists") == false)
+            var files = await ApplicationData.Current.LocalFolder.GetFilesAsync();
+            if (files.Any(f => f.Name == "Artists") == false)
                 return false;
 
-            var artistsContainer = ApplicationData.Current.LocalSettings.Containers["Artists"];
-
-            var data = (string)artistsContainer.Values["Data"];
-            if (data == null)
-                return false;
-
-            var artistsData = JsonConvert.DeserializeObject<IEnumerable<Artist>>(data);
-
-            foreach (var artist in artistsData)
+            try
             {
-                artists.Add(artist);
-            }
+                var artistsFile = await ApplicationData.Current.LocalFolder.CreateFileAsync("Artists", CreationCollisionOption.OpenIfExists);
 
-            return true;
+                var data = await FileIO.ReadTextAsync(artistsFile);
+                var artistsData = JsonConvert.DeserializeObject<IEnumerable<Artist>>(data);
+
+                foreach (var artist in artistsData)
+                {
+                    artists.Add(artist);
+                }
+
+                return true;
+            }
+            catch (FileNotFoundException)
+            {
+                return false;
+            }
         }
 
         public async Task<bool> ReScanMusicLibrary()
         {
             // copy to a separate list while loaded, to stop the UI flickering when reading lots of new data
             var artists = Artists.ToList();
+            Log.Information("Scanning music folder...");
             var newTracks = await ScanMusicLibraryFolder(KnownFolders.MusicLibrary, artists);
-            Debug.WriteLine("Finished scanning music folder");
+            Log.Information("Finished scanning music folder");
 
             if (newTracks)
             {
                 Artists.Replace(artists);
-                await Task.Factory.StartNew(() => SaveData(Artists));
+                await SaveData(Artists);
             }
 
             return true;
@@ -105,8 +115,9 @@ namespace Jukebox.WinStore.Storage
                             album = new Album
                                 {
                                     Title = fileProps.Album,
-                                    Folder = Path.Combine(relativeFolder, folder.Name)
+                                    Folder = Path.Combine(relativeFolder, fileProps.Album.RemoveIllegalChars())
                                 };
+                            artist.Albums.Add(album);
                             newData = true;
                         }
 
@@ -127,6 +138,7 @@ namespace Jukebox.WinStore.Storage
                                            Path = f.Path,
                                            Duration = fileProps.Duration
                                        };
+                            album.Songs.Add(song);
                             newData = true;
                             await _presentationBus.PublishAsync(new SongLoadedEvent(album, song));
                             // save new entry to app storage
@@ -139,14 +151,32 @@ namespace Jukebox.WinStore.Storage
             return newData;
         }
         
-        private void SaveData(IEnumerable<Artist> artists)
+        private async Task SaveData(IEnumerable<Artist> artists)
         {
-            var artistsContainer = ApplicationData.Current.LocalSettings.CreateContainer("Artists", ApplicationDataCreateDisposition.Always);
+            var artistsFile = await ApplicationData.Current.LocalFolder.CreateFileAsync("Artists", CreationCollisionOption.ReplaceExisting);
 
             var artistsData = JsonConvert.SerializeObject(artists);
-            artistsContainer.Values["Data"] = artistsData;
+
+            await FileIO.WriteTextAsync(artistsFile, artistsData);
             
             Debug.WriteLine("Save completed");
+        }
+    }
+
+    public static class FolderPathStringExtensions
+    {
+        public static string RemoveIllegalChars(this string @this)
+        {
+            return
+                @this.Replace("<", string.Empty)
+                    .Replace(">", string.Empty)
+                    .Replace(":", string.Empty)
+                    .Replace(".", string.Empty)
+                    .Replace("/", string.Empty)
+                    .Replace("?", string.Empty)
+                    .Replace("|", string.Empty)
+                    .Replace("*", string.Empty)
+                    .Trim();
         }
     }
 }

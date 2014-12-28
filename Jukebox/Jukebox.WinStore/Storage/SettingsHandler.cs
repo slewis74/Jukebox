@@ -1,7 +1,7 @@
 ﻿using Windows.Storage;
 using Jukebox.WinStore.Events;
 using Jukebox.WinStore.Requests;
-using Slab.PresentationBus;
+using Slew.PresentationBus;
 
 namespace Jukebox.WinStore.Storage
 {
@@ -34,7 +34,7 @@ namespace Jukebox.WinStore.Storage
         public void Handle(RandomPlayModeChangedEvent presentationEvent)
         {
             var settingsContainer = ApplicationData.Current.LocalSettings.CreateContainer(Settings, ApplicationDataCreateDisposition.Always);
-            settingsContainer.Values[RandomPlayMode] = presentationEvent.Data;
+            settingsContainer.Values[RandomPlayMode] = presentationEvent.IsRandomPlayMode;
         }
     }
 }

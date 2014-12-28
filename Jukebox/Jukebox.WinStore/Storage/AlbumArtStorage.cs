@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
@@ -58,22 +59,14 @@ namespace Jukebox.WinStore.Storage
 
         public async Task<bool> AlbumFolderExists(string albumFolder)
         {
-            try
-            {
-                var albumArtFolderName = AlbumArtFolderName(albumFolder);
-                var imageFile =
-                    await ApplicationData.Current.LocalFolder.GetFolderAsync(albumArtFolderName);
-                return true;
-            }
-            catch (FileNotFoundException)
-            {
-                return false;
-            }
+            var albumArtFolderName = AlbumArtFolderName(albumFolder);
+            var folders = await ApplicationData.Current.LocalFolder.GetFoldersAsync();
+            return folders.Any(f => f.Name == albumArtFolderName);
         }
 
         private static string AlbumArtFolderName(string albumFolder)
         {
-            return Path.Combine(albumFolder, "AlbumArt");
+            return Path.Combine("AlbumArt", albumFolder);
         }
 
         public string AlbumArtFileName(string albumFolder, uint size)

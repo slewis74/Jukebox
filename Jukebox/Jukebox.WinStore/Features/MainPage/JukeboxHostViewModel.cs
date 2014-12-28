@@ -5,7 +5,7 @@ using Jukebox.WinStore.Features.MainPage.Requests;
 using Jukebox.WinStore.Model;
 using Jukebox.WinStore.Requests;
 using Slab.Data;
-using Slab.PresentationBus;
+using Slew.PresentationBus;
 using Slab.ViewModels;
 using Slab.WinStore.Host;
 
@@ -106,7 +106,7 @@ namespace Jukebox.WinStore.Features.MainPage
 
         public void Handle(NowPlayingCurrentTrackChangedEvent e)
         {
-            if (e.Data != _nowPlayingPlaylist)
+            if (e.Playlist != _nowPlayingPlaylist)
                 return;
 
             var song = e.PlaylistSong;

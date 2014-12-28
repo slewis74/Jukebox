@@ -8,7 +8,7 @@ namespace Jukebox.WinStore.Storage
     {
         DistinctAsyncObservableCollection<Artist> Artists { get; }
 
-        void LoadContent();
+        Task LoadContent();
 
         Task<bool> ReScanMusicLibrary();
     }

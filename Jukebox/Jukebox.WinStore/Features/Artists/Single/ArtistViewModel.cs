@@ -3,7 +3,7 @@ using Jukebox.WinStore.Features.Albums;
 using Jukebox.WinStore.Model;
 using Jukebox.WinStore.Requests;
 using Slab.Pages.Navigation;
-using Slab.PresentationBus;
+using Slew.PresentationBus;
 using Slab.ViewModels;
 
 namespace Jukebox.WinStore.Features.Artists.Single

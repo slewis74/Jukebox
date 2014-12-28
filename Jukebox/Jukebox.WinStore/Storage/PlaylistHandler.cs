@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using Jukebox.WinStore.Events;
 using Jukebox.WinStore.Model;
-using Slab.PresentationBus;
+using Slew.PresentationBus;
 
 namespace Jukebox.WinStore.Storage
 {
     public class PlaylistHandler :
         IHandlePresentationEvent<PlaylistContentChangedEvent>,
         IHandlePresentationEvent<NowPlayingContentChangedEvent>,
-        IHandlePresentationEvent<NowPlayingCurrentTrackChangedEvent>
+        IHandlePresentationEvent<NowPlayingCurrentTrackChangedEvent>,
+        IHandlePresentationEvent<AlbumDataLoaded>
     {
         private readonly IPresentationBus _presentationBus;
         private readonly ISettingsHandler _settingsHandler;
@@ -91,7 +92,7 @@ namespace Jukebox.WinStore.Storage
 
         public void Handle(NowPlayingCurrentTrackChangedEvent presentationEvent)
         {
-            Task.Factory.StartNew(() => DoSaveCurrentTrackForPlaylist((NowPlayingPlaylist)presentationEvent.Data));
+            Task.Factory.StartNew(() => DoSaveCurrentTrackForPlaylist((NowPlayingPlaylist)presentationEvent.Playlist));
         }
 
         private void DoSaveCurrentTrackForPlaylist(NowPlayingPlaylist playlist)
@@ -102,7 +103,7 @@ namespace Jukebox.WinStore.Storage
 
         public void Handle(PlaylistContentChangedEvent presentationEvent)
         {
-            Task.Factory.StartNew(() => DoSaveData(presentationEvent.Data));
+            Task.Factory.StartNew(() => DoSaveData(presentationEvent.Playlist));
         }
 
         private void DoSaveData(Playlist playlist)
@@ -121,7 +122,7 @@ namespace Jukebox.WinStore.Storage
 
         public void Handle(NowPlayingContentChangedEvent presentationEvent)
         {
-            Task.Factory.StartNew(() => DoSaveData((NowPlayingPlaylist)presentationEvent.Data));
+            Task.Factory.StartNew(() => DoSaveData((NowPlayingPlaylist)presentationEvent.Playlist));
         }
         private void DoSaveData(NowPlayingPlaylist playlist)
         {
@@ -148,6 +149,11 @@ namespace Jukebox.WinStore.Storage
                 songsContainer.Values[songIndex.ToString()] = songComposite;
                 songIndex++;
             }
+        }
+
+        public void Handle(AlbumDataLoaded presentationEvent)
+        {
+            LoadContent();
         }
     }
 }

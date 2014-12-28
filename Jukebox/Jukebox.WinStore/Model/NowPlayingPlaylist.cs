@@ -4,7 +4,7 @@ using System.Linq;
 using Jukebox.WinStore.Events;
 using Jukebox.WinStore.Features.MainPage.Events;
 using Jukebox.WinStore.Requests;
-using Slab.PresentationBus;
+using Slew.PresentationBus;
 
 namespace Jukebox.WinStore.Model
 {
@@ -178,7 +178,7 @@ namespace Jukebox.WinStore.Model
 
         public void Handle(RandomPlayModeChangedEvent presentationEvent)
         {
-            _isRandomPlayMode = presentationEvent.Data;
+            _isRandomPlayMode = presentationEvent.IsRandomPlayMode;
             OnCanMoveChanged();
         }
 

@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Media;
 using Jukebox.WinStore.Features.MainPage.Events;
 using Jukebox.WinStore.Features.MainPage.Requests;
 using Jukebox.WinStore.Requests;
-using Slab.PresentationBus;
+using Slew.PresentationBus;
 
 namespace Jukebox.WinStore.Features.MainPage
 {
@@ -86,6 +86,7 @@ namespace Jukebox.WinStore.Features.MainPage
         public void Handle(PlayFileRequest request)
         {
             DoPlay(request.StorageFile);
+            request.IsHandled = true;
         }
 
         public void Handle(StopPlayingRequest request)

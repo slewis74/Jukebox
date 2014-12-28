@@ -1,5 +1,5 @@
 ﻿using Autofac;
-using Slab.PresentationBus;
+using Slew.PresentationBus;
 
 namespace Jukebox.WinStore.Modules
 {

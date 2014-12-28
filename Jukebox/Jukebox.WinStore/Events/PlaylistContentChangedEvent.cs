@@ -1,13 +1,15 @@
 using Jukebox.WinStore.Model;
-using Slab.PresentationBus;
+using Slew.PresentationBus;
 
 namespace Jukebox.WinStore.Events
 {
-    public class PlaylistContentChangedEvent : PresentationEvent<Playlist>
+    public class PlaylistContentChangedEvent : PresentationEvent
     {
-        public PlaylistContentChangedEvent(Playlist data)
-            : base(data)
+        public PlaylistContentChangedEvent(Playlist playlist)
         {
+            Playlist = playlist;
         }
+
+        public Playlist Playlist { get; set; }
     }
 }

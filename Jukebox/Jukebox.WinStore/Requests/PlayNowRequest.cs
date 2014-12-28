@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Jukebox.WinStore.Model;
-using Slab.PresentationBus;
+using Slew.PresentationBus;
 
 namespace Jukebox.WinStore.Requests
 {

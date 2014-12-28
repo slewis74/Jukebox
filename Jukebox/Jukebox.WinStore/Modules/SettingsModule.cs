@@ -1,8 +1,8 @@
 ﻿using Autofac;
 using Jukebox.WinStore.Features.Settings;
 using Jukebox.WinStore.Storage;
-using Slab.PresentationBus;
 using Slab.WinStore.Pages.Settings;
+using Slew.PresentationBus;
 
 namespace Jukebox.WinStore.Modules
 {

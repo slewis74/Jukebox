@@ -10,11 +10,11 @@ namespace Jukebox.WinStore.Features.Albums
     public class AlbumController : JukeboxController
     {
         private readonly IMusicProvider _musicProvider;
-        private readonly Func<Album, AlbumViewModel> _albumViewModelFactory;
+        private readonly AlbumViewModel.Factory _albumViewModelFactory;
 
         public AlbumController(
             IMusicProvider musicProvider,
-            Func<Album, AlbumViewModel> albumViewModelFactory)
+            AlbumViewModel.Factory albumViewModelFactory)
         {
             _musicProvider = musicProvider;
             _albumViewModelFactory = albumViewModelFactory;
@@ -24,7 +24,7 @@ namespace Jukebox.WinStore.Features.Albums
          {
              var artist = _musicProvider.Artists.Single(a => a.Name == artistName);
 
-            return new ViewModelActionResult(() => _albumViewModelFactory(artist.Albums.Single(a => a.Title == albumTitle)));
+             return new ViewModelActionResult(() => _albumViewModelFactory(artist, artist.Albums.Single(a => a.Title == albumTitle)));
          }
     }
 }

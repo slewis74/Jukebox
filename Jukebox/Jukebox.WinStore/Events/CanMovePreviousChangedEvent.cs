@@ -1,16 +1,17 @@
 using Jukebox.WinStore.Model;
-using Slab.PresentationBus;
+using Slew.PresentationBus;
 
 namespace Jukebox.WinStore.Events
 {
-    public class CanMovePreviousChangedEvent : PresentationEvent<Playlist>
+    public class CanMovePreviousChangedEvent : PresentationEvent
     {
-        public CanMovePreviousChangedEvent(Playlist data, bool canMovePrevious)
-            : base(data)
+        public CanMovePreviousChangedEvent(Playlist playlist, bool canMovePrevious)
         {
+            Playlist = playlist;
             CanMovePrevious = canMovePrevious;
         }
 
+        public Playlist Playlist { get; set; }
         public bool CanMovePrevious { get; set; }
     }
 }

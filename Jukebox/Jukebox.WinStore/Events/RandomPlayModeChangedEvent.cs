@@ -1,11 +1,14 @@
-﻿using Slab.PresentationBus;
+﻿using Slew.PresentationBus;
 
 namespace Jukebox.WinStore.Events
 {
-    public class RandomPlayModeChangedEvent : PresentationEvent<bool>
+    public class RandomPlayModeChangedEvent : PresentationEvent
     {
-        public RandomPlayModeChangedEvent(bool data) : base(data)
+        public RandomPlayModeChangedEvent(bool isRandomPlayMode)
         {
+            IsRandomPlayMode = isRandomPlayMode;
         }
+
+        public bool IsRandomPlayMode { get; set; }
     }
 }
