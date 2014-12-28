@@ -16,28 +16,26 @@ namespace Jukebox.WinStore.Features.MainPage
         IHandlePresentationRequest<PlayRequest>,
         IHandlePresentationRequest<PauseRequest>,
         IHandlePresentationRequest<StopRequest>,
-        IHandlePresentationEvent<NowPlayingCurrentTrackChangedEvent>
+        IHandlePresentationEvent<NowPlayingCurrentTrackChangedEvent>,
+        IHandlePresentationEvent<PlaylistDataLoaded>
 	{
         private readonly DistinctAsyncObservableCollection<Playlist> _playlists;
 
-        public delegate JukeboxHostViewModel Factory(
-            DistinctAsyncObservableCollection<Playlist> playlists,
-            NowPlayingPlaylist currentPlaylist);
-
         public JukeboxHostViewModel(
             IPresentationBus presentationBus,
-            DistinctAsyncObservableCollection<Playlist> playlists,
-            NowPlayingPlaylist currentPlaylist)
+            NextTrackCommand nextTrackCommand,
+            PreviousTrackCommand previousTrackCommand)
         {
             PresentationBus = presentationBus;
-            NowPlayingPlaylist = currentPlaylist;
-            _playlists = playlists;
+
+            _playlists = new DistinctAsyncObservableCollection<Playlist>();
+            _nowPlayingPlaylist = new NowPlayingPlaylist(presentationBus, false);
 
             PlayCommand = new PresentationRequestCommand<PlayRequest>(PresentationBus);
             PauseCommand = new PresentationRequestCommand<PauseRequest>(PresentationBus);
             PlaylistsCommand = new PlaylistsCommand(_playlists);
-            NextTrackCommand = new NextTrackCommand(PresentationBus, NowPlayingPlaylist.CanMoveNext);
-            PreviousTrackCommand = new PreviousTrackCommand(PresentationBus, NowPlayingPlaylist.CanMovePrevious);
+            NextTrackCommand = nextTrackCommand;
+            PreviousTrackCommand = previousTrackCommand;
         }
         
         public ICommand PlayCommand { get; private set; }
@@ -173,5 +171,14 @@ namespace Jukebox.WinStore.Features.MainPage
 		{
             PresentationBus.PublishAsync(new StopPlayingRequest());
 		}
+
+	    public void Handle(PlaylistDataLoaded presentationEvent)
+	    {
+	        Playlists.StartLargeUpdate();
+            Playlists.AddRange(presentationEvent.PlaylistData.Playlists);
+            Playlists.CompleteLargeUpdate();
+
+	        NowPlayingPlaylist = presentationEvent.PlaylistData.NowPlayingPlaylist;
+	    }
 	}
 }

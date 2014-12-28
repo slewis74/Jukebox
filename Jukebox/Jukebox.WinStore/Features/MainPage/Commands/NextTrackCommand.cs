@@ -8,15 +8,15 @@ namespace Jukebox.WinStore.Features.MainPage.Commands
 {
     public class NextTrackCommand : 
         PresentationRequestCommand<NextTrackRequest>,
-        IHandlePresentationEvent<CanMoveNextChangedEvent>
+        IHandlePresentationEvent<CanMoveNextChangedEvent>,
+        IHandlePresentationEvent<PlaylistDataLoaded>
     {
         private readonly SystemMediaTransportControls _systemMediaTransportControls;
         private bool _canMoveNext;
 
-        public NextTrackCommand(IPresentationBus presentationBus, bool canMoveNext) : base(presentationBus)
+        public NextTrackCommand(IPresentationBus presentationBus) : base(presentationBus)
         {
             _systemMediaTransportControls = SystemMediaTransportControls.GetForCurrentView();
-            _canMoveNext = canMoveNext;
         }
 
         public override bool CanExecute(object parameter)
@@ -28,6 +28,13 @@ namespace Jukebox.WinStore.Features.MainPage.Commands
         {
             _systemMediaTransportControls.IsNextEnabled = e.CanMoveNext;
             _canMoveNext = e.CanMoveNext;
+            RaiseCanExecuteChanged();
+        }
+
+        public void Handle(PlaylistDataLoaded presentationEvent)
+        {
+            _systemMediaTransportControls.IsNextEnabled = presentationEvent.PlaylistData.NowPlayingPlaylist.CanMoveNext;
+            _canMoveNext = presentationEvent.PlaylistData.NowPlayingPlaylist.CanMoveNext;
             RaiseCanExecuteChanged();
         }
     }

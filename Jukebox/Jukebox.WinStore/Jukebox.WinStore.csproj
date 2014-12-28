@@ -122,6 +122,7 @@
     <Compile Include="Events\NowPlayingCurrentTrackChangedEvent.cs" />
     <Compile Include="Events\PlaylistContentChangedEvent.cs" />
     <Compile Include="Events\PlaylistCurrentTrackChangedEvent.cs" />
+    <Compile Include="Events\PlaylistDataLoaded.cs" />
     <Compile Include="Events\RandomPlayModeChangedEvent.cs" />
     <Compile Include="Events\SongLoadedEvent.cs" />
     <Compile Include="Features\Albums\AlbumBottomAppBarView.xaml.cs">

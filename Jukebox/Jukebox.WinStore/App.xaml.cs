@@ -6,13 +6,11 @@ using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Search;
 using Windows.UI.Xaml;
 using Autofac;
-using Autofac.Core;
 using Jukebox.WinStore.EventHandlers;
 using Jukebox.WinStore.Features.MainPage;
 using Jukebox.WinStore.Features.Search;
 using Jukebox.WinStore.Model;
 using Jukebox.WinStore.Storage;
-using Slab.Data;
 using Slab.Pages.Navigation;
 using Slab.WinStore.Data.Navigation;
 using Slab.WinStore.Host;
@@ -23,9 +21,6 @@ namespace Jukebox.WinStore
 {
     sealed partial class App
     {
-        private DistinctAsyncObservableCollection<Playlist> _playlists;
-        private PlaylistHandler _playlistHandler;
-
         private IContainer _container;
 
         public App()
@@ -50,32 +45,31 @@ namespace Jukebox.WinStore
 
             // Resolve the SettingsManager, to wire up the settings handlers.
             _container.Resolve<ISettingsManager>();
+            _container.Resolve<PlaylistHandler>();
 
+            // The main page view model needs to be listening for the data loaded events.
+            var mainPageViewModel = _container.Resolve<JukeboxHostViewModel>();
+            _container.InjectUnsetProperties(mainPageViewModel);
+
+            DoStartup(args, mainPageViewModel);
+        }
+
+        private async Task DoStartup(LaunchActivatedEventArgs args, JukeboxHostViewModel mainPageViewModel)
+        {
             var musicProvider = _container.Resolve<IMusicProvider>();
-            musicProvider.LoadContent();
-
-            _playlistHandler = _container.Resolve<PlaylistHandler>();
-            var playlistData = _playlistHandler.LoadContent();
-            _playlists = new DistinctAsyncObservableCollection<Playlist>(playlistData.Playlists);
+            await musicProvider.LoadContent();
 
             if (args.PreviousExecutionState == ApplicationExecutionState.Terminated)
             {
                 //TODO: Load state from previously suspended application
             }
 
-            var mainPageViewModel = _container.Resolve<JukeboxHostViewModel>( new Parameter[]
-                                                                               {
-                                                                                   new NamedParameter("playlists", _playlists), 
-                                                                                   new NamedParameter("currentPlaylist", playlistData.NowPlayingPlaylist)
-                                                                               });
-            _container.InjectUnsetProperties(mainPageViewModel);
-            
             var nowPlayingHeaderView = _container.Resolve<NowPlayingHeaderView>();
             var mainPageView = new HostView
-                                   {
-                                       HeaderContent = nowPlayingHeaderView,
-                                       DataContext = mainPageViewModel
-                                   };
+            {
+                HeaderContent = nowPlayingHeaderView,
+                DataContext = mainPageViewModel
+            };
             Window.Current.Content = mainPageView;
             Window.Current.Activate();
 

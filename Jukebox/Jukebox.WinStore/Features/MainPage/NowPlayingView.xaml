@@ -66,9 +66,9 @@
             Grid.Row="1"
 			Grid.ColumnSpan="3">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBlock Text="{Binding NowPlayingPlaylist.CurrentTrack.Album.Artist.Name}" />
+                <TextBlock Text="{Binding NowPlayingPlaylist.CurrentTrack.ArtistName}" />
                 <TextBlock Text=" - " VerticalAlignment="Center" Margin="5 0"/>
-                <TextBlock Text="{Binding NowPlayingPlaylist.CurrentTrack.Title}" />
+                <TextBlock Text="{Binding NowPlayingPlaylist.CurrentTrack.Song.Title}" />
             </StackPanel>
         </Grid>
 

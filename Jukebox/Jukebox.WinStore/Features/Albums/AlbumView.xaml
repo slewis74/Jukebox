@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:pages="using:Slab.WinStore.Pages"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:designTime="using:Jukebox.WinStore.Features.Albums.DesignTime"
     mc:Ignorable="d"
     d:DataContext="{Binding Source={d:DesignInstance Type=designTime:DesignTimeAlbumViewModel, IsDesignTimeCreatable=True}}">
 

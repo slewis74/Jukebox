@@ -37,7 +37,7 @@ namespace Jukebox.WinStore.Storage
             Artists.AddRange(artists);
             Artists.CompleteLargeUpdate();
 
-            await _presentationBus.PublishAsync(new AlbumDataLoaded());
+            await _presentationBus.PublishAsync(new AlbumDataLoaded(Artists));
         }
 
         /// <summary>

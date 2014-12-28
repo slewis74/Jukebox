@@ -14,25 +14,17 @@ namespace Jukebox.WinStore.Storage
         IHandlePresentationEvent<PlaylistContentChangedEvent>,
         IHandlePresentationEvent<NowPlayingContentChangedEvent>,
         IHandlePresentationEvent<NowPlayingCurrentTrackChangedEvent>,
-        IHandlePresentationEvent<AlbumDataLoaded>
+        IHandlePresentationEventAsync<AlbumDataLoaded>
     {
         private readonly IPresentationBus _presentationBus;
         private readonly ISettingsHandler _settingsHandler;
-        private readonly IMusicProvider _musicProvider;
 
         public PlaylistHandler(
             IPresentationBus presentationBus,
-            ISettingsHandler settingsHandler,
-            IMusicProvider musicProvider)
+            ISettingsHandler settingsHandler)
         {
             _presentationBus = presentationBus;
             _settingsHandler = settingsHandler;
-            _musicProvider = musicProvider;
-        }
-
-        public PlaylistData LoadContent()
-        {
-            return LoadData(_musicProvider.Artists.ToDictionary(k => k.Name), _settingsHandler.IsGetRandomPlayMode());
         }
 
         private PlaylistData LoadData(IDictionary<string, Artist> artists, bool isRandomPlayMode)
@@ -151,9 +143,11 @@ namespace Jukebox.WinStore.Storage
             }
         }
 
-        public void Handle(AlbumDataLoaded presentationEvent)
+        public async Task HandleAsync(AlbumDataLoaded presentationEvent)
         {
-            LoadContent();
+            var playlistData = LoadData(presentationEvent.Artists.ToDictionary(k => k.Name), _settingsHandler.IsGetRandomPlayMode());
+
+            await _presentationBus.PublishAsync(new PlaylistDataLoaded(playlistData));
         }
     }
 }
