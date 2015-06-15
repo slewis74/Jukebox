@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Jukebox.WinStore.Model;
 using Jukebox.WinStore.Requests;
-using Slab.ViewModels;
+using Orienteer.Xaml.ViewModels;
 using Slew.PresentationBus;
 
 namespace Jukebox.WinStore.Features.Artists.All

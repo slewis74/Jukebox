@@ -3,10 +3,10 @@ using Windows.ApplicationModel.DataTransfer;
 using Jukebox.WinStore.Model;
 using Jukebox.WinStore.Requests;
 using Jukebox.WinStore.Storage;
-using Slab.Data;
-using Slab.Pages.Navigation;
-using Slab.ViewModels;
-using Slab.WinStore.Pages;
+using Orienteer.Data;
+using Orienteer.Pages.Navigation;
+using Orienteer.WinStore.Pages;
+using Orienteer.Xaml.ViewModels;
 using Slew.PresentationBus;
 
 namespace Jukebox.WinStore.Features.Albums
@@ -29,8 +29,8 @@ namespace Jukebox.WinStore.Features.Albums
             _artist = artist;
             _album = album;
 
-            AlbumLocationCommandMappings = new AsyncObservableCollection<LocationCommandMapping>();
-            TrackLocationCommandMappings = new AsyncObservableCollection<LocationCommandMapping>();
+            AlbumLocationCommandMappings = new DispatchingObservableCollection<LocationCommandMapping>();
+            TrackLocationCommandMappings = new DispatchingObservableCollection<LocationCommandMapping>();
 
 			PlaySong = new PlaySongCommand(presentationBus);
 			PlayAlbum = new PlayAlbumCommand(presentationBus);
@@ -39,11 +39,11 @@ namespace Jukebox.WinStore.Features.Albums
 
             PinAlbum = new PinAlbumCommand(albumArtStorage, this);
 
-            Tracks = new AsyncObservableCollection<TrackViewModel>(
+            Tracks = new DispatchingObservableCollection<TrackViewModel>(
                 album.Songs
                 .OrderBy(s => s.DiscNumber)
                 .ThenBy(s => s.TrackNumber)
-                .Select(t => new TrackViewModel(artist.Name, album.Title, t, TrackLocationCommandMappings)));
+                .Select(t => new TrackViewModel(artist.Name, album, t, TrackLocationCommandMappings)));
 		}
 
         public override string PageTitle
@@ -64,7 +64,7 @@ namespace Jukebox.WinStore.Features.Albums
         public string SmallBitmapUri { get { return _album.SmallBitmapUri; } }
         public string LargeBitmapUri { get { return _album.LargeBitmapUri; } }
 
-        public AsyncObservableCollection<TrackViewModel> Tracks { get; private set; }
+        public DispatchingObservableCollection<TrackViewModel> Tracks { get; private set; }
 
         private TrackViewModel _selectedTrack;
         public TrackViewModel SelectedTrack
@@ -77,8 +77,8 @@ namespace Jukebox.WinStore.Features.Albums
 			}
 		}
 
-	    public AsyncObservableCollection<LocationCommandMapping> AlbumLocationCommandMappings { get; private set; }
-	    private AsyncObservableCollection<LocationCommandMapping> TrackLocationCommandMappings { get; set; }
+        public DispatchingObservableCollection<LocationCommandMapping> AlbumLocationCommandMappings { get; private set; }
+        private DispatchingObservableCollection<LocationCommandMapping> TrackLocationCommandMappings { get; set; }
 
         public Album GetAlbum()
         {
@@ -118,7 +118,7 @@ namespace Jukebox.WinStore.Features.Albums
 
         public override void Execute(TrackViewModel parameter)
 		{
-            _presentationBus.PublishAsync(new PlaySongNowRequest(parameter.ArtistName, parameter.AlbumTitle, parameter.GetSong()));
+            _presentationBus.PublishAsync(new PlaySongNowRequest(parameter.ArtistName, parameter.Album, parameter.GetSong()));
 		}
 	}
 

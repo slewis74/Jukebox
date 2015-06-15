@@ -2,7 +2,7 @@
 using Jukebox.WinStore.Common;
 using Jukebox.WinStore.Model;
 using Jukebox.WinStore.Storage;
-using Slab.Pages.Navigation;
+using Orienteer.Pages.Navigation;
 
 namespace Jukebox.WinStore.Features.Search
 {

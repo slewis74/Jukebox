@@ -6,28 +6,28 @@ namespace Jukebox.WinStore.Requests
 {
     public class PlayNowRequest<T> : PresentationRequest
     {
-        public PlayNowRequest(string artistName, string albumTitle)
+        public PlayNowRequest(string artistName, Album album)
         {
             ArtistName = artistName;
-            AlbumTitle = albumTitle;
+            Album = album;
         }
 
         public string ArtistName { get; set; }
-        public string AlbumTitle { get; set; }
+        public Album Album { get; set; }
 
         public T Scope { get; protected set; }
     }
 
     public class PlaySongNowRequest : PlayNowRequest<Song>
     {
-        public PlaySongNowRequest(string artistName, string albumTitle, Song song) : base(artistName, albumTitle)
+        public PlaySongNowRequest(string artistName, Album album, Song song) : base(artistName, album)
         {
             Scope = song;
         }
     }
     public class PlayAlbumNowRequest : PlayNowRequest<Album>
     {
-        public PlayAlbumNowRequest(string artistName, Album album) : base(artistName, album.Title)
+        public PlayAlbumNowRequest(string artistName, Album album) : base(artistName, album)
         {
             Scope = album;
         }

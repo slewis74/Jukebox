@@ -1,5 +1,5 @@
 using Jukebox.WinStore.Model;
-using Slab.Data;
+using Orienteer.Data;
 
 namespace Jukebox.WinStore.Features.Playlists
 {
@@ -12,6 +12,6 @@ namespace Jukebox.WinStore.Features.Playlists
             _playlist = playlist;
         }
 
-        public AsyncObservableCollection<PlaylistSong> Tracks { get { return _playlist; } }
+        public DispatchingObservableCollection<PlaylistSong> Tracks { get { return _playlist; } }
     }
 }

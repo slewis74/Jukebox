@@ -10,14 +10,14 @@ namespace Jukebox.WinStore.Features.Search
             InitializeComponent();
         }
 
-        private void ListViewBase_OnItemClick(object sender, ItemClickEventArgs e)
+        private async void ListViewBase_OnItemClick(object sender, ItemClickEventArgs e)
         {
             var result = e.ClickedItem as SearchResult;
             if (result == null) return;
 
             var viewModel = (SearchResultsViewModel)DataContext;
 
-            viewModel.Navigator.Navigate(result.NavigationUri);
+            await viewModel.Navigator.NavigateAsync(result.NavigationUri, false);
         }
     }
 }

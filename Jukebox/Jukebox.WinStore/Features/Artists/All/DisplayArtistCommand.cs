@@ -1,6 +1,6 @@
 ﻿using Jukebox.WinStore.Model;
-using Slab.Pages.Navigation;
-using Slab.ViewModels;
+using Orienteer.Pages.Navigation;
+using Orienteer.Xaml.ViewModels;
 
 namespace Jukebox.WinStore.Features.Artists.All
 {

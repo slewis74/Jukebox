@@ -1,7 +1,7 @@
 ﻿using Jukebox.WinStore.Common;
 using Jukebox.WinStore.Model;
-using Slab.Data;
-using Slab.Pages.Navigation;
+using Orienteer.Data;
+using Orienteer.Pages.Navigation;
 
 namespace Jukebox.WinStore.Features.Playlists
 {

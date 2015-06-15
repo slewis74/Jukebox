@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using Jukebox.WinStore.Model;
-using Slab.Data;
-using Slab.Pages.Navigation;
-using Slab.WinStore.ViewModels;
+using Orienteer.Data;
+using Orienteer.Pages.Navigation;
+using Orienteer.WinStore.ViewModels;
 
 namespace Jukebox.WinStore.Features.Search
 {
@@ -10,7 +10,7 @@ namespace Jukebox.WinStore.Features.Search
     {
         public delegate SearchResultsViewModel Factory(string queryText, SearchResult[] searchResults);
 
-        private AsyncObservableCollection<GroupedData<SearchResult>> _groups;
+        private DispatchingObservableCollection<GroupedData<SearchResult>> _groups;
 
         public SearchResultsViewModel(
             INavigator navigator, 
@@ -19,12 +19,12 @@ namespace Jukebox.WinStore.Features.Search
         {
         }
 
-        public AsyncObservableCollection<GroupedData<SearchResult>> GroupedItems
+        public DispatchingObservableCollection<GroupedData<SearchResult>> GroupedItems
         {
             get
             {
                 if (_groups == null)
-                    _groups = new AsyncObservableCollection<GroupedData<SearchResult>>();
+                    _groups = new DispatchingObservableCollection<GroupedData<SearchResult>>();
 
                 _groups.StartLargeUpdate();
                 _groups.Clear();

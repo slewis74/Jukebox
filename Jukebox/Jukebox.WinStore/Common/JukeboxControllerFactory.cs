@@ -1,6 +1,6 @@
 ﻿using System;
 using Autofac;
-using Slab.Pages;
+using Orienteer.Pages;
 
 namespace Jukebox.WinStore.Common
 {

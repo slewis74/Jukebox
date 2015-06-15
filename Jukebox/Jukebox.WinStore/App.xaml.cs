@@ -11,11 +11,11 @@ using Jukebox.WinStore.Features.MainPage;
 using Jukebox.WinStore.Features.Search;
 using Jukebox.WinStore.Model;
 using Jukebox.WinStore.Storage;
-using Slab.Pages.Navigation;
-using Slab.WinStore.Data.Navigation;
-using Slab.WinStore.Host;
-using Slab.WinStore.Pages.Navigation;
-using Slab.WinStore.Pages.Settings;
+using Orienteer.Pages.Navigation;
+using Orienteer.WinStore.Data.Navigation;
+using Orienteer.WinStore.Host;
+using Orienteer.WinStore.Pages.Navigation;
+using Orienteer.WinStore.Pages.Settings;
 
 namespace Jukebox.WinStore
 {
@@ -39,7 +39,7 @@ namespace Jukebox.WinStore
 
             if (string.IsNullOrWhiteSpace(args.Arguments) == false)
             {
-                var stackStorage = _container.Resolve<INavigationStackStorage>();
+                var stackStorage = _container.Resolve<INavigationStack>();
                 stackStorage.LaunchingDeepLink(args.Arguments);
             }
 

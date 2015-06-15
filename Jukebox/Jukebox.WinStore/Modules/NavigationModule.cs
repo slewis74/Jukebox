@@ -1,8 +1,9 @@
 ﻿using System.Reflection;
 using Autofac;
-using Slab.WinStore.Data.Navigation;
-using Slab.WinStore.Pages;
-using Slab.WinStore.Pages.Navigation;
+using Orienteer.Pages.Navigation;
+using Orienteer.WinStore.Data.Navigation;
+using Orienteer.WinStore.Pages;
+using Orienteer.WinStore.Pages.Navigation;
 
 namespace Jukebox.WinStore.Modules
 {
@@ -11,10 +12,16 @@ namespace Jukebox.WinStore.Modules
         protected override void Load(ContainerBuilder builder)
         {
             builder
-                .RegisterType<NavigationStackStorage>()
+                .RegisterType<WinStoreNavigationStackStorage>()
                 .As<INavigationStackStorage>()
+                .InstancePerLifetimeScope();
+
+            builder
+                .RegisterType<NavigationStack>()
+                .As<INavigationStack>()
                 .WithParameter("defaultRoute", "Artists/ShowAll")
                 .WithParameter("alwaysStartFromDefaultRoute", false)
+                .OnActivated(c => c.Context.InjectUnsetProperties(c.Instance))
                 .InstancePerLifetimeScope();
 
             builder
@@ -23,7 +30,7 @@ namespace Jukebox.WinStore.Modules
             
             builder
                 .RegisterType<ViewLocator>()
-                .As<IViewLocator>()
+                .AsImplementedInterfaces()
                 .SingleInstance()
                 .OnActivated(x => x.Instance.Configure(typeof(NavigationModule).GetTypeInfo().Assembly, "Jukebox.WinStore.Features", "Jukebox.WinStore.Features"));
         }

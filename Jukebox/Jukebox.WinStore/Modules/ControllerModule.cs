@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Autofac;
 using Jukebox.WinStore.Common;
-using Slab.Pages;
+using Orienteer.Pages;
 
 namespace Jukebox.WinStore.Modules
 {

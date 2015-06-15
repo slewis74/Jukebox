@@ -1,7 +1,7 @@
 using Windows.Media;
 using Jukebox.WinStore.Events;
 using Jukebox.WinStore.Requests;
-using Slab.ViewModels;
+using Orienteer.Xaml.ViewModels;
 using Slew.PresentationBus;
 
 namespace Jukebox.WinStore.Features.MainPage.Commands

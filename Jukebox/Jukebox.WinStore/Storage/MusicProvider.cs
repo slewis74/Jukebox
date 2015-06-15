@@ -10,7 +10,7 @@ using Jukebox.WinStore.Events;
 using Jukebox.WinStore.Model;
 using Newtonsoft.Json;
 using Serilog;
-using Slab.Data;
+using Orienteer.Data;
 using Slew.PresentationBus;
 
 namespace Jukebox.WinStore.Storage

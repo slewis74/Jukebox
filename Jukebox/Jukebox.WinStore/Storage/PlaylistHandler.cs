@@ -71,7 +71,7 @@ namespace Jukebox.WinStore.Storage
                 var song = album.Songs.SingleOrDefault(s => s.DiscNumber == discNumber && s.TrackNumber == trackNumber);
                 if (song != null)
                 {
-                    songs.Add(new PlaylistSong { ArtistName = artistName, AlbumTitle = albumTitle, Song = song });
+                    songs.Add(new PlaylistSong { ArtistName = artistName, Album = album, Song = song });
                 }
                 else
                 {

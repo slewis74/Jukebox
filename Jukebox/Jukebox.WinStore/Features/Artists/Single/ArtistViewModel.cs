@@ -2,9 +2,9 @@
 using Jukebox.WinStore.Features.Albums;
 using Jukebox.WinStore.Model;
 using Jukebox.WinStore.Requests;
-using Slab.Pages.Navigation;
+using Orienteer.Pages.Navigation;
+using Orienteer.Xaml.ViewModels;
 using Slew.PresentationBus;
-using Slab.ViewModels;
 
 namespace Jukebox.WinStore.Features.Artists.Single
 {

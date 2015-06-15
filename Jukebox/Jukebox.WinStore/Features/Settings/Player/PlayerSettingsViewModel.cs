@@ -1,5 +1,5 @@
 ﻿using Jukebox.WinStore.Events;
-using Slab.Data;
+using Orienteer.Data;
 using Slew.PresentationBus;
 
 namespace Jukebox.WinStore.Features.Settings.Player

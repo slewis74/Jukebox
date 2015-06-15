@@ -2,17 +2,17 @@
 using Autofac;
 using Jukebox.WinStore.Model;
 using Jukebox.WinStore.Storage;
-using Slab.Data;
-using Slab.Pages.Navigation;
+using Orienteer.Data;
+using Orienteer.Pages.Navigation;
+using Orienteer.Xaml.ViewModels;
 using Slew.PresentationBus;
-using Slab.ViewModels;
 
 namespace Jukebox.WinStore.Features.Artists.All
 {
     public class ArtistsViewModel : CanRequestNavigationBase
 	{
         private readonly DistinctAsyncObservableCollection<Artist> _artists;
-        private AsyncObservableCollection<GroupedData<GroupedArtistViewModel>> _groups;
+        private DispatchingObservableCollection<GroupedData<GroupedArtistViewModel>> _groups;
 
         public delegate ArtistsViewModel Factory();
 
@@ -38,12 +38,12 @@ namespace Jukebox.WinStore.Features.Artists.All
 
         public DistinctAsyncObservableCollection<Artist> Items { get { return _artists; } }
 
-        public AsyncObservableCollection<GroupedData<GroupedArtistViewModel>> GroupedItems
+        public DispatchingObservableCollection<GroupedData<GroupedArtistViewModel>> GroupedItems
 		{
 			get
 			{
                 if (_groups == null)
-                    _groups = new AsyncObservableCollection<GroupedData<GroupedArtistViewModel>>();
+                    _groups = new DispatchingObservableCollection<GroupedData<GroupedArtistViewModel>>();
                 
                 _groups.StartLargeUpdate();
                 _groups.Clear();

@@ -4,10 +4,10 @@ using Jukebox.WinStore.Features.MainPage.Commands;
 using Jukebox.WinStore.Features.MainPage.Requests;
 using Jukebox.WinStore.Model;
 using Jukebox.WinStore.Requests;
-using Slab.Data;
+using Orienteer.Data;
+using Orienteer.Xaml.ViewModels;
 using Slew.PresentationBus;
-using Slab.ViewModels;
-using Slab.WinStore.Host;
+using Orienteer.WinStore.Host;
 
 namespace Jukebox.WinStore.Features.MainPage
 {

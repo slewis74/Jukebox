@@ -1,20 +1,20 @@
 ﻿using System.Collections.Generic;
 using Jukebox.WinStore.Model;
-using Slab.Data;
+using Orienteer.Data;
 
 namespace Jukebox.WinStore.Features.Artists.DesignTime
 {
     public class DesignArtistsViewModel
     {
-        private AsyncObservableCollection<GroupedData<Artist>> _groups;
+        private DispatchingObservableCollection<GroupedData<Artist>> _groups;
 
-        public AsyncObservableCollection<GroupedData<Artist>> GroupedItems
+        public DispatchingObservableCollection<GroupedData<Artist>> GroupedItems
         {
             get
             {
                 if (_groups == null)
                 {
-                    _groups = new AsyncObservableCollection<GroupedData<Artist>>();
+                    _groups = new DispatchingObservableCollection<GroupedData<Artist>>();
                     
                     var groupedData = new GroupedData<Artist> {Key = "A"};
                     groupedData.Add(new Artist { Name = "Artist A"});

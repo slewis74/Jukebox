@@ -1,5 +1,5 @@
 ﻿using Jukebox.WinStore.Model;
-using Slab.Data;
+using Orienteer.Data;
 
 namespace Jukebox.WinStore.Features.Artists.All
 {

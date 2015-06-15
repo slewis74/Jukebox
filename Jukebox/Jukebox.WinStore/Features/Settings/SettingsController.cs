@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using Jukebox.WinStore.Common;
 using Jukebox.WinStore.Features.Settings.Player;
 using Jukebox.WinStore.Requests;
-using Slab.Pages.Navigation;
-using Slab.WinStore.Pages.Navigation;
+using Orienteer.Pages.Navigation;
+using Orienteer.WinStore.Pages.Navigation;
 using Slew.PresentationBus;
 
 namespace Jukebox.WinStore.Features.Settings

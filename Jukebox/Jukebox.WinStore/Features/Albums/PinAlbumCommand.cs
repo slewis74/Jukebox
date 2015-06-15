@@ -1,6 +1,6 @@
 ﻿using System;
 using Jukebox.WinStore.Storage;
-using Slab.WinStore.ViewModels;
+using Orienteer.WinStore.ViewModels;
 
 namespace Jukebox.WinStore.Features.Albums
 {

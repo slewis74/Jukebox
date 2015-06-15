@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Windows.Input;
 using Autofac;
-using Slab.WinStore.Commands;
+using Orienteer.WinStore.Commands;
 
 namespace Jukebox.WinStore.Modules
 {

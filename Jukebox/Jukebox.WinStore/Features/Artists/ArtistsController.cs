@@ -4,7 +4,7 @@ using Jukebox.WinStore.Features.Albums;
 using Jukebox.WinStore.Features.Artists.All;
 using Jukebox.WinStore.Features.Artists.Single;
 using Jukebox.WinStore.Storage;
-using Slab.Pages.Navigation;
+using Orienteer.Pages.Navigation;
 
 namespace Jukebox.WinStore.Features.Artists
 {

@@ -1,26 +1,27 @@
 ﻿using System;
 using Jukebox.WinStore.Model;
-using Slab.Data;
-using Slab.WinStore.Pages;
+using Orienteer.Data;
+using Orienteer.WinStore.Pages;
 
 namespace Jukebox.WinStore.Features.Albums
 {
     public class TrackViewModel
     {
-        private Song _song;
+        private readonly Song _song;
 
-        public TrackViewModel(string artistName, string albumTitle, Song song, AsyncObservableCollection<LocationCommandMapping> trackLocationCommandMappings)
+        public TrackViewModel(string artistName, Album album, Song song, DispatchingObservableCollection<LocationCommandMapping> trackLocationCommandMappings)
         {
             _song = song;
             ArtistName = artistName;
-            AlbumTitle = albumTitle;
+            Album = album;
             TrackLocationCommandMappings = trackLocationCommandMappings;
         }
 
-        public AsyncObservableCollection<LocationCommandMapping> TrackLocationCommandMappings { get; private set; }
+        public DispatchingObservableCollection<LocationCommandMapping> TrackLocationCommandMappings { get; private set; }
 
         public string ArtistName { get; private set; }
-        public string AlbumTitle { get; private set; }
+        public Album Album { get; private set; }
+        public string AlbumTitle { get { return Album.Title; } }
 
         public uint TrackNumber { get { return _song.TrackNumber; } }
         public string Title { get { return _song.Title; } }

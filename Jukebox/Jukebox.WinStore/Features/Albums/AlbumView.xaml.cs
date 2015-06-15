@@ -1,5 +1,5 @@
 ﻿using System;
-using Slab.WinStore.Pages;
+using Orienteer.WinStore.Pages;
 
 namespace Jukebox.WinStore.Features.Albums
 {

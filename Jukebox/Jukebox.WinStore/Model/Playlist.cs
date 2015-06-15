@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using Jukebox.WinStore.Events;
-using Slab.Data;
+using Orienteer.Data;
 using Slew.PresentationBus;
 
 namespace Jukebox.WinStore.Model

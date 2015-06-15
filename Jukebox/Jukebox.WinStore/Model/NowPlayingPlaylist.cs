@@ -203,7 +203,7 @@ namespace Jukebox.WinStore.Model
         {
             request.IsHandled = true;
             Clear();
-            Add(new PlaylistSong { ArtistName = request.ArtistName, AlbumTitle = request.AlbumTitle, Song = request.Scope });
+            Add(new PlaylistSong { ArtistName = request.ArtistName, Album = request.Album, Song = request.Scope });
             CurrentTrack = this[0];
         }
 
@@ -238,7 +238,7 @@ namespace Jukebox.WinStore.Model
         {
             foreach (var song in album.Songs.OrderBy(s => s.DiscNumber).ThenBy(s => s.TrackNumber))
             {
-                Add(new PlaylistSong { ArtistName = artistName, AlbumTitle = album.Title, Song = song });
+                Add(new PlaylistSong { ArtistName = artistName, Album = album, Song = song });
             }
         }
 

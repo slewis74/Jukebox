@@ -3,7 +3,8 @@
     public class PlaylistSong
     {
         public string ArtistName { get; set; }
-        public string AlbumTitle { get; set; }
+        public Album Album { get; set; }
+        public string AlbumTitle { get { return Album.Title; } }
 
         public Song Song { get; set; }
 

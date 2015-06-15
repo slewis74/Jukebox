@@ -225,11 +225,11 @@
     <Compile Include="Modules\SettingsModule.cs" />
     <Compile Include="Modules\ViewModelModule.cs" />
     <Compile Include="Modules\ViewModule.cs" />
+    <Compile Include="OrienteerResources\HostView.xaml.cs" />
     <Compile Include="Requests\AddToCurrentPlaylistRequest.cs" />
     <Compile Include="Requests\IsRandomPlayModeRequest.cs" />
     <Compile Include="Requests\PlayNowRequest.cs" />
     <Compile Include="Requests\PlayRequest.cs" />
-    <Compile Include="SlabResources\HostView.xaml.cs" />
     <Compile Include="Storage\AlbumArtStorage.cs" />
     <Compile Include="Storage\IMusicProvider.cs" />
     <Compile Include="Storage\ISettingsHandler.cs" />
@@ -335,6 +335,30 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="OrienteerResources\Controls.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="OrienteerResources\Converters.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="OrienteerResources\HostView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="OrienteerResources\OrienteerResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="OrienteerResources\StandardLayout.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="OrienteerResources\StandardStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Resources\ButtonStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -344,30 +368,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Page>
-    <Page Include="SlabResources\Controls.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="SlabResources\Converters.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="SlabResources\HostView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="SlabResources\SlabResources.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="SlabResources\StandardLayout.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="SlabResources\StandardStyles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -383,16 +383,20 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.7\lib\netcore45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Orienteer">
+      <HintPath>..\packages\Orienteer.1.0.10\lib\win8\Orienteer.dll</HintPath>
+    </Reference>
+    <Reference Include="Orienteer.Autofac">
+      <HintPath>..\packages\Orienteer.Autofac.1.0.10\lib\win8\Orienteer.Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Orienteer.WinStore">
+      <HintPath>..\packages\Orienteer.1.0.10\lib\win8\Orienteer.WinStore.dll</HintPath>
+    </Reference>
+    <Reference Include="Orienteer.Xaml">
+      <HintPath>..\packages\Orienteer.1.0.10\lib\win8\Orienteer.Xaml.dll</HintPath>
+    </Reference>
     <Reference Include="Serilog">
       <HintPath>..\packages\Serilog.1.4.1\lib\portable-net45+win8+wp8\Serilog.dll</HintPath>
-    </Reference>
-    <Reference Include="Slab, Version=1.0.12.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Slab.1.0.12\lib\win8\Slab.dll</HintPath>
-    </Reference>
-    <Reference Include="Slab.WinStore, Version=1.0.12.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Slab.1.0.12\lib\win8\Slab.WinStore.dll</HintPath>
     </Reference>
     <Reference Include="Slew.PresentationBus">
       <HintPath>..\packages\Slew.PresentationBus.1.0.4\lib\portable-win+net40+wp8+wp81+wpa81+MonoAndroid10+MonoTouch10\Slew.PresentationBus.dll</HintPath>

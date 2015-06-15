@@ -1,4 +1,4 @@
-﻿using Slab.Data;
+﻿using Orienteer.Data;
 
 namespace Jukebox.WinStore.Features.HomePage.ArtistsSummary
 {
