@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.Foundation;
 using Windows.Media;
 using Windows.Storage;
 using Windows.UI.Xaml;
@@ -9,6 +10,7 @@ using Windows.UI.Xaml.Media;
 using Jukebox.WinStore.Features.MainPage.Events;
 using Jukebox.WinStore.Features.MainPage.Requests;
 using Jukebox.WinStore.Requests;
+using Orienteer.WinStore.Pages;
 using Slew.PresentationBus;
 
 namespace Jukebox.WinStore.Features.MainPage
@@ -17,7 +19,8 @@ namespace Jukebox.WinStore.Features.MainPage
         IHandlePresentationRequest<PlayFileRequest>,
         IHandlePresentationRequest<StopPlayingRequest>,
         IHandlePresentationRequest<PausePlayingRequest>,
-        IHandlePresentationRequest<RestartPlayingRequest>
+        IHandlePresentationRequest<RestartPlayingRequest>,
+        IHandlePresentationRequest<PositionTransformRequest>
     {
         private readonly SynchronizationContext _synchronizationContext = SynchronizationContext.Current;
         private SystemMediaTransportControls _systemMediaTransportControls;
@@ -170,6 +173,22 @@ namespace Jukebox.WinStore.Features.MainPage
         private void MediaElementMediaEnded1(object sender, RoutedEventArgs e)
         {
             ViewModel.PresentationBus.PublishAsync(new SongEndedEvent());
+        }
+
+        public void Handle(PositionTransformRequest request)
+        {
+            var element = request.Element;
+
+            var position = element.TransformToVisual((UIElement)this.Parent).TransformPoint(new Point(0, 0));
+
+            var location = new Location
+            {
+                Position = position,
+                Size = new Size(element.ActualWidth, element.ActualHeight)
+            };
+
+            request.Location = location;
+            request.IsHandled = true;
         }
     }
 }

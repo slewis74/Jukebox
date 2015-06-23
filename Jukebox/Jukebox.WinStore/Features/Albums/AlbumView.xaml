@@ -40,6 +40,11 @@
                     <TextBlock Text="{Binding TrackNumber}" Margin="{StaticResource LeftMostControlMargin}"/>
                     <TextBlock Text=" - " Margin="{StaticResource HorizontallyCentralControlMargin}"/>
                     <TextBlock Text="{Binding Title}" Margin="{StaticResource RightMostControlMargin}"/>
+                    <interactivity:Interaction.Behaviors>
+                        <pages:DragDropBehaviour
+                            FloatingControlTypeName="Jukebox.WinStore.Features.Albums.TrackFloatingView,Jukebox.WinStore"
+                            LocationCommandMappings="{Binding TrackLocationCommandMappings, Mode=TwoWay}"/>
+                    </interactivity:Interaction.Behaviors>
                 </StackPanel>
                 <Button 
                     Grid.Column="2"
@@ -77,6 +82,9 @@
                     HorizontalAlignment="Left">
                     <interactivity:Interaction.Behaviors>
                         <pages:TapCommandBehaviour Command="{Binding PlayAlbum}" CommandParameter="{Binding}"/>
+                        <pages:DragDropBehaviour
+                            FloatingControlTypeName="Jukebox.WinStore.Features.Albums.AlbumFloatingView,Jukebox.WinStore"
+                            LocationCommandMappings="{Binding AlbumLocationCommandMappings, Mode=TwoWay}"/>
                     </interactivity:Interaction.Behaviors>
                 </Image>
                 <TextBlock 

@@ -1,0 +1,27 @@
+﻿<UserControl
+    x:Class="Jukebox.WinStore.Features.Albums.AlbumFloatingView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Jukebox.WinStore.Features.Albums"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="100"
+    d:DesignWidth="100"
+    HorizontalAlignment="Left"
+    VerticalAlignment="Top">
+
+    <StackPanel>
+        <Border
+            BorderThickness="1"
+            BorderBrush="Gray">
+            <StackPanel>
+                <TextBlock Text="{Binding Title}" Margin="{StaticResource TopMostControlMargin}" />
+                <Image 
+                    Source="{Binding SmallBitmapUri}" 
+                    Margin="{StaticResource BottomMostControlMargin}" 
+                    Height="{StaticResource FourUnits}" Stretch="Uniform"/>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>

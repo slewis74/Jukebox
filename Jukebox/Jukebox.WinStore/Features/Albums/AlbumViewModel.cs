@@ -85,17 +85,15 @@ namespace Jukebox.WinStore.Features.Albums
             return _album;
         }
 
-	    public void SetLocations(Location getPlayDropLocation, Location getPlaylistDropLocation)
+	    public void SetLocations(Location getPlayDropLocation)
 	    {
 	        AlbumLocationCommandMappings.Replace(new[]
 	                                      {
-	                                          new LocationCommandMapping { Location = getPlayDropLocation, Command = PlayAlbum },
-	                                          new LocationCommandMapping { Location = getPlaylistDropLocation, Command = AddAlbum }
+	                                          new LocationCommandMapping { Location = getPlayDropLocation, Command = PlayAlbum }
 	                                      });
 	        TrackLocationCommandMappings.Replace(new[]
 	                                      {
-	                                          new LocationCommandMapping { Location = getPlayDropLocation, Command = PlaySong },
-	                                          new LocationCommandMapping { Location = getPlaylistDropLocation, Command = AddSong }
+	                                          new LocationCommandMapping { Location = getPlayDropLocation, Command = PlaySong }
 	                                      });
 	    }
 

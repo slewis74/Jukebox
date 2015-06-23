@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
+using Windows.UI.Xaml;
 using Autofac;
+using Orienteer.Autofac;
 using Orienteer.Pages.Navigation;
 using Orienteer.WinStore.Data.Navigation;
 using Orienteer.WinStore.Pages;
@@ -26,6 +28,11 @@ namespace Jukebox.WinStore.Modules
 
             builder
                 .RegisterType<RtNavigator>().AsImplementedInterfaces()
+                .SingleInstance();
+            
+            builder
+                .RegisterType<AutofacViewFactory<FrameworkElement>>()
+                .AsImplementedInterfaces()
                 .SingleInstance();
             
             builder

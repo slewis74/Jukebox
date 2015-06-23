@@ -149,27 +149,25 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.5\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Orienteer, Version=1.0.10.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Orienteer.1.0.10\lib\wp8\Orienteer.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Orienteer.Autofac, Version=1.0.10.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Orienteer">
+      <HintPath>..\packages\Orienteer.1.0.14.16\lib\wp8\Orienteer.dll</HintPath>
+    </Reference>
+    <Reference Include="Orienteer.Autofac">
+      <HintPath>..\packages\Orienteer.Autofac.1.0.14.16\lib\wp8\Orienteer.Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Orienteer.WinPhone">
+      <HintPath>..\packages\Orienteer.1.0.14.16\lib\wp8\Orienteer.WinPhone.dll</HintPath>
+    </Reference>
+    <Reference Include="Orienteer.Xaml">
+      <HintPath>..\packages\Orienteer.1.0.14.16\lib\wp8\Orienteer.Xaml.dll</HintPath>
+    </Reference>
+    <Reference Include="Slew.PresentationBus, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Orienteer.Autofac.1.0.10\lib\wp8\Orienteer.Autofac.dll</HintPath>
-    </Reference>
-    <Reference Include="Orienteer.WinPhone, Version=1.0.10.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Orienteer.1.0.10\lib\wp8\Orienteer.WinPhone.dll</HintPath>
-    </Reference>
-    <Reference Include="Orienteer.Xaml, Version=1.0.10.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Orienteer.1.0.10\lib\wp8\Orienteer.Xaml.dll</HintPath>
-    </Reference>
-    <Reference Include="Slew.PresentationBus">
-      <HintPath>..\packages\Slew.PresentationBus.1.0.4\lib\portable-win+net40+wp8+wp81+wpa81+MonoAndroid10+MonoTouch10\Slew.PresentationBus.dll</HintPath>
+      <HintPath>..\packages\Slew.PresentationBus.1.0.8\lib\portable-win+net40+wp8+wp81+wpa81+MonoAndroid10+MonoTouch10\Slew.PresentationBus.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
