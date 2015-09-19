@@ -6,16 +6,18 @@ using Jukebox.WinStore.Model;
 using Jukebox.WinStore.Requests;
 using Orienteer.Data;
 using Orienteer.Xaml.ViewModels;
-using Slew.PresentationBus;
+using PresentationBus;
 using Orienteer.WinStore.Host;
+using NextTrackCommand = Jukebox.WinStore.Features.MainPage.Commands.NextTrackCommand;
+using PreviousTrackCommand = Jukebox.WinStore.Features.MainPage.Commands.PreviousTrackCommand;
 
 namespace Jukebox.WinStore.Features.MainPage
 {
 	public class JukeboxHostViewModel :
         HostViewModel,
-        IHandlePresentationRequest<PlayRequest>,
-        IHandlePresentationRequest<PauseRequest>,
-        IHandlePresentationRequest<StopRequest>,
+        IHandlePresentationCommand<PlayCommand>,
+        IHandlePresentationCommand<PauseCommand>,
+        IHandlePresentationCommand<StopCommand>,
         IHandlePresentationEvent<NowPlayingCurrentTrackChangedEvent>,
         IHandlePresentationEvent<PlaylistDataLoaded>
 	{
@@ -24,15 +26,16 @@ namespace Jukebox.WinStore.Features.MainPage
         public JukeboxHostViewModel(
             IPresentationBus presentationBus,
             NextTrackCommand nextTrackCommand,
-            PreviousTrackCommand previousTrackCommand)
+            PreviousTrackCommand previousTrackCommand,
+            NowPlayingPlaylist.DefaultFactory nowPlayPlaylistFactory)
         {
             PresentationBus = presentationBus;
 
             _playlists = new DistinctAsyncObservableCollection<Playlist>();
-            _nowPlayingPlaylist = new NowPlayingPlaylist(presentationBus, false);
+            _nowPlayingPlaylist = nowPlayPlaylistFactory(false);
 
-            PlayCommand = new PresentationRequestCommand<PlayRequest>(PresentationBus);
-            PauseCommand = new PresentationRequestCommand<PauseRequest>(PresentationBus);
+            PlayCommand = new PresentationCommandSenderCommand<PlayCommand>(PresentationBus);
+            PauseCommand = new PresentationCommandSenderCommand<PauseCommand>(PresentationBus);
             PlaylistsCommand = new PlaylistsCommand(_playlists);
             NextTrackCommand = nextTrackCommand;
             PreviousTrackCommand = previousTrackCommand;
@@ -117,18 +120,18 @@ namespace Jukebox.WinStore.Features.MainPage
             }
         }
 
-        public void Handle(PlayRequest request)
+        public void Handle(PlayCommand command)
         {
             StartPlaying();
         }
 
-        public void Handle(PauseRequest request)
+        public void Handle(PauseCommand command)
         {
             if (IsNotPlaying)
                 return;
             PausePlaying();
         }
-        public void Handle(StopRequest request)
+        public void Handle(StopCommand command)
         {
             if (IsNotPlaying)
                 return;
@@ -150,8 +153,8 @@ namespace Jukebox.WinStore.Features.MainPage
         
 		private async void PlayFile(string artistName, Song song)
 		{
-            await PresentationBus.PublishAsync(
-                new PlayFileRequest(
+            await PresentationBus.Send(
+                new PlayFileCommand(
                     artistName, 
                     song.Title, 
                     await song.GetStorageFileAsync()));
@@ -159,17 +162,17 @@ namespace Jukebox.WinStore.Features.MainPage
 
 	    private void RestartPlaying()
         {
-            PresentationBus.PublishAsync(new RestartPlayingRequest());
+            PresentationBus.Send(new RestartPlayingCommand());
         }
 
         private void PausePlaying()
         {
-            PresentationBus.PublishAsync(new PausePlayingRequest());
+            PresentationBus.Send(new PausePlayingCommand());
         }
 
 		private void StopPlaying()
 		{
-            PresentationBus.PublishAsync(new StopPlayingRequest());
+            PresentationBus.Send(new StopPlayingCommand());
 		}
 
 	    public void Handle(PlaylistDataLoaded presentationEvent)

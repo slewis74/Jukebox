@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using Jukebox.WinStore.Events;
 using Orienteer.Data;
-using Slew.PresentationBus;
+using PresentationBus;
 
 namespace Jukebox.WinStore.Model
 {
@@ -63,7 +63,7 @@ namespace Jukebox.WinStore.Model
 
         protected virtual void OnListChanged()
         {
-            PresentationBus.PublishAsync(new PlaylistContentChangedEvent(this));
+            PresentationBus.Publish(new PlaylistContentChangedEvent(this));
         }
     }
 }

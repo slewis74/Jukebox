@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using Jukebox.WinStore.Events;
 using Jukebox.WinStore.Model;
-using Slew.PresentationBus;
+using PresentationBus;
 
 namespace Jukebox.WinStore.Storage
 {
@@ -18,13 +18,16 @@ namespace Jukebox.WinStore.Storage
     {
         private readonly IPresentationBus _presentationBus;
         private readonly ISettingsHandler _settingsHandler;
+        private readonly PlaylistData.Factory _playlistDataFactory;
 
         public PlaylistHandler(
             IPresentationBus presentationBus,
-            ISettingsHandler settingsHandler)
+            ISettingsHandler settingsHandler,
+            PlaylistData.Factory playlistDataFactory)
         {
             _presentationBus = presentationBus;
             _settingsHandler = settingsHandler;
+            _playlistDataFactory = playlistDataFactory;
         }
 
         private PlaylistData LoadData(IDictionary<string, Artist> artists, bool isRandomPlayMode)
@@ -33,7 +36,7 @@ namespace Jukebox.WinStore.Storage
 
             var playlistContainer = ApplicationData.Current.LocalSettings.CreateContainer(NowPlayingPlaylist.NowPlayingName, ApplicationDataCreateDisposition.Always);
 
-            var playlistData = new PlaylistData(_presentationBus, isRandomPlayMode, LoadPlaylist(artists, playlistContainer), (int?)playlistContainer.Values["CurrentTrackIndex"]);
+            var playlistData = _playlistDataFactory(isRandomPlayMode, LoadPlaylist(artists, playlistContainer), (int?)playlistContainer.Values["CurrentTrackIndex"]);
 
             var playlistsContainer = ApplicationData.Current.LocalSettings.CreateContainer("Playlists", ApplicationDataCreateDisposition.Always);
             foreach (var playlistKey in playlistsContainer.Containers.Keys)
@@ -147,7 +150,7 @@ namespace Jukebox.WinStore.Storage
         {
             var playlistData = LoadData(presentationEvent.Artists.ToDictionary(k => k.Name), _settingsHandler.IsGetRandomPlayMode());
 
-            await _presentationBus.PublishAsync(new PlaylistDataLoaded(playlistData));
+            await _presentationBus.Publish(new PlaylistDataLoaded(playlistData));
         }
     }
 }

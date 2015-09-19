@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Jukebox.WinStore.Events;
 using Jukebox.WinStore.Storage;
-using Slew.PresentationBus;
+using PresentationBus;
 
 namespace Jukebox.WinStore.EventHandlers.WhenASong.GetsLoaded
 {

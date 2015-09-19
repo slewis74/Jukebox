@@ -1,13 +1,13 @@
 ﻿using Windows.Storage;
 using Jukebox.WinStore.Events;
 using Jukebox.WinStore.Requests;
-using Slew.PresentationBus;
+using PresentationBus;
 
 namespace Jukebox.WinStore.Storage
 {
     public class SettingsHandler :
         ISettingsHandler,
-        IHandlePresentationRequest<IsRandomPlayModeRequest>,
+        IHandlePresentationRequest<IsRandomPlayModeRequest, IsRandomPlaymodeResponse>,
         IHandlePresentationEvent<RandomPlayModeChangedEvent>
     {
         const string Settings = "Settings";
@@ -25,10 +25,9 @@ namespace Jukebox.WinStore.Storage
             return false;
         }
 
-        public void Handle(IsRandomPlayModeRequest request)
+        public IsRandomPlaymodeResponse Handle(IsRandomPlayModeRequest request)
         {
-            request.IsHandled = true;
-            request.IsRandomPlayMode = IsGetRandomPlayMode();
+            return new IsRandomPlaymodeResponse { IsRandomPlayMode = IsGetRandomPlayMode()} ;
         }
 
         public void Handle(RandomPlayModeChangedEvent presentationEvent)

@@ -2,8 +2,7 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Autofac;
-using Jukebox.WinStore.Features.MainPage;
-using Slew.PresentationBus;
+using PresentationBus;
 
 namespace Jukebox.WinStore.Modules
 {
@@ -18,19 +17,19 @@ namespace Jukebox.WinStore.Modules
                 .InstancePerDependency()
                 .OnActivated(c =>
                 {
-                    var bus = c.Context.Resolve<IPresentationBus>();
+                    var bus = c.Context.Resolve<IPresentationBusConfiguration>();
                     InjectProperties(c.Context, bus, (FrameworkElement) c.Instance);
                 });
         }
 
-        private void InjectProperties(IComponentContext context, IPresentationBus bus, UIElement uiElement)
+        private void InjectProperties(IComponentContext context, IPresentationBusConfiguration bus, UIElement uiElement)
         {
             if (uiElement == null)
                 return;
 
             context.InjectUnsetProperties(uiElement);
 
-            var subscriber = uiElement as IHandlePresentationEvents;
+            var subscriber = uiElement as IHandlePresentationMessages;
             if (subscriber != null)
             {
                 bus.Subscribe(subscriber);
@@ -39,7 +38,7 @@ namespace Jukebox.WinStore.Modules
             InjectPropertiesForChildViews(context, bus, uiElement);
         }
 
-        private void InjectPropertiesForChildViews(IComponentContext context, IPresentationBus bus, UIElement uiElement)
+        private void InjectPropertiesForChildViews(IComponentContext context, IPresentationBusConfiguration bus, UIElement uiElement)
         {
             var userControl = uiElement as UserControl;
             if (userControl != null)

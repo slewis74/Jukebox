@@ -2,7 +2,7 @@
 using Jukebox.WinStore.Features.Settings;
 using Jukebox.WinStore.Storage;
 using Orienteer.WinStore.Pages.Settings;
-using Slew.PresentationBus;
+using PresentationBus;
 
 namespace Jukebox.WinStore.Modules
 {
@@ -16,7 +16,7 @@ namespace Jukebox.WinStore.Modules
                 .OnActivated(x =>
                 {
                     x.Instance.Add<SettingsController>("PlayerSettings", "Player Settings", c => c.PlayerSettings());
-                    var bus = x.Context.Resolve<IPresentationBus>();
+                    var bus = x.Context.Resolve<IPresentationBusConfiguration>();
                     bus.Subscribe(x.Instance);
                 });
 

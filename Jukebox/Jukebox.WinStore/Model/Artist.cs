@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using Orienteer.Data;
-using Slew.PresentationBus;
+using PresentationBus;
 
 namespace Jukebox.WinStore.Model
 {

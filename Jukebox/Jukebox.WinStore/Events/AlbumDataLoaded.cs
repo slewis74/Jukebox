@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Jukebox.WinStore.Model;
-using Slew.PresentationBus;
+using PresentationBus;
 
 namespace Jukebox.WinStore.Events
 {

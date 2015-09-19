@@ -2,7 +2,7 @@
 using Jukebox.WinStore.Model;
 using Jukebox.WinStore.Requests;
 using Orienteer.Xaml.ViewModels;
-using Slew.PresentationBus;
+using PresentationBus;
 
 namespace Jukebox.WinStore.Features.Artists.All
 {
@@ -19,7 +19,7 @@ namespace Jukebox.WinStore.Features.Artists.All
 
         public async override void Execute(object parameter)
         {
-            await _presentationBus.PublishAsync(new PlayAllNowRequest(_artists));
+            await _presentationBus.Send(new PlayAllNowCommand(_artists));
         }
     }
 }

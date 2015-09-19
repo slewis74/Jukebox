@@ -1,5 +1,5 @@
 ﻿using Jukebox.WinStore.Model;
-using Slew.PresentationBus;
+using PresentationBus;
 
 namespace Jukebox.WinStore.Events
 {

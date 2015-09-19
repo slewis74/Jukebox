@@ -1,15 +1,17 @@
 using System.Collections.Generic;
 using System.Linq;
-using Slew.PresentationBus;
+using PresentationBus;
 
 namespace Jukebox.WinStore.Model
 {
     public class PlaylistData
     {
-        public PlaylistData(IPresentationBus presentationBus, bool isRandomPlayMode, IEnumerable<PlaylistSong> nowPlayingSongs, int? currentTrackIndex)
+        public delegate PlaylistData Factory(bool isRandomPlayMode, IEnumerable<PlaylistSong> nowPlayingSongs, int? currentTrackIndex);
+
+        public PlaylistData(NowPlayingPlaylist.WithTracksFactory nowPlayingFactory, bool isRandomPlayMode, IEnumerable<PlaylistSong> nowPlayingSongs, int? currentTrackIndex)
         {
             NowPlayingPlaylist =
-                new NowPlayingPlaylist(presentationBus, isRandomPlayMode, nowPlayingSongs, currentTrackIndex);
+                nowPlayingFactory(isRandomPlayMode, nowPlayingSongs, currentTrackIndex);
 
             Playlists = Enumerable.Empty<Playlist>();
         }

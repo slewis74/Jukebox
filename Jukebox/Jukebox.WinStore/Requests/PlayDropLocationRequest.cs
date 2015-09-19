@@ -1,10 +1,8 @@
-using Orienteer.WinStore.Pages;
-using Slew.PresentationBus;
+using PresentationBus;
 
 namespace Jukebox.WinStore.Requests
 {
-    public class PlayDropLocationRequest : PresentationRequest
+    public class PlayDropLocationRequest : PresentationRequest<PlayDropLocationRequest, PlayDropLocationResponse>
     {
-        public Location Location { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
-using Slew.PresentationBus;
+using PresentationBus;
 
 namespace Jukebox.WinStore.EventHandlers
 {

@@ -194,7 +194,7 @@
     </Compile>
     <Compile Include="Features\MainPage\Commands\PlaylistsCommand.cs" />
     <Compile Include="Features\MainPage\Commands\PreviousTrackCommand.cs" />
-    <Compile Include="Features\MainPage\Requests\StopPlayingRequest.cs" />
+    <Compile Include="Features\MainPage\Requests\StopPlayingCommand.cs" />
     <Compile Include="Features\Search\SearchController.cs" />
     <Compile Include="Features\Search\SearchResultsView.xaml.cs">
       <DependentUpon>SearchResultsView.xaml</DependentUpon>
@@ -232,12 +232,13 @@
     <Compile Include="Modules\ViewModelModule.cs" />
     <Compile Include="Modules\ViewModule.cs" />
     <Compile Include="OrienteerResources\HostView.xaml.cs" />
-    <Compile Include="Requests\AddToCurrentPlaylistRequest.cs" />
+    <Compile Include="Requests\AddToCurrentPlaylistCommand.cs" />
     <Compile Include="Requests\IsRandomPlayModeRequest.cs" />
     <Compile Include="Requests\PlayDropLocationRequest.cs" />
+    <Compile Include="Requests\PlayDropLocationResponse.cs" />
     <Compile Include="Requests\PlaylistDropLocationRequest.cs" />
-    <Compile Include="Requests\PlayNowRequest.cs" />
-    <Compile Include="Requests\PlayRequest.cs" />
+    <Compile Include="Requests\PlayNowCommand.cs" />
+    <Compile Include="Requests\PlayCommand.cs" />
     <Compile Include="Requests\PositionTransformRequest.cs" />
     <Compile Include="Storage\AlbumArtStorage.cs" />
     <Compile Include="Storage\IMusicProvider.cs" />
@@ -401,29 +402,29 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\netcore45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Orienteer, Version=1.0.14.16, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Orienteer.1.0.14.16\lib\win8\Orienteer.dll</HintPath>
+    <Reference Include="Orienteer, Version=1.0.16.22, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Orienteer.1.0.16.22\lib\win8\Orienteer.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Orienteer.Autofac, Version=1.0.14.16, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Orienteer.Autofac.1.0.14.16\lib\win8\Orienteer.Autofac.dll</HintPath>
+    <Reference Include="Orienteer.Autofac, Version=1.0.16.22, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Orienteer.Autofac.1.0.16.22\lib\win8\Orienteer.Autofac.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Orienteer.WinStore, Version=1.0.14.16, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Orienteer.1.0.14.16\lib\win8\Orienteer.WinStore.dll</HintPath>
+    <Reference Include="Orienteer.WinStore, Version=1.0.16.22, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Orienteer.1.0.16.22\lib\win8\Orienteer.WinStore.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Orienteer.Xaml, Version=1.0.14.16, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Orienteer.1.0.14.16\lib\win8\Orienteer.Xaml.dll</HintPath>
+    <Reference Include="Orienteer.Xaml, Version=1.0.16.22, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Orienteer.1.0.16.22\lib\win8\Orienteer.Xaml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationBus, Version=2.0.13.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\PresentationBus.2.0.13\lib\portable-win+net40+wp8+wp81+wpa81+MonoAndroid10+MonoTouch10+uap10.0\PresentationBus.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Serilog, Version=1.4.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Serilog.1.4.113\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10\Serilog.dll</HintPath>
-    </Reference>
-    <Reference Include="Slew.PresentationBus, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Slew.PresentationBus.1.0.8\lib\portable-win+net40+wp8+wp81+wpa81+MonoAndroid10+MonoTouch10\Slew.PresentationBus.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Core">
       <HintPath>..\packages\Rx-Core.2.2.5\lib\windows8\System.Reactive.Core.dll</HintPath>

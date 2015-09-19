@@ -4,7 +4,7 @@ using Jukebox.WinStore.Model;
 using Jukebox.WinStore.Requests;
 using Orienteer.Pages.Navigation;
 using Orienteer.Xaml.ViewModels;
-using Slew.PresentationBus;
+using PresentationBus;
 
 namespace Jukebox.WinStore.Features.Artists.Single
 {
@@ -76,7 +76,7 @@ namespace Jukebox.WinStore.Features.Artists.Single
         public override void Execute(ArtistViewModel parameter)
         {
             var artist = parameter.GetArtist();
-            _presentationBus.PublishAsync(new PlayArtistNowRequest(artist));
+            _presentationBus.Send(new PlayArtistNowCommand(artist));
         }
     }
 }

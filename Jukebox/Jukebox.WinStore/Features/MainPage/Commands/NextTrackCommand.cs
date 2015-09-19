@@ -2,12 +2,12 @@ using Windows.Media;
 using Jukebox.WinStore.Events;
 using Jukebox.WinStore.Requests;
 using Orienteer.Xaml.ViewModels;
-using Slew.PresentationBus;
+using PresentationBus;
 
 namespace Jukebox.WinStore.Features.MainPage.Commands
 {
     public class NextTrackCommand : 
-        PresentationRequestCommand<NextTrackRequest>,
+        PresentationCommandSenderCommand<WinStore.Requests.NextTrackCommand>,
         IHandlePresentationEvent<CanMoveNextChangedEvent>,
         IHandlePresentationEvent<PlaylistDataLoaded>
     {

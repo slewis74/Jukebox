@@ -27,6 +27,7 @@ namespace Jukebox.WinStore.Modules
 
             builder.RegisterType<ControllerLocator>().As<IControllerLocator>().SingleInstance();
             builder.RegisterType<ControllerInvoker>().As<IControllerInvoker>().InstancePerDependency();
+            builder.RegisterType<ControllerRouteConverter>().As<IControllerRouteConverter>().InstancePerDependency();
         }
     }
 }

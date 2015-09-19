@@ -5,7 +5,7 @@ using Jukebox.WinStore.Features.Settings.Player;
 using Jukebox.WinStore.Requests;
 using Orienteer.Pages.Navigation;
 using Orienteer.WinStore.Pages.Navigation;
-using Slew.PresentationBus;
+using PresentationBus;
 
 namespace Jukebox.WinStore.Features.Settings
 {
@@ -25,8 +25,8 @@ namespace Jukebox.WinStore.Features.Settings
         public async Task<ActionResult> PlayerSettings()
          {
              var request = new IsRandomPlayModeRequest();
-             await _presentationBus.PublishAsync(request);
-             var isRandomPlayMode = request.IsRandomPlayMode;
+             var response = await _presentationBus.Request(request);
+             var isRandomPlayMode = response.IsRandomPlayMode;
 
              return new SettingsPageActionResult<PlayerSettingsView, PlayerSettingsViewModel>(_playerSettingsViewModelFactory(isRandomPlayMode));
          }

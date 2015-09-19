@@ -7,7 +7,7 @@ using Orienteer.Data;
 using Orienteer.Pages.Navigation;
 using Orienteer.WinStore.Pages;
 using Orienteer.Xaml.ViewModels;
-using Slew.PresentationBus;
+using PresentationBus;
 
 namespace Jukebox.WinStore.Features.Albums
 {
@@ -116,7 +116,7 @@ namespace Jukebox.WinStore.Features.Albums
 
         public override void Execute(TrackViewModel parameter)
 		{
-            _presentationBus.PublishAsync(new PlaySongNowRequest(parameter.ArtistName, parameter.Album, parameter.GetSong()));
+            _presentationBus.Send(new PlaySongNowCommand(parameter.ArtistName, parameter.Album, parameter.GetSong()));
 		}
 	}
 
@@ -131,7 +131,7 @@ namespace Jukebox.WinStore.Features.Albums
 
         public override void Execute(AlbumViewModel parameter)
 		{
-            _presentationBus.PublishAsync(new PlayAlbumNowRequest(parameter.ArtistName, parameter.GetAlbum()));
+            _presentationBus.Send(new PlayAlbumNowCommand(parameter.ArtistName, parameter.GetAlbum()));
 		}
 
 	}
@@ -147,7 +147,7 @@ namespace Jukebox.WinStore.Features.Albums
 
         public override void Execute(TrackViewModel parameter)
         {
-            _presentationBus.PublishAsync(new AddSongToCurrentPlaylistRequest { Song = parameter.GetSong() });
+            _presentationBus.Send(new AddSongToCurrentPlaylistCommand { Song = parameter.GetSong() });
         }
     }
 
@@ -162,7 +162,7 @@ namespace Jukebox.WinStore.Features.Albums
 
         public override void Execute(AlbumViewModel parameter)
         {
-            _presentationBus.PublishAsync(new AddAlbumToCurrentPlaylistRequest { Album = parameter.GetAlbum() });
+            _presentationBus.Send(new AddAlbumToCurrentPlaylistCommand { Album = parameter.GetAlbum() });
         }
     }
 }

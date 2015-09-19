@@ -1,6 +1,6 @@
 ﻿using Jukebox.WinStore.Events;
 using Orienteer.Data;
-using Slew.PresentationBus;
+using PresentationBus;
 
 namespace Jukebox.WinStore.Features.Settings.Player
 {
@@ -22,7 +22,7 @@ namespace Jukebox.WinStore.Features.Settings.Player
             {
                 if (SetProperty(ref _isRandomPlayMode, value))
                 {
-                    _presentationBus.PublishAsync(new RandomPlayModeChangedEvent(_isRandomPlayMode));
+                    _presentationBus.Publish(new RandomPlayModeChangedEvent(_isRandomPlayMode));
                 }
             }
         }

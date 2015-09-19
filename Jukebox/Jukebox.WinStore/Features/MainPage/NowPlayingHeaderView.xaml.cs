@@ -11,16 +11,16 @@ using Jukebox.WinStore.Features.MainPage.Events;
 using Jukebox.WinStore.Features.MainPage.Requests;
 using Jukebox.WinStore.Requests;
 using Orienteer.WinStore.Pages;
-using Slew.PresentationBus;
+using PresentationBus;
 
 namespace Jukebox.WinStore.Features.MainPage
 {
     public sealed partial class NowPlayingHeaderView :
-        IHandlePresentationRequest<PlayFileRequest>,
-        IHandlePresentationRequest<StopPlayingRequest>,
-        IHandlePresentationRequest<PausePlayingRequest>,
-        IHandlePresentationRequest<RestartPlayingRequest>,
-        IHandlePresentationRequest<PositionTransformRequest>
+        IHandlePresentationCommand<PlayFileCommand>,
+        IHandlePresentationCommand<StopPlayingCommand>,
+        IHandlePresentationCommand<PausePlayingCommand>,
+        IHandlePresentationCommand<RestartPlayingCommand>,
+        IHandlePresentationRequest<PositionTransformRequest, PositionTransformResponse>
     {
         private readonly SynchronizationContext _synchronizationContext = SynchronizationContext.Current;
         private SystemMediaTransportControls _systemMediaTransportControls;
@@ -72,10 +72,10 @@ namespace Jukebox.WinStore.Features.MainPage
                     DoStopPlaying();
                     break;
                 case SystemMediaTransportControlsButton.Previous:
-                    ViewModel.PresentationBus.PublishAsync(new PreviousTrackRequest());
+                    ViewModel.PresentationBus.Send(new PreviousTrackCommand());
                     break;
                 case SystemMediaTransportControlsButton.Next:
-                    ViewModel.PresentationBus.PublishAsync(new NextTrackRequest());
+                    ViewModel.PresentationBus.Send(new NextTrackCommand());
                     break;
 
             }
@@ -86,21 +86,20 @@ namespace Jukebox.WinStore.Features.MainPage
             Debug.WriteLine("MediaFailed: {0}", e.ErrorMessage);
         }
 
-        public void Handle(PlayFileRequest request)
+        public void Handle(PlayFileCommand command)
         {
-            DoPlay(request.StorageFile);
-            request.IsHandled = true;
+            DoPlay(command.StorageFile);
         }
 
-        public void Handle(StopPlayingRequest request)
+        public void Handle(StopPlayingCommand command)
         {
             DoStopPlaying();
         }
-        public void Handle(PausePlayingRequest request)
+        public void Handle(PausePlayingCommand command)
         {
             DoPausePlaying();
         }
-        public void Handle(RestartPlayingRequest request)
+        public void Handle(RestartPlayingCommand command)
         {
             DoRestart();
         }
@@ -172,10 +171,10 @@ namespace Jukebox.WinStore.Features.MainPage
 
         private void MediaElementMediaEnded1(object sender, RoutedEventArgs e)
         {
-            ViewModel.PresentationBus.PublishAsync(new SongEndedEvent());
+            ViewModel.PresentationBus.Publish(new SongEndedEvent());
         }
 
-        public void Handle(PositionTransformRequest request)
+        public PositionTransformResponse Handle(PositionTransformRequest request)
         {
             var element = request.Element;
 
@@ -187,8 +186,7 @@ namespace Jukebox.WinStore.Features.MainPage
                 Size = new Size(element.ActualWidth, element.ActualHeight)
             };
 
-            request.Location = location;
-            request.IsHandled = true;
+            return new PositionTransformResponse { Location = location };
         }
     }
 }

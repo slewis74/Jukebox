@@ -5,7 +5,7 @@ using Jukebox.WinStore.Storage;
 using Orienteer.Data;
 using Orienteer.Pages.Navigation;
 using Orienteer.Xaml.ViewModels;
-using Slew.PresentationBus;
+using PresentationBus;
 
 namespace Jukebox.WinStore.Features.Artists.All
 {

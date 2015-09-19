@@ -2,7 +2,7 @@
 using Windows.UI.Xaml;
 using Jukebox.WinStore.Requests;
 using Orienteer.WinStore.Pages;
-using Slew.PresentationBus;
+using PresentationBus;
 
 namespace Jukebox.WinStore.Features.Albums
 {
@@ -23,9 +23,9 @@ namespace Jukebox.WinStore.Features.Albums
         async void AlbumViewLoaded(object sender, RoutedEventArgs e)
         {
             var playDropLocationRequest = new PlayDropLocationRequest();
-            await PresentationBus.PublishAsync(playDropLocationRequest);
+            var response = await PresentationBus.Request(playDropLocationRequest);
 
-            ((AlbumViewModel)DataContext).SetLocations(playDropLocationRequest.Location);
+            ((AlbumViewModel)DataContext).SetLocations(response.Location);
         }
 	}
 }

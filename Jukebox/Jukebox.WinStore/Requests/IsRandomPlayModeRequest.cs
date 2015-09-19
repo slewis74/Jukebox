@@ -1,14 +1,16 @@
-﻿using Slew.PresentationBus;
+﻿using PresentationBus;
 
 namespace Jukebox.WinStore.Requests
 {
-    public class IsRandomPlayModeRequest : PresentationRequest
+    public class IsRandomPlayModeRequest : PresentationRequest<IsRandomPlayModeRequest, IsRandomPlaymodeResponse>
     {
         public IsRandomPlayModeRequest()
         {
-            MustBeHandled = true;
         }
+    }
 
+    public class IsRandomPlaymodeResponse : IPresentationResponse
+    { 
         public bool IsRandomPlayMode { get; set; }
     }
 }

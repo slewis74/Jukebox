@@ -1,12 +1,12 @@
 ﻿using System.Threading.Tasks;
 using Jukebox.WinStore.Requests;
 using Orienteer.WinStore.Pages;
-using Slew.PresentationBus;
+using PresentationBus;
 
 namespace Jukebox.WinStore.Features.MainPage
 {
     public sealed partial class NowPlayingView :
-        IHandlePresentationEventAsync<PlayDropLocationRequest>
+        IHandlePresentationRequestAsync<PlayDropLocationRequest, PlayDropLocationResponse>
     {
         public NowPlayingView()
         {
@@ -15,17 +15,17 @@ namespace Jukebox.WinStore.Features.MainPage
 
         public IPresentationBus PresentationBus { get; set; }
 
-        public async Task HandleAsync(PlayDropLocationRequest request)
+        public async Task<PlayDropLocationResponse> HandleAsync(PlayDropLocationRequest request)
         {
-            request.IsHandled = true;
-            request.Location = await GetPlayDropLocation();
+            var location = await GetPlayDropLocation();
+            return new PlayDropLocationResponse {Location = location};
         }
 
         private async Task<Location> GetPlayDropLocation()
         {
             var request = new PositionTransformRequest(playPauseGrid);
-            await PresentationBus.PublishAsync(request);
-            return request.Location;
+            var response = await PresentationBus.Request(request);
+            return response.Location;
         }
     }
 }

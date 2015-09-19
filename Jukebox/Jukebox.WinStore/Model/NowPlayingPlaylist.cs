@@ -4,38 +4,37 @@ using System.Linq;
 using Jukebox.WinStore.Events;
 using Jukebox.WinStore.Features.MainPage.Events;
 using Jukebox.WinStore.Requests;
-using Slew.PresentationBus;
+using PresentationBus;
 
 namespace Jukebox.WinStore.Model
 {
     public class NowPlayingPlaylist : Playlist,
         IHandlePresentationEvent<SongEndedEvent>,
-        IHandlePresentationRequest<PreviousTrackRequest>,
-        IHandlePresentationRequest<NextTrackRequest>,
+        IHandlePresentationCommand<PreviousTrackCommand>,
+        IHandlePresentationCommand<NextTrackCommand>,
         IHandlePresentationEvent<RandomPlayModeChangedEvent>,
-        IHandlePresentationRequest<PlaySongNowRequest>,
-        IHandlePresentationRequest<PlayAlbumNowRequest>,
-        IHandlePresentationRequest<PlayArtistNowRequest>,
-        IHandlePresentationRequest<PlayAllNowRequest>
+        IHandlePresentationCommand<PlaySongNowCommand>,
+        IHandlePresentationCommand<PlayAlbumNowCommand>,
+        IHandlePresentationCommand<PlayArtistNowCommand>,
+        IHandlePresentationCommand<PlayAllNowCommand>
     {
         public const string NowPlayingName = "NowPlaying";
 
         private bool _isRandomPlayMode;
 
+        public delegate NowPlayingPlaylist DefaultFactory(bool isRandomPlayMode);
+        public delegate NowPlayingPlaylist WithTracksFactory(bool isRandomPlayMode, IEnumerable<PlaylistSong> tracks, int? currentTrackIndex);
+
         public NowPlayingPlaylist(IPresentationBus presentationBus, bool isRandomPlayMode)
             : base(presentationBus, NowPlayingName)
         {
             _isRandomPlayMode = isRandomPlayMode;
-
-            presentationBus.Subscribe(this);
         }
         public NowPlayingPlaylist(IPresentationBus presentationBus, bool isRandomPlayMode, IEnumerable<PlaylistSong> tracks, int? currentTrackIndex)
             : base(presentationBus, NowPlayingName, tracks)
         {
             _isRandomPlayMode = isRandomPlayMode;
             _currentTrack = currentTrackIndex == null || currentTrackIndex >= Count ? null : this[currentTrackIndex.Value];
-
-            presentationBus.Subscribe(this);
         }
 
         private PlaylistSong _currentTrack;
@@ -160,20 +159,20 @@ namespace Jukebox.WinStore.Model
 
         protected async override void OnListChanged()
         {
-            await PresentationBus.PublishAsync(new NowPlayingContentChangedEvent(this));
+            await PresentationBus.Publish(new NowPlayingContentChangedEvent(this));
             OnCanMoveChanged();
         }
 
         protected void OnCurrentTrackChanged(PlaylistSong e)
         {
-            PresentationBus.PublishAsync(new NowPlayingCurrentTrackChangedEvent(this, e));
+            PresentationBus.Publish(new NowPlayingCurrentTrackChangedEvent(this, e));
             OnCanMoveChanged();
         }
 
         private void OnCanMoveChanged()
         {
-            PresentationBus.PublishAsync(new CanMovePreviousChangedEvent(this, CanMovePrevious));
-            PresentationBus.PublishAsync(new CanMoveNextChangedEvent(this, CanMoveNext));
+            PresentationBus.Publish(new CanMovePreviousChangedEvent(this, CanMovePrevious));
+            PresentationBus.Publish(new CanMoveNextChangedEvent(this, CanMoveNext));
         }
 
         public void Handle(RandomPlayModeChangedEvent presentationEvent)
@@ -182,11 +181,11 @@ namespace Jukebox.WinStore.Model
             OnCanMoveChanged();
         }
 
-        public void Handle(PreviousTrackRequest request)
+        public void Handle(PreviousTrackCommand command)
         {
             MoveToPreviousTrack();
         }
-        public void Handle(NextTrackRequest request)
+        public void Handle(NextTrackCommand command)
         {
             MoveToNextTrack();
         }
@@ -199,35 +198,30 @@ namespace Jukebox.WinStore.Model
             }
         }
 
-        public void Handle(PlaySongNowRequest request)
+        public void Handle(PlaySongNowCommand command)
         {
-            request.IsHandled = true;
             Clear();
-            Add(new PlaylistSong { ArtistName = request.ArtistName, Album = request.Album, Song = request.Scope });
+            Add(new PlaylistSong { ArtistName = command.ArtistName, Album = command.Album, Song = command.Scope });
             CurrentTrack = this[0];
         }
 
-        public void Handle(PlayAlbumNowRequest request)
+        public void Handle(PlayAlbumNowCommand command)
         {
-            request.IsHandled = true;
-            
             StartLargeUpdate();
             Clear();
-            AddAlbum(request.ArtistName, request.Scope);
+            AddAlbum(command.ArtistName, command.Scope);
             CompleteLargeUpdate();
 
             CurrentTrack = this[0];
         }
 
-        public void Handle(PlayArtistNowRequest request)
+        public void Handle(PlayArtistNowCommand command)
         {
-            request.IsHandled = true;
-            
             StartLargeUpdate();
             Clear();
-            foreach (var album in request.Scope.Albums)
+            foreach (var album in command.Scope.Albums)
             {
-                AddAlbum(request.Scope.Name, album);
+                AddAlbum(command.Scope.Name, album);
             }
             CompleteLargeUpdate();
 
@@ -242,13 +236,11 @@ namespace Jukebox.WinStore.Model
             }
         }
 
-        public void Handle(PlayAllNowRequest request)
+        public void Handle(PlayAllNowCommand command)
         {
-            request.IsHandled = true;
-
             StartLargeUpdate();
             Clear();
-            foreach (var artist in request.Artists)
+            foreach (var artist in command.Artists)
             {
                 foreach (var album in artist.Albums)
                 {

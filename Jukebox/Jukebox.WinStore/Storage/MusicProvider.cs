@@ -11,7 +11,7 @@ using Jukebox.WinStore.Model;
 using Newtonsoft.Json;
 using Serilog;
 using Orienteer.Data;
-using Slew.PresentationBus;
+using PresentationBus;
 
 namespace Jukebox.WinStore.Storage
 {
@@ -37,7 +37,7 @@ namespace Jukebox.WinStore.Storage
             Artists.AddRange(artists);
             Artists.CompleteLargeUpdate();
 
-            await _presentationBus.PublishAsync(new AlbumDataLoaded(Artists));
+            await _presentationBus.Publish(new AlbumDataLoaded(Artists));
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace Jukebox.WinStore.Storage
                                        };
                             album.Songs.Add(song);
                             newData = true;
-                            await _presentationBus.PublishAsync(new SongLoadedEvent(album, song));
+                            await _presentationBus.Publish(new SongLoadedEvent(album, song));
                             // save new entry to app storage
                         }
                         song.SetStorageFile(f);
